@@ -752,7 +752,7 @@ Jest replaces Karma. Do not install or configure Karma.
 export default {
   preset: 'jest-preset-angular',
   setupFilesAfterFramework: ['<rootDir>/setup-jest.ts'],
-  testPathPattern: ['src/.*\\.spec\\.ts$'],
+  testMatch: ['src/.*\\.spec\\.ts$'],
   collectCoverageFrom: ['src/app/**/*.ts', '!src/app/**/*.spec.ts'],
 };
 ```
