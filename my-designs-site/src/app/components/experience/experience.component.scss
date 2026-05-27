@@ -1,4 +1,170 @@
+@use '../../../styles/tokens' as tokens;
+
 :host {
   display: block;
   width: 100%;
+}
+
+.experience-heading {
+  margin-top: tokens.$spacing-3;
+  margin-bottom: tokens.$spacing-8;
+}
+
+// ─── Timeline container ───────────────────────────────────────────────────────
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-6;
+  padding-left: tokens.$spacing-6;
+
+  // Vertical accent line — left-aligned on mobile
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 1px;
+    background: var(--border-accent);
+  }
+}
+
+// ─── Individual entry ─────────────────────────────────────────────────────────
+
+.timeline-entry {
+  position: relative;
+
+  // Node dot centered on the line
+  // Line is at 20px from timeline left; entry is offset 48px in.
+  // Node left = 20 - 48 - 5 (half of 10px) = -33px → center lands at 20px ✓
+  &::before {
+    content: '';
+    position: absolute;
+    top: tokens.$spacing-4;
+    left: -33px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--background);
+  }
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+
+.timeline-card {
+  padding: tokens.$spacing-4;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-3;
+}
+
+.timeline-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-unit;
+}
+
+.timeline-period {
+  color: var(--text-secondary);
+}
+
+.timeline-company {
+  color: var(--text-primary);
+}
+
+.timeline-role {
+  color: var(--accent);
+}
+
+// ─── Bullets ──────────────────────────────────────────────────────────────────
+
+.timeline-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-unit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.timeline-bullet {
+  padding-left: tokens.$spacing-2;
+  position: relative;
+
+  &::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: tokens.$font-primary;
+    font-size: 0.85em;
+  }
+}
+
+// ─── Tags ─────────────────────────────────────────────────────────────────────
+
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$spacing-unit;
+}
+
+// ─── Reveal animations ────────────────────────────────────────────────────────
+
+[appReveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity tokens.$duration-reveal tokens.$easing-out-expo,
+    transform tokens.$duration-reveal tokens.$easing-out-expo;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.experience-heading[appReveal] {
+  transition-delay: 150ms;
+}
+
+// ─── Desktop: alternating left/right layout ───────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .timeline {
+    padding-left: 0;
+    gap: tokens.$spacing-8;
+
+    // Move line to horizontal center
+    &::before {
+      left: 50%;
+      transform: translateX(-0.5px);
+    }
+  }
+
+  .timeline-entry {
+    display: flex;
+
+    // Node always centered on the line regardless of card side
+    &::before {
+      left: calc(50% - 5px);
+    }
+
+    // Odd entries: card on the left half
+    &:not(.is-right) {
+      padding-right: calc(50% + tokens.$spacing-4);
+    }
+
+    // Even entries: card on the right half
+    &.is-right {
+      padding-left: calc(50% + tokens.$spacing-4);
+    }
+
+    .timeline-card {
+      width: 100%;
+    }
+  }
 }
