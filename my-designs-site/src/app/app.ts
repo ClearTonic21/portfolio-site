@@ -11,11 +11,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { ScrollService } from './services/scroll.service';
 import { MotionService } from './services/motion.service';
+import { HeroComponent } from './components/hero/hero.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeroComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
