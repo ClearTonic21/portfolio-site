@@ -1,14 +1,14 @@
-<section id="hero" class="hero-section">
+<section id="hero" class="hero-section" [@heroEntrance] [@.disabled]="motionService.reducedMotion()">
   <div class="section-inner hero-inner">
-    <p class="type-eyebrow">/ Intro · Worthington, OH</p>
-    <h1 class="type-display hero-title">ELI<br />PHILPOTT</h1>
-    <p class="type-body hero-copy">
+    <p class="type-eyebrow hero-animate">/ Intro · Worthington, OH</p>
+    <h1 class="type-display hero-title hero-animate">ELI<br />PHILPOTT</h1>
+    <p class="type-body hero-copy hero-animate">
       Software Designer and indie game creator building polished digital products, thoughtful
       interfaces, and playful interactive experiences.
     </p>
-    <p class="type-heading hero-subtitle">UI/UX &amp; Software Designer</p>
+    <p class="type-heading hero-subtitle hero-animate">UI/UX &amp; Software Designer</p>
 
-    <div class="hero-actions">
+    <div class="hero-actions hero-animate">
       <button type="button" class="button-primary" (click)="viewWork()">View My Work</button>
       <a class="button-ghost" [href]="resumeHref" target="_blank" rel="noopener noreferrer">
         Resume ↗
