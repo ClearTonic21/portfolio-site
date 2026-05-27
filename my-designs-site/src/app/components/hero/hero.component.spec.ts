@@ -22,6 +22,6 @@ describe('HeroComponent', () => {
   });
 
   it('should define resumeHref', () => {
-    expect(component.resumeHref).toBe('assets/images/resume.pdf');
+    expect(component.resumeHref).toBe('../../../../public/Eli_Philpott_Resume.pdf');
   });
 });

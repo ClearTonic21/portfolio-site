@@ -1,4 +1,76 @@
+@use '../../../styles/tokens' as tokens;
+
 :host {
   display: block;
   width: 100%;
+}
+
+.contact-inner {
+  align-items: center;
+  text-align: center;
+}
+
+.contact-heading {
+  font-family: tokens.$font-primary;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-top: tokens.$spacing-3;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: tokens.$spacing-4;
+  margin-top: tokens.$spacing-8;
+  margin-bottom: tokens.$spacing-8;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  font-family: tokens.$font-primary;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  position: relative;
+  transition: color tokens.$duration-base tokens.$easing-standard;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform tokens.$duration-base tokens.$easing-out-expo;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.contact-footer {
+  margin-top: tokens.$spacing-12;
+  padding-top: tokens.$spacing-4;
+  border-top: 1px solid var(--border-default);
+  width: 100%;
+  text-align: center;
+}
+
+.brand-underscore {
+  color: var(--accent);
 }
