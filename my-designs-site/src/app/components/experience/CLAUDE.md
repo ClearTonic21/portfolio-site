@@ -31,6 +31,9 @@ interface TimelineEntry {
 ```
 Defined as a typed array in the component class. No HTTP calls or external data.
 
+## Icons
+Timeline entries are text-only. If company logos or role icons are added in the future, use Lucide from `@lucide/angular` for consistency.
+
 ## Dependencies
 - `RevealDirective` — staggered card reveals
 

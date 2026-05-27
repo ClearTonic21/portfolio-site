@@ -1,4 +1,5 @@
 # CLAUDE.md — Eli Philpott Portfolio Site
+
 > Read this file completely before writing any component, style, or configuration file.
 > This is the single source of truth for the entire project.
 
@@ -6,7 +7,7 @@
 
 ## 1. Project Overview
 
-A single-page Angular portfolio site for **Eli Philpott** — a UI/UX and software designer who builds polished, well-structured applications and creates indie games under **ClearTonic Games_**.
+A single-page Angular portfolio site for **Eli Philpott** — a UI/UX and software designer who builds polished, well-structured applications and creates indie games under **ClearTonic Games\_**.
 
 **Primary audience:** Hiring managers and recruiters looking for a Software Designer, App Designer, or UI/UX Designer.
 
@@ -16,10 +17,11 @@ A single-page Angular portfolio site for **Eli Philpott** — a UI/UX and softwa
 **GitHub account:** `https://github.com/ClearTonic21`
 **Base href:** `/portfolio/` (update to match the actual repo name when created)
 
-**Angular version:** Angular 21 (verify installed version with `ng version` before writing any code).
+**Angular version:** Angular 20 (verify installed version with `ng version` before writing any code).
 
 **Tech stack:**
-- Angular 21, standalone components, Signals, `inject()` function
+
+- Angular 20, standalone components, Signals, `inject()` function
 - TypeScript — strict mode, all checks on (see Section 10)
 - SCSS — global design tokens in `src/styles/`; no CSS-in-JS, no utility frameworks
 - No UI component library — all components are handwritten
@@ -30,11 +32,12 @@ A single-page Angular portfolio site for **Eli Philpott** — a UI/UX and softwa
 
 ---
 
-## 2. Angular 21 Best Practices
+## 2. Angular 20 Best Practices
 
 Follow the [Angular Style Guide](https://angular.dev/style-guide) strictly.
 
 **Signals for all local state — no component-level BehaviorSubject or Subject:**
+
 ```typescript
 import { signal, computed, effect } from '@angular/core';
 
@@ -43,6 +46,7 @@ readonly menuAriaExpanded = computed(() => this.isMenuOpen().toString());
 ```
 
 **`inject()` everywhere — no constructor injection:**
+
 ```typescript
 export class HeroComponent {
   private readonly scrollService = inject(ScrollService);
@@ -50,6 +54,7 @@ export class HeroComponent {
 ```
 
 **Standalone components — no NgModules anywhere:**
+
 ```typescript
 @Component({
   selector: 'app-hero',
@@ -62,23 +67,24 @@ export class HeroComponent {
 ```
 
 **`@if` / `@for` / `@switch` control flow — never `*ngIf` or `*ngFor`:**
+
 ```html
 @if (isMenuOpen()) {
-  <nav class="mobile-navigation">...</nav>
-}
-
-@for (project of projects; track project.id) {
-  <app-project-card [project]="project" />
+<nav class="mobile-navigation">...</nav>
+} @for (project of projects; track project.id) {
+<app-project-card [project]="project" />
 }
 ```
 
 **Signal-based `input()` and `output()` — never `@Input()` or `@Output()` decorators:**
+
 ```typescript
 readonly label = input.required<string>();
 readonly cardClicked = output<string>();
 ```
 
 **`toSignal()` for any RxJS streams that must be retained:**
+
 ```typescript
 private readonly scrollPosition = toSignal(
   fromEvent(window, 'scroll').pipe(map(() => window.scrollY)),
@@ -87,6 +93,7 @@ private readonly scrollPosition = toSignal(
 ```
 
 **`afterNextRender` for any DOM access — never `ngAfterViewInit`:**
+
 ```typescript
 afterNextRender(() => {
   this.intersectionObserver = new IntersectionObserver(/* ... */);
@@ -171,6 +178,7 @@ afterNextRender(() => {
 ```
 
 **Structure rules:**
+
 - One component per folder. Folder name = kebab-case of the component selector.
 - Business logic in `.ts` files only. Templates are declarative.
 - No inline `style="..."` attributes anywhere in templates.
@@ -188,32 +196,32 @@ Component SCSS always references CSS custom properties. Never hardcode hex value
 ```scss
 // src/styles/_tokens.scss
 
-$color-background:          #1A1A1A;
-$color-background-surface:  #232323;
-$color-background-subtle:   #2C2C2C;
-$color-text-primary:        #F0EDE6;
-$color-text-secondary:      #A89F91;
-$color-text-inverted:       #1A1A1A;
-$color-accent:              #38EEB4;
-$color-accent-hover:        #1ABFA0;
-$color-accent-glow:         rgba(56, 238, 180, 0.15);
-$color-border-default:      rgba(240, 237, 230, 0.08);
-$color-border-accent:       rgba(56, 238, 180, 0.30);
-$color-error:               #FF6B6B;
+$color-background: #1a1a1a;
+$color-background-surface: #232323;
+$color-background-subtle: #2c2c2c;
+$color-text-primary: #f0ede6;
+$color-text-secondary: #a89f91;
+$color-text-inverted: #1a1a1a;
+$color-accent: #38eeb4;
+$color-accent-hover: #1abfa0;
+$color-accent-glow: rgba(56, 238, 180, 0.15);
+$color-border-default: rgba(240, 237, 230, 0.08);
+$color-border-accent: rgba(56, 238, 180, 0.3);
+$color-error: #ff6b6b;
 
 :root {
-  --background:             #{$color-background};
-  --background-surface:     #{$color-background-surface};
-  --background-subtle:      #{$color-background-subtle};
-  --text-primary:           #{$color-text-primary};
-  --text-secondary:         #{$color-text-secondary};
-  --text-inverted:          #{$color-text-inverted};
-  --accent:                 #{$color-accent};
-  --accent-hover:           #{$color-accent-hover};
-  --accent-glow:            #{$color-accent-glow};
-  --border-default:         #{$color-border-default};
-  --border-accent:          #{$color-border-accent};
-  --error:                  #{$color-error};
+  --background: #{$color-background};
+  --background-surface: #{$color-background-surface};
+  --background-subtle: #{$color-background-subtle};
+  --text-primary: #{$color-text-primary};
+  --text-secondary: #{$color-text-secondary};
+  --text-inverted: #{$color-text-inverted};
+  --accent: #{$color-accent};
+  --accent-hover: #{$color-accent-hover};
+  --accent-glow: #{$color-accent-glow};
+  --border-default: #{$color-border-default};
+  --border-accent: #{$color-border-accent};
+  --error: #{$color-error};
 }
 ```
 
@@ -228,8 +236,8 @@ Two fonts only. Visual hierarchy is achieved through weight, size, spacing, and 
 ```scss
 // src/styles/_typography.scss
 
-$font-primary:  'DM Sans', sans-serif;   // all headings, labels, UI, tags
-$font-body:     'Lora', serif;           // body copy only
+$font-primary: 'DM Sans', sans-serif; // all headings, labels, UI, tags
+$font-body: 'Lora', serif; // body copy only
 
 // Google Fonts — place in index.html <head>, before any stylesheet link:
 // <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -280,7 +288,8 @@ $font-body:     'Lora', serif;           // body copy only
 ```
 
 **Typography rules:**
-- The trailing `_` in **ClearTonic Games_** is a brand element. Always render it as `<span class="brand-underscore">_</span>` styled `color: var(--accent)`.
+
+- The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="brand-underscore">_</span>` styled `color: var(--accent)`.
 - Section eyebrow labels follow the `/ Section Name` pattern.
 - Never use font-weight below 500 for headings or labels.
 - Never use Arial, Inter, Roboto, or system-ui.
@@ -294,18 +303,18 @@ $font-body:     'Lora', serif;           // body copy only
 ```scss
 // src/styles/_tokens.scss (continued)
 
-$spacing-unit:                  8px;
-$spacing-2:                     16px;
-$spacing-3:                     24px;
-$spacing-4:                     32px;
-$spacing-6:                     48px;
-$spacing-8:                     64px;
-$spacing-12:                    96px;
-$spacing-16:                    128px;
+$spacing-unit: 8px;
+$spacing-2: 16px;
+$spacing-3: 24px;
+$spacing-4: 32px;
+$spacing-6: 48px;
+$spacing-8: 64px;
+$spacing-12: 96px;
+$spacing-16: 128px;
 
-$section-vertical-padding:      clamp(#{$spacing-12}, 12vw, #{$spacing-16});
-$content-max-width:             1200px;
-$content-horizontal-gutter:     clamp(#{$spacing-3}, 5vw, #{$spacing-8});
+$section-vertical-padding: clamp(#{$spacing-12}, 12vw, #{$spacing-16});
+$content-max-width: 1200px;
+$content-horizontal-gutter: clamp(#{$spacing-3}, 5vw, #{$spacing-8});
 ```
 
 ---
@@ -313,10 +322,10 @@ $content-horizontal-gutter:     clamp(#{$spacing-3}, 5vw, #{$spacing-8});
 ### 4.4 Surfaces and Border Radius
 
 ```scss
-$border-radius-small:   4px;
-$border-radius-medium:  8px;
-$border-radius-large:   16px;
-$border-radius-pill:    999px;
+$border-radius-small: 4px;
+$border-radius-medium: 8px;
+$border-radius-large: 16px;
+$border-radius-pill: 999px;
 
 .surface {
   background: var(--background-surface);
@@ -350,11 +359,11 @@ $border-radius-pill:    999px;
 // Two-column layout (about, experience)
 .two-column-layout {
   display: flex;
-  flex-direction: column;   // mobile: stacked
+  flex-direction: column; // mobile: stacked
   gap: $spacing-6;
 
   @media (min-width: 768px) {
-    flex-direction: row;    // desktop: side by side
+    flex-direction: row; // desktop: side by side
   }
 }
 
@@ -380,25 +389,26 @@ Motion is minimal. A "Reduce motion" button is visible in the bottom-left corner
 ```scss
 // src/styles/_tokens.scss (continued)
 
-$easing-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
-$easing-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+$easing-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+$easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
-$duration-fast:     150ms;
-$duration-base:     300ms;
-$duration-slow:     600ms;
-$duration-reveal:   700ms;
+$duration-fast: 150ms;
+$duration-base: 300ms;
+$duration-slow: 600ms;
+$duration-reveal: 700ms;
 ```
 
 **Permitted animations:**
+
 1. Scroll reveal — `opacity` + `translateY(20px)` via `RevealDirective`
 2. Nav underline — `scaleX()` on hover
 3. Project card hover — `translateY(-3px)` + border brightens
 4. Mobile menu — `opacity` + `translateY`
 
 **Reduced motion — applied globally:**
+
 ```scss
-@media (prefers-reduced-motion: reduce),
-[data-reduced-motion="true"] * {
+@media (prefers-reduced-motion: reduce), [data-reduced-motion="true"] * {
   animation-duration: 0.01ms !important;
   transition-duration: 0.01ms !important;
 }
@@ -414,16 +424,16 @@ Never use `transition: all`. Always specify the property name.
 
 ```scss
 // Breakpoints
-$breakpoint-medium:  768px;   // tablet and up
-$breakpoint-large:   1024px;  // desktop and up
-$breakpoint-xlarge:  1280px;  // wide desktop
+$breakpoint-medium: 768px; // tablet and up
+$breakpoint-large: 1024px; // desktop and up
+$breakpoint-xlarge: 1280px; // wide desktop
 
 // Usage pattern — always mobile-first
 .component-element {
-  font-size: 1rem;              // mobile base
+  font-size: 1rem; // mobile base
 
   @media (min-width: $breakpoint-medium) {
-    font-size: 1.25rem;         // tablet and up
+    font-size: 1.25rem; // tablet and up
   }
 }
 ```
@@ -473,7 +483,7 @@ UI/UX & Software Designer
 - "View My Work" calls `ScrollService.scrollToSection('about')`
 - "Resume ↗" opens `assets/images/resume.pdf` in a new tab — **the only `target="_blank"` link in the entire site**
 - Pixel-noise SVG texture overlay at 5% opacity on section background
-- ClearTonic Games_ floating badge in bottom-right corner
+- ClearTonic Games\_ floating badge in bottom-right corner
 
 ### `#about`
 
@@ -485,13 +495,14 @@ Two-column layout — flex row on desktop (768px+), column on mobile.
   - Frontend: Angular, TypeScript, SCSS, RxJS
   - Backend: Node.js, RESTful APIs, SQL
   - Platforms: ServiceNow, Azure, GitHub Pages
-  - Game Dev: Pixel Art, Game Design, ClearTonic Games_
+  - Game Dev: Pixel Art, Game Design, ClearTonic Games\_
 
 ### `#experience`
 
 Vertical timeline. 1px `var(--border-accent)` line. Cards alternate left/right on desktop (768px+), stack on mobile.
 
 Entries, newest first:
+
 1. **ServiceNow Application Developer — Capital One**: custom JS + AngularJS components, REST API integrations, ITSM/HR modules, Agile team, mentored junior engineers
 2. **ServiceNow Application Developer — Discover Financial**: enterprise ITSM application development
 3. **Full-Stack Software Engineer — Experlogix Inc.**: TypeScript + Angular SaaS, CRM integrations, UI redesigns and accessibility improvements, API and database layer changes, collaborated with Design and Product teams
@@ -503,7 +514,8 @@ Flex row, wrapping, gap `$spacing-4`. Each card `flex: 1 1 calc(50% - $spacing-4
 Cards: image area, eyebrow tag, `.type-heading` title, `.tag` pills, `.type-body` description, CTA link.
 
 Projects:
-1. **ClearTonic Games_ — [Game Name]** — `assets/images/game-screenshot.png` — GitHub: `https://github.com/ClearTonic21` (link to repo, no live demo)
+
+1. **ClearTonic Games\_ — [Game Name]** — `assets/images/game-screenshot.png` — GitHub: `https://github.com/ClearTonic21` (link to repo, no live demo)
 2. **Canopy Trails** — `assets/images/app-screenshot.png` — GitHub: `https://github.com/ClearTonic21` (link to repo)
 3. **This Portfolio Site** — AI-directed design and development case study — GitHub: `https://github.com/ClearTonic21`
 
@@ -542,8 +554,9 @@ LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. The
   background: var(--accent);
   color: var(--text-inverted);
   cursor: pointer;
-  transition: background $duration-base $easing-out-expo,
-              color $duration-base $easing-out-expo;
+  transition:
+    background $duration-base $easing-out-expo,
+    color $duration-base $easing-out-expo;
 
   &:hover {
     background: transparent;
@@ -602,7 +615,37 @@ LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. The
 
 ---
 
-## 8. Services
+## 8. Icons with Lucide
+
+**Icon library:** Lucide Angular (`@lucide/angular`)
+
+All icons in the portfolio use Lucide for consistency. Never use custom SVGs or icon fonts unless Lucide does not provide the needed icon.
+
+**Import and usage:**
+```typescript
+import { LucideAngularModule, Icon } from '@lucide/angular';
+
+// In component standalone imports:
+imports: [LucideAngularModule, CommonModule],
+
+// In template:
+<lucide-icon name="github" size="24" stroke-width="2"></lucide-icon>
+```
+
+**Icon sizing:** Use standard sizes (`16`, `20`, `24`, `32`). Control icon color via component CSS or inline styles aligned with the design system palette.
+
+**Accessibility:** Always pair icon-only buttons with `aria-label`:
+```html
+<button aria-label="Open menu">
+  <lucide-icon name="menu" size="24"></lucide-icon>
+</button>
+```
+
+**Allowed icon names:** GitHub, LinkedIn, Mail, ExternalLink, ChevronDown, Menu, X (close), ArrowUpRight, and others as needed. Check [lucide.dev](https://lucide.dev) for the full icon set.
+
+---
+
+## 9. Services
 
 ### ScrollService (`src/app/services/scroll.service.ts`)
 
@@ -642,12 +685,14 @@ Adds `is-visible` class to host element when it enters viewport.
 - When `MotionService.reducedMotion()` is true, adds `is-visible` immediately on init
 
 Consuming component SCSS:
+
 ```scss
 [appReveal] {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity $duration-reveal $easing-out-expo,
-              transform $duration-reveal $easing-out-expo;
+  transition:
+    opacity $duration-reveal $easing-out-expo,
+    transform $duration-reveal $easing-out-expo;
 
   &.is-visible {
     opacity: 1;
@@ -658,7 +703,7 @@ Consuming component SCSS:
 
 ---
 
-## 9. Reduced-Motion Toggle Button
+## 10. Reduced-Motion Toggle Button
 
 Fixed bottom-left. Visible only when `scrollY < window.innerHeight * 0.8`. Hides via `opacity: 0; pointer-events: none` after that threshold (not `display: none`).
 
@@ -703,7 +748,7 @@ Fixed bottom-left. Visible only when `scrollY < window.innerHeight * 0.8`. Hides
 
 ---
 
-## 10. TypeScript Configuration
+## 11. TypeScript Configuration
 
 `tsconfig.json` must include:
 
@@ -727,21 +772,23 @@ No `any`. No `!` non-null assertions. If a value may be null, handle it explicit
 
 ---
 
-## 11. Testing with Jest
+## 12. Testing with Jest
 
 Jest replaces Karma. Do not install or configure Karma.
 
 **`jest.config.ts` root config:**
+
 ```typescript
 export default {
   preset: 'jest-preset-angular',
   setupFilesAfterFramework: ['<rootDir>/setup-jest.ts'],
-  testPathPattern: ['src/.*\\.spec\\.ts$'],
+  testMatch: ['src/.*\\.spec\\.ts$'],
   collectCoverageFrom: ['src/app/**/*.ts', '!src/app/**/*.spec.ts'],
 };
 ```
 
 **Component spec skeleton:**
+
 ```typescript
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeroComponent } from './hero.component';
@@ -767,6 +814,7 @@ describe('HeroComponent', () => {
 ```
 
 **Service spec skeleton:**
+
 ```typescript
 import { TestBed } from '@angular/core/testing';
 import { MotionService } from './motion.service';
@@ -786,6 +834,7 @@ describe('MotionService', () => {
 ```
 
 **Directive spec skeleton:**
+
 ```typescript
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -815,7 +864,7 @@ describe('RevealDirective', () => {
 
 ---
 
-## 12. GitHub Pages Deployment
+## 13. GitHub Pages Deployment
 
 1. `ng add angular-cli-ghpages`
 2. In `angular.json` production configuration: `"baseHref": "/portfolio/"` (update to match actual repo name)
@@ -825,7 +874,7 @@ describe('RevealDirective', () => {
 
 ---
 
-## 13. Accessibility
+## 14. Accessibility
 
 - All images have descriptive `alt`. Decorative images use `alt=""`.
 - `#38EEB4` on `#1A1A1A` — contrast ~9.5:1 ✓ (WCAG AA)
@@ -838,13 +887,13 @@ describe('RevealDirective', () => {
 
 ---
 
-## 14. Code Comment Policy
+## 15. Code Comment Policy
 
-Comments explain *why* something is done — never *what* the code does. Aim for fewer than one comment per ten lines. If code requires a comment to be understood, first try to make the code itself clearer.
+Comments explain _why_ something is done — never _what_ the code does. Aim for fewer than one comment per ten lines. If code requires a comment to be understood, first try to make the code itself clearer.
 
 ---
 
-## 15. What Claude Code Must Not Do
+## 16. What Claude Code Must Not Do
 
 - Add any accent color other than `#38EEB4`
 - Use Angular Material, PrimeNG, or any UI component library
@@ -854,7 +903,7 @@ Comments explain *why* something is done — never *what* the code does. Aim for
 - Use `any` in TypeScript or `!` non-null assertions
 - Write inline styles (`style="..."`)
 - Hardcode hex color values in component SCSS files
-- Use `target="_blank"` on any link except: the resume PDF and the contact section's LinkedIn and GitHub links
+- Use `target="_blank"` on any link you don't have yet: the resume PDF and the contact section's LinkedIn and GitHub links are available
 - Use CSS Grid — use Flexbox
 - Write desktop-first media queries — always mobile-first (`min-width`)
 - Add sections not listed in Section 6 without being asked
@@ -864,28 +913,30 @@ Comments explain *why* something is done — never *what* the code does. Aim for
 
 ---
 
-## 16. Quick Reference
+## 17. Quick Reference
 
-| Item | Value |
-|---|---|
-| Background | `#1A1A1A` / `var(--background)` |
-| Surface | `#232323` / `var(--background-surface)` |
-| Text primary | `#F0EDE6` / `var(--text-primary)` |
-| Text secondary | `#A89F91` / `var(--text-secondary)` |
-| Accent | `#38EEB4` / `var(--accent)` |
-| Primary font | `DM Sans` |
-| Body font | `Lora` |
-| Base spacing unit | `8px` |
-| Content max width | `1200px` |
-| Card border radius | `16px` |
-| Accent glow | `rgba(56, 238, 180, 0.15)` |
-| Mobile breakpoint | `768px` |
-| Layout approach | Flexbox only |
-| Style direction | Mobile-first |
-| Test runner | Jest |
-| TypeScript | strict — all checks on |
-| GitHub | `https://github.com/ClearTonic21` |
+| Item               | Value                                       |
+| ------------------ | ------------------------------------------- |
+| Background         | `#1A1A1A` / `var(--background)`             |
+| Surface            | `#232323` / `var(--background-surface)`     |
+| Text primary       | `#F0EDE6` / `var(--text-primary)`           |
+| Text secondary     | `#A89F91` / `var(--text-secondary)`         |
+| Accent             | `#38EEB4` / `var(--accent)`                 |
+| Primary font       | `DM Sans`                                   |
+| Body font          | `Lora`                                      |
+| Base spacing unit  | `8px`                                       |
+| Content max width  | `1200px`                                    |
+| Card border radius | `16px`                                      |
+| Accent glow        | `rgba(56, 238, 180, 0.15)`                  |
+| Mobile breakpoint  | `768px`                                     |
+| Layout approach    | Flexbox only                                |
+| Style direction    | Mobile-first                                |
+| Test runner        | Jest                                        |
+| TypeScript         | strict — all checks on                      |
+| GitHub             | `https://github.com/ClearTonic21`           |
+| LinkedIn           | `https://www.linkedin.com/in/eli-philpott/` |
+| email              | `eli.philpott@gmail.com`                    |
 
 ---
 
-*Last updated: May 2026. All changes to this file require deliberate review — it governs the entire codebase.*
+_Last updated: May 27 2026. All changes to this file require deliberate review — it governs the entire codebase._

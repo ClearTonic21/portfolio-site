@@ -34,6 +34,9 @@ interface ProjectCard {
 }
 ```
 
+## Icons
+Project cards may display an external link icon using Lucide for CTAs: `<lucide-icon name="external-link" size="16"></lucide-icon>` or `<lucide-icon name="arrow-up-right" size="16"></lucide-icon>`. Import from `@lucide/angular` for consistency.
+
 ## Dependencies
 - `RevealDirective`
 

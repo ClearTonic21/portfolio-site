@@ -20,6 +20,9 @@ Introduces Eli's professional philosophy and technical skillset. Two-column layo
   - Game Dev: Pixel Art, Godot / Unity, Game Design
 - Stacks to single column on mobile (768px breakpoint)
 
+## Icons
+Skill tags are text-only (no icons). If icons are added to skill groups in the future, use Lucide from `@lucide/angular` for consistency.
+
 ## Dependencies
 - `RevealDirective` — scroll-reveal on section and key child elements
 

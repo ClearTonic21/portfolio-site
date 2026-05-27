@@ -25,6 +25,9 @@ The first section the user sees. Full viewport height. Establishes Eli's name, r
 ## Animation
 Name lines fade up with stagger on load via `@angular/animations`. Respects `MotionService.reducedMotion`.
 
+## Icons
+The "Resume" CTA button may display an external link icon using Lucide: `<lucide-icon name="external-link" size="16"></lucide-icon>` inside or next to the button text. Use `@lucide/angular` for consistency.
+
 ## Does Not
 - Contain navigation logic
 - Render nav links
