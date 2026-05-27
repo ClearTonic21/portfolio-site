@@ -873,7 +873,7 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 - Use `any` in TypeScript or `!` non-null assertions
 - Write inline styles (`style="..."`)
 - Hardcode hex color values in component SCSS files
-- Use `target="_blank"` on any link except: the resume PDF and the contact section's LinkedIn and GitHub links
+- Use `target="_blank"` on any link you don't have yet: the resume PDF and the contact section's LinkedIn and GitHub links are available
 - Use CSS Grid — use Flexbox
 - Write desktop-first media queries — always mobile-first (`min-width`)
 - Add sections not listed in Section 6 without being asked
@@ -885,26 +885,28 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 
 ## 16. Quick Reference
 
-| Item               | Value                                   |
-| ------------------ | --------------------------------------- |
-| Background         | `#1A1A1A` / `var(--background)`         |
-| Surface            | `#232323` / `var(--background-surface)` |
-| Text primary       | `#F0EDE6` / `var(--text-primary)`       |
-| Text secondary     | `#A89F91` / `var(--text-secondary)`     |
-| Accent             | `#38EEB4` / `var(--accent)`             |
-| Primary font       | `DM Sans`                               |
-| Body font          | `Lora`                                  |
-| Base spacing unit  | `8px`                                   |
-| Content max width  | `1200px`                                |
-| Card border radius | `16px`                                  |
-| Accent glow        | `rgba(56, 238, 180, 0.15)`              |
-| Mobile breakpoint  | `768px`                                 |
-| Layout approach    | Flexbox only                            |
-| Style direction    | Mobile-first                            |
-| Test runner        | Jest                                    |
-| TypeScript         | strict — all checks on                  |
-| GitHub             | `https://github.com/ClearTonic21`       |
+| Item               | Value                                       |
+| ------------------ | ------------------------------------------- |
+| Background         | `#1A1A1A` / `var(--background)`             |
+| Surface            | `#232323` / `var(--background-surface)`     |
+| Text primary       | `#F0EDE6` / `var(--text-primary)`           |
+| Text secondary     | `#A89F91` / `var(--text-secondary)`         |
+| Accent             | `#38EEB4` / `var(--accent)`                 |
+| Primary font       | `DM Sans`                                   |
+| Body font          | `Lora`                                      |
+| Base spacing unit  | `8px`                                       |
+| Content max width  | `1200px`                                    |
+| Card border radius | `16px`                                      |
+| Accent glow        | `rgba(56, 238, 180, 0.15)`                  |
+| Mobile breakpoint  | `768px`                                     |
+| Layout approach    | Flexbox only                                |
+| Style direction    | Mobile-first                                |
+| Test runner        | Jest                                        |
+| TypeScript         | strict — all checks on                      |
+| GitHub             | `https://github.com/ClearTonic21`           |
+| LinkedIn           | `https://www.linkedin.com/in/eli-philpott/` |
+| email              | `eli.philpott@gmail.com`                    |
 
 ---
 
-_Last updated: May 2026. All changes to this file require deliberate review — it governs the entire codebase._
+_Last updated: May 27 2026. All changes to this file require deliberate review — it governs the entire codebase._
