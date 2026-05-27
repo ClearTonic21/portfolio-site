@@ -2,8 +2,6 @@ import {
   Component,
   ChangeDetectionStrategy,
   signal,
-  computed,
-  effect,
   inject,
   afterNextRender,
   OnDestroy,
@@ -12,11 +10,15 @@ import { CommonModule } from '@angular/common';
 import { ScrollService } from './services/scroll.service';
 import { MotionService } from './services/motion.service';
 import { HeroComponent } from './components/hero/hero.component';
+import { AboutComponent } from './components/about/about.component';
+import { ExperienceComponent } from './components/experience/experience.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HeroComponent],
+  imports: [CommonModule, HeroComponent, AboutComponent, ExperienceComponent, ProjectsComponent, ContactComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,9 +30,7 @@ export class AppComponent implements OnDestroy {
   readonly isMenuOpen = signal(false);
   readonly isNavHidden = signal(false);
   readonly activeSection = signal<string | null>(null);
-  readonly isMotionButtonHidden = computed(() => {
-    return typeof window === 'undefined' ? true : window.scrollY > window.innerHeight * 0.8;
-  });
+  readonly isMotionButtonHidden = signal(false);
 
   private intersectionObservers: IntersectionObserver[] = [];
   private lastScrollY = 0;
@@ -84,12 +84,8 @@ export class AppComponent implements OnDestroy {
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > this.lastScrollY && currentScrollY > 100) {
-        this.isNavHidden.set(true);
-      } else {
-        this.isNavHidden.set(false);
-      }
-
+      this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
+      this.isMotionButtonHidden.set(currentScrollY > window.innerHeight * 0.8);
       this.lastScrollY = currentScrollY;
     });
   }
