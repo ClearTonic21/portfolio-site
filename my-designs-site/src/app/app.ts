@@ -71,7 +71,7 @@ export class AppComponent implements OnDestroy {
             this.activeSection.set(sectionId);
           }
         },
-        { threshold: 0.4 }
+        { threshold: 0.4 },
       );
 
       observer.observe(section);
