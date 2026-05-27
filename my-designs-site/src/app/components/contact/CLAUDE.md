@@ -19,6 +19,14 @@ The final section. Provides Eli's contact information and the resume PDF link. S
 - "View Resume" `.button-primary` — opens `assets/images/resume.pdf` in a new tab
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_` in `.type-caption`
 
+## Icons
+Use Lucide icons for external links:
+- `mail` icon for the email link
+- `linkedin` icon for the LinkedIn link (or `external-link` if preferred)
+- `github` icon for the GitHub link
+
+Import from `@lucide/angular` and render with `<lucide-icon name="..." size="20"></lucide-icon>`. Pair each with `aria-label` for accessibility.
+
 ## On External Links
 LinkedIn, GitHub, and the resume PDF are the only places in the entire site using `target="_blank"`. This is intentional — they are genuine external destinations and are documented here to justify the exception.
 

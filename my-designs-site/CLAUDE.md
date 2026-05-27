@@ -615,7 +615,37 @@ LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. The
 
 ---
 
-## 8. Services
+## 8. Icons with Lucide
+
+**Icon library:** Lucide Angular (`@lucide/angular`)
+
+All icons in the portfolio use Lucide for consistency. Never use custom SVGs or icon fonts unless Lucide does not provide the needed icon.
+
+**Import and usage:**
+```typescript
+import { LucideAngularModule, Icon } from '@lucide/angular';
+
+// In component standalone imports:
+imports: [LucideAngularModule, CommonModule],
+
+// In template:
+<lucide-icon name="github" size="24" stroke-width="2"></lucide-icon>
+```
+
+**Icon sizing:** Use standard sizes (`16`, `20`, `24`, `32`). Control icon color via component CSS or inline styles aligned with the design system palette.
+
+**Accessibility:** Always pair icon-only buttons with `aria-label`:
+```html
+<button aria-label="Open menu">
+  <lucide-icon name="menu" size="24"></lucide-icon>
+</button>
+```
+
+**Allowed icon names:** GitHub, LinkedIn, Mail, ExternalLink, ChevronDown, Menu, X (close), ArrowUpRight, and others as needed. Check [lucide.dev](https://lucide.dev) for the full icon set.
+
+---
+
+## 9. Services
 
 ### ScrollService (`src/app/services/scroll.service.ts`)
 
@@ -673,7 +703,7 @@ Consuming component SCSS:
 
 ---
 
-## 9. Reduced-Motion Toggle Button
+## 10. Reduced-Motion Toggle Button
 
 Fixed bottom-left. Visible only when `scrollY < window.innerHeight * 0.8`. Hides via `opacity: 0; pointer-events: none` after that threshold (not `display: none`).
 
@@ -718,7 +748,7 @@ Fixed bottom-left. Visible only when `scrollY < window.innerHeight * 0.8`. Hides
 
 ---
 
-## 10. TypeScript Configuration
+## 11. TypeScript Configuration
 
 `tsconfig.json` must include:
 
@@ -742,7 +772,7 @@ No `any`. No `!` non-null assertions. If a value may be null, handle it explicit
 
 ---
 
-## 11. Testing with Jest
+## 12. Testing with Jest
 
 Jest replaces Karma. Do not install or configure Karma.
 
@@ -834,7 +864,7 @@ describe('RevealDirective', () => {
 
 ---
 
-## 12. GitHub Pages Deployment
+## 13. GitHub Pages Deployment
 
 1. `ng add angular-cli-ghpages`
 2. In `angular.json` production configuration: `"baseHref": "/portfolio/"` (update to match actual repo name)
@@ -844,7 +874,7 @@ describe('RevealDirective', () => {
 
 ---
 
-## 13. Accessibility
+## 14. Accessibility
 
 - All images have descriptive `alt`. Decorative images use `alt=""`.
 - `#38EEB4` on `#1A1A1A` — contrast ~9.5:1 ✓ (WCAG AA)
@@ -857,13 +887,13 @@ describe('RevealDirective', () => {
 
 ---
 
-## 14. Code Comment Policy
+## 15. Code Comment Policy
 
 Comments explain _why_ something is done — never _what_ the code does. Aim for fewer than one comment per ten lines. If code requires a comment to be understood, first try to make the code itself clearer.
 
 ---
 
-## 15. What Claude Code Must Not Do
+## 16. What Claude Code Must Not Do
 
 - Add any accent color other than `#38EEB4`
 - Use Angular Material, PrimeNG, or any UI component library
@@ -883,7 +913,7 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 
 ---
 
-## 16. Quick Reference
+## 17. Quick Reference
 
 | Item               | Value                                       |
 | ------------------ | ------------------------------------------- |
