@@ -1,8 +1,7 @@
-$font-primary: 'DM Sans', sans-serif;
-$font-body: 'Lora', serif;
+@use 'tokens';
 
 .type-display {
-  font-family: $font-primary;
+  font-family: tokens.$font-primary;
   font-size: clamp(4.5rem, 11vw, 9.5rem);
   font-weight: 900;
   line-height: 0.92;
@@ -11,7 +10,7 @@ $font-body: 'Lora', serif;
 }
 
 .type-eyebrow {
-  font-family: $font-primary;
+  font-family: tokens.$font-primary;
   font-size: clamp(0.65rem, 1vw, 0.75rem);
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -20,7 +19,7 @@ $font-body: 'Lora', serif;
 }
 
 .type-heading {
-  font-family: $font-primary;
+  font-family: tokens.$font-primary;
   font-size: clamp(1.2rem, 2.2vw, 1.6rem);
   font-weight: 700;
   line-height: 1.15;
@@ -28,7 +27,7 @@ $font-body: 'Lora', serif;
 }
 
 .type-body {
-  font-family: $font-body;
+  font-family: tokens.$font-body;
   font-size: clamp(0.95rem, 1.1vw, 1.05rem);
   font-weight: 400;
   line-height: 1.78;
@@ -36,7 +35,7 @@ $font-body: 'Lora', serif;
 }
 
 .type-caption {
-  font-family: $font-primary;
+  font-family: tokens.$font-primary;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
