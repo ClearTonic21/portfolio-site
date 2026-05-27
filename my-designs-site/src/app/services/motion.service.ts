@@ -1,10 +1,10 @@
-import { Injectable, effect, signal, WritableSignal } from '@angular/core';
+import { Injectable, effect, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MotionService {
-  reducedMotion: WritableSignal<boolean> = signal(this.getInitialReducedMotion());
+  readonly reducedMotion = signal(this.getInitialReducedMotion());
 
   constructor() {
     effect(() => {
@@ -14,7 +14,7 @@ export class MotionService {
   }
 
   toggleReducedMotion(): void {
-    this.reducedMotion.update((current: any) => !current);
+    this.reducedMotion.update((current: boolean) => !current);
   }
 
   private getInitialReducedMotion(): boolean {
