@@ -1,4 +1,170 @@
+@use '../../../styles/tokens' as tokens;
+
 :host {
   display: block;
   width: 100%;
+}
+
+.projects-heading {
+  margin-top: tokens.$spacing-3;
+  margin-bottom: tokens.$spacing-8;
+}
+
+// ─── Grid ─────────────────────────────────────────────────────────────────────
+
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$spacing-4;
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+
+.project-card {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    transform 250ms tokens.$easing-out-expo,
+    border-color 250ms tokens.$easing-out-expo,
+    box-shadow 250ms tokens.$easing-out-expo;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-accent);
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+}
+
+// ─── Image area ───────────────────────────────────────────────────────────────
+
+.project-image-area {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--surface-raised);
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 350ms tokens.$easing-out-expo;
+
+  .project-card:hover & {
+    transform: scale(1.03);
+  }
+}
+
+.project-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-raised),
+    var(--surface-raised) 6px,
+    var(--surface) 6px,
+    var(--surface) 12px
+  );
+}
+
+.placeholder-label {
+  color: var(--text-secondary);
+  background: var(--surface);
+  padding: tokens.$spacing-unit tokens.$spacing-2;
+  border-radius: 4px;
+}
+
+// ─── Body ─────────────────────────────────────────────────────────────────────
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-3;
+  padding: tokens.$spacing-4;
+  flex: 1;
+}
+
+.project-eyebrow {
+  color: var(--text-secondary);
+}
+
+.project-title {
+  color: var(--text-primary);
+}
+
+.brand-underscore {
+  color: var(--accent);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$spacing-unit;
+}
+
+.project-description {
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+// ─── CTA link ─────────────────────────────────────────────────────────────────
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: tokens.$font-primary;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  width: fit-content;
+  transition: opacity 200ms ease;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 200ms tokens.$easing-out-expo;
+  }
+
+  &:hover {
+    opacity: 0.8;
+
+    svg {
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+// ─── Reveal animations ────────────────────────────────────────────────────────
+
+[appReveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity tokens.$duration-reveal tokens.$easing-out-expo,
+    transform tokens.$duration-reveal tokens.$easing-out-expo;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.projects-heading[appReveal] {
+  transition-delay: 150ms;
+}
+
+// ─── Desktop: 2-column grid ───────────────────────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .project-card {
+    flex: 1 1 calc(50% - #{tokens.$spacing-4} / 2);
+  }
 }
