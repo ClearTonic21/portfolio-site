@@ -167,7 +167,9 @@ a:focus-visible {
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: reduce), [data-reduced-motion='true'] * {
-  animation-duration: 0.01ms !important;
-  transition-duration: 0.01ms !important;
+@media (prefers-reduced-motion: reduce) {
+  [data-reduced-motion='true'] * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

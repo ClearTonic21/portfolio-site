@@ -1,0 +1,82 @@
+<nav class="app-nav" [class.is-hidden]="isNavHidden()">
+  <div class="app-nav-inner">
+    <button class="app-nav-monogram" aria-label="Scroll to home" (click)="onNavLinkClick('hero')">
+      EP
+    </button>
+
+    <div class="app-nav-links" [class.is-open]="isMenuOpen()">
+      <a
+        class="app-nav-link"
+        [class.is-active]="activeSection() === 'about'"
+        (click)="onNavLinkClick('about')"
+        role="button"
+        tabindex="0"
+      >
+        / About
+      </a>
+      <a
+        class="app-nav-link"
+        [class.is-active]="activeSection() === 'experience'"
+        (click)="onNavLinkClick('experience')"
+        role="button"
+        tabindex="0"
+      >
+        / Experience
+      </a>
+      <a
+        class="app-nav-link"
+        [class.is-active]="activeSection() === 'projects'"
+        (click)="onNavLinkClick('projects')"
+        role="button"
+        tabindex="0"
+      >
+        / Projects
+      </a>
+      <a
+        class="app-nav-link"
+        [class.is-active]="activeSection() === 'contact'"
+        (click)="onNavLinkClick('contact')"
+        role="button"
+        tabindex="0"
+      >
+        / Contact
+      </a>
+    </div>
+
+    <button
+      class="app-nav-hamburger"
+      aria-label="Toggle menu"
+      [attr.aria-expanded]="isMenuOpen()"
+      (click)="toggleMenu()"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<main>
+  <app-hero></app-hero>
+  <app-about></app-about>
+  <app-experience></app-experience>
+  <app-projects></app-projects>
+  <app-contact></app-contact>
+</main>
+
+<button
+  class="motion-toggle-button"
+  [class.is-hidden]="isMotionButtonHidden()"
+  [attr.aria-pressed]="motionService.reducedMotion()"
+  (click)="motionService.toggleReducedMotion()"
+>
+  @if (motionService.reducedMotion()) {
+    Enable motion
+  } @else {
+    Reduce motion
+  }
+</button>
+
+@if (isMenuOpen()) {
+  <div class="menu-backdrop" (click)="closeMenu()" role="presentation"></div>
+}

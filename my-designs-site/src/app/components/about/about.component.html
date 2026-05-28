@@ -1,0 +1,49 @@
+<section id="about" aria-labelledby="about-heading">
+  <div class="section-inner">
+    <p class="type-eyebrow" appReveal>/ About</p>
+
+    <div class="two-column-layout about-layout" appReveal>
+      <div class="about-prose">
+        <h2 id="about-heading" class="type-heading about-heading">
+          Designer. Developer. Builder.
+        </h2>
+        <div class="about-body">
+          <p class="type-body">
+            I'm a software designer who cares about the details — the kind that show up in
+            pixel-perfect layouts, intuitive user flows, and code that's clean enough to maintain.
+            With a background spanning enterprise service management, SaaS products, and indie game
+            development, I bring both breadth and precision to every project.
+          </p>
+          <p class="type-body">
+            At my core, I build things. I've spent years bridging design and engineering — crafting
+            polished Angular interfaces, architecting ServiceNow applications for Fortune 500
+            organizations, and shipping games under ClearTonic Games<span class="brand-underscore">_</span>.
+            I work closely with AI tooling, directing it deliberately — every output is evaluated
+            against design principles and engineering standards before it counts.
+          </p>
+          <p class="type-body">
+            I'm most energized when a problem demands both creative and technical thinking, and when
+            the craft behind the solution is as good as the solution itself.
+          </p>
+        </div>
+      </div>
+
+      <div class="about-skills">
+        @for (group of skillGroups; track group.category) {
+          <div class="skill-group">
+            <p class="type-eyebrow skill-group-label">{{ group.category }}</p>
+            <div class="skill-tags">
+              @for (skill of group.skills; track skill) {
+                @if (skill === 'ClearTonic Games_') {
+                  <span class="tag">ClearTonic Games<span class="brand-underscore">_</span></span>
+                } @else {
+                  <span class="tag">{{ skill }}</span>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -35,6 +35,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/my-designs-site/",
               "budgets": [
                 {
                   "type": "initial",
@@ -68,6 +69,13 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/my-designs-site/",
+            "dir": "dist/my-designs-site/browser"
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
