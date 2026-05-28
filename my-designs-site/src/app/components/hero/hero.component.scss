@@ -1,3 +1,5 @@
+@use '../../../styles/tokens' as tokens;
+
 :host {
   display: block;
   width: 100%;
@@ -15,16 +17,21 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 780px;
 }
 
 .hero-title {
-  line-height: 0.9;
+  // Explicit font-family: component styles win the specificity race against the global
+  // .type-display rule, so font-family must be declared here or it falls back to body Lora.
+  // No clamp floor — pure vw scaling prevents horizontal overflow on narrow viewports,
+  // which would clip the trailing underscore character behind overflow: hidden on the section.
+  font-family: tokens.$font-primary;
+  font-size: clamp(0.1px, 12vw, 10.5rem);
+  line-height: 0.88;
   letter-spacing: -0.03em;
 }
 
 .hero-copy {
-  max-width: 620px;
+  max-width: 540px;
 }
 
 .hero-subtitle {

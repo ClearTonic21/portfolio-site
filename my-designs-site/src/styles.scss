@@ -1,1 +1,175 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/reset';
+@use 'styles/tokens' as tokens;
+@use 'styles/typography';
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+main {
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.surface {
+  background: var(--background-surface);
+  border: 1px solid var(--border-default);
+  border-radius: tokens.$border-radius-large;
+}
+
+.surface--accent-highlight {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  font-family: tokens.$font-primary;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: tokens.$border-radius-pill;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--text-inverted);
+  transition:
+    background tokens.$duration-base tokens.$easing-out-expo,
+    color tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+  background: transparent;
+  color: var(--accent);
+}
+
+.button-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  font-family: tokens.$font-primary;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: tokens.$border-radius-pill;
+  border: 2px solid transparent;
+  background: transparent;
+  color: var(--accent);
+  transition:
+    background tokens.$duration-base tokens.$easing-out-expo,
+    color tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.button-ghost:hover,
+.button-ghost:focus-visible {
+  background: var(--accent-glow);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: tokens.$font-primary;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: tokens.$border-radius-pill;
+  background: var(--background-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+
+.section-inner {
+  display: flex;
+  flex-direction: column;
+  padding: tokens.$section-vertical-padding tokens.$content-horizontal-gutter;
+  max-width: tokens.$content-max-width;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.two-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-6;
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .two-column-layout {
+    flex-direction: row;
+  }
+}
+
+.card-row {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-4;
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .card-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.motion-toggle-button {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  font-family: tokens.$font-primary;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: tokens.$border-radius-pill;
+  border: 1px solid var(--border-default);
+  background: var(--background-surface);
+  color: var(--text-secondary);
+  transition: opacity tokens.$duration-base tokens.$easing-standard;
+}
+
+.motion-toggle-button.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reduced-motion='true'] * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
