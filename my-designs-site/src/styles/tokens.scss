@@ -57,4 +57,5 @@ $duration-reveal: 700ms;
   --border-default: #{$color-border-default};
   --border-accent: #{$color-border-accent};
   --error: #{$color-error};
+  --background-overlay: #{rgba($color-background, 0.8)};
 }

@@ -26,7 +26,7 @@ const heroEntranceAnimation = trigger('heroEntrance', [
   standalone: true,
   imports: [],
   templateUrl: './hero.component.html',
-  styleUrls: ['./hero.component.scss'],
+  styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [heroEntranceAnimation],
 })

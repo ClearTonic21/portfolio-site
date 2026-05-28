@@ -29,7 +29,7 @@ export class ProjectsComponent {
       id: 'cleartonic-game',
       title: 'ClearTonic Games_',
       isBrandTitle: true,
-      eyebrow: 'Indie Game Dev',
+      eyebrow: 'Indie Game Design and Development',
       description:
         'Solo-developed pixel art games built in Godot, from concept and art direction to mechanics and release. ClearTonic Games_ is the studio label for everything I ship.',
       imagePath: 'assets/images/game-screenshot.png',
@@ -45,7 +45,7 @@ export class ProjectsComponent {
       eyebrow: 'Personal Project',
       description:
         'A trail and nature-spot information organizer built for hikers who want to track visited locations, save notes, and plan future adventures without a paywall.',
-      imagePath: 'assets/images/app-screenshot.png',
+      imagePath: 'assets/images/app_screenshot.png',
       imageAlt: 'Screenshot of the Canopy Trails app',
       tags: ['Angular', 'TypeScript', 'SCSS', 'UX Design'],
       linkHref: '#',

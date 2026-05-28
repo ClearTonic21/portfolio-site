@@ -48,10 +48,6 @@
   gap: tokens.$spacing-unit;
 }
 
-.brand-underscore {
-  color: var(--accent);
-}
-
 [appReveal] {
   opacity: 0;
   transform: translateY(20px);

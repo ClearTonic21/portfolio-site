@@ -1,7 +1,14 @@
-<section id="hero" class="hero-section" [@heroEntrance] [@.disabled]="motionService.reducedMotion()">
+<section
+  id="hero"
+  class="hero-section"
+  [@heroEntrance]
+  [@.disabled]="motionService.reducedMotion()"
+>
   <div class="section-inner hero-inner">
-    <p class="type-eyebrow hero-animate">/ Intro · Worthington, OH</p>
-    <h1 class="type-display hero-title hero-animate">ELI<br />PHILPOTT<span class="brand-underscore">_</span></h1>
+    <p class="type-eyebrow hero-animate">Intro<span class="brand-underscore">_</span></p>
+    <h1 class="type-display hero-title hero-animate">
+      ELI<br />PHILPOTT<span class="brand-underscore">_</span>
+    </h1>
     <p class="type-body hero-copy hero-animate">
       Software Designer and indie game creator building polished digital products, thoughtful
       interfaces, and playful interactive experiences.
@@ -16,8 +23,5 @@
     </div>
   </div>
 
-  <div class="hero-badge">
-    <span class="type-eyebrow">ClearTonic Games</span><span class="brand-underscore">_</span>
-  </div>
   <div class="hero-overlay" aria-hidden="true"></div>
 </section>

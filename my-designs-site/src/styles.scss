@@ -142,31 +142,6 @@ a:focus-visible {
   }
 }
 
-.motion-toggle-button {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 100;
-  display: inline-flex;
-  align-items: center;
-  font-family: tokens.$font-primary;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border-radius: tokens.$border-radius-pill;
-  border: 1px solid var(--border-default);
-  background: var(--background-surface);
-  color: var(--text-secondary);
-  transition: opacity tokens.$duration-base tokens.$easing-standard;
-}
-
-.motion-toggle-button.is-hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   [data-reduced-motion='true'] * {
     animation-duration: 0.01ms !important;

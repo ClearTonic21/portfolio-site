@@ -25,7 +25,7 @@
   // No clamp floor — pure vw scaling prevents horizontal overflow on narrow viewports,
   // which would clip the trailing underscore character behind overflow: hidden on the section.
   font-family: tokens.$font-primary;
-  font-size: clamp(0.1px, 12vw, 10.5rem);
+  font-size: clamp(2rem, 12vw, 10.5rem);
   line-height: 0.88;
   letter-spacing: -0.03em;
 }

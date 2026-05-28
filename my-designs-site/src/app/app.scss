@@ -17,7 +17,7 @@ main {
   right: 0;
   z-index: 1000;
   backdrop-filter: blur(12px);
-  background: rgba($color-background, 0.8);
+  background: var(--background-overlay);
   border-bottom: 1px solid var(--border-default);
   transition: transform $duration-base $easing-standard;
 
@@ -127,7 +127,7 @@ main {
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: rgba($color-background, 0.8);
+  background: var(--background-overlay);
   backdrop-filter: blur(4px);
   animation: fadeIn $duration-base $easing-standard;
 
