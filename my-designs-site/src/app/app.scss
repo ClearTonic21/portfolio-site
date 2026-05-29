@@ -6,8 +6,68 @@
   min-height: 100vh;
 }
 
-main {
-  min-height: 100vh;
+// ─── Parallax background ──────────────────────────────────────────────────────
+// Three blurred orbs fixed to the viewport. position: fixed + z-index: 0 keeps
+// them behind <main> (which has z-index: 1 in global styles). Removed from the
+// DOM entirely when MotionService.reducedMotion() is true.
+
+.parallax-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.parallax-orb {
+  position: absolute;
+  border-radius: 50%;
+  animation: orb-drift ease-in-out infinite;
+}
+
+// Upper-left — largest, most prominent
+.parallax-orb--1 {
+  width: 70vw;
+  height: 60vh;
+  top: -10%;
+  left: -8%;
+  background: radial-gradient(ellipse, rgba($color-accent, 0.14) 0%, transparent 70%);
+  filter: blur(80px);
+  animation-duration: 28s;
+}
+
+// Lower-right — medium, runs in opposite direction
+.parallax-orb--2 {
+  width: 60vw;
+  height: 65vh;
+  bottom: -18%;
+  right: -10%;
+  background: radial-gradient(ellipse, rgba($color-accent, 0.10) 0%, transparent 70%);
+  filter: blur(100px);
+  animation-duration: 36s;
+  animation-direction: reverse;
+  animation-delay: -14s;
+}
+
+// Bottom-center — widest, most diffuse — gives depth to the lower half
+.parallax-orb--3 {
+  width: 90vw;
+  height: 50vh;
+  top: 55%;
+  left: 5%;
+  background: radial-gradient(ellipse, rgba($color-accent, 0.07) 0%, transparent 70%);
+  filter: blur(130px);
+  animation-duration: 24s;
+  animation-delay: -9s;
+}
+
+@keyframes orb-drift {
+  0%   { transform: translate(0%,    0%  ); }
+  20%  { transform: translate(5%,   -3%  ); }
+  40%  { transform: translate(6%,    3%  ); }
+  60%  { transform: translate(2%,    6%  ); }
+  80%  { transform: translate(-4%,   3%  ); }
+  100% { transform: translate(0%,    0%  ); }
 }
 
 .app-nav {

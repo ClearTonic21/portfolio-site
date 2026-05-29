@@ -9,8 +9,8 @@
   position: relative;
   overflow: hidden;
   min-height: calc(100vh - 88px);
-  padding: 96px 24px 120px;
-  background: var(--background);
+  padding: 56px 24px 72px;
+  // No background — the body's parallax gradient shows through
 }
 
 .hero-inner {
@@ -20,14 +20,17 @@
 }
 
 .hero-title {
-  // Explicit font-family: component styles win the specificity race against the global
-  // .type-display rule, so font-family must be declared here or it falls back to body Lora.
-  // No clamp floor — pure vw scaling prevents horizontal overflow on narrow viewports,
-  // which would clip the trailing underscore character behind overflow: hidden on the section.
   font-family: tokens.$font-primary;
   font-size: clamp(2rem, 12vw, 10.5rem);
   line-height: 0.88;
   letter-spacing: -0.03em;
+
+  .first-name {
+    letter-spacing: 2px;
+  }
+  .last-name {
+    letter-spacing: 4px;
+  }
 }
 
 .hero-copy {
@@ -65,7 +68,7 @@
 
 @media (min-width: 768px) {
   .hero-section {
-    padding: 120px 48px 140px;
+    padding: 72px 48px 88px;
   }
 
   .hero-actions {

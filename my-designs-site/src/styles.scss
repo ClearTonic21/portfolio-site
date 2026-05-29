@@ -13,6 +13,9 @@ body {
 }
 
 main {
+  // Position creates a stacking context so main content sits above the fixed parallax orbs (z-index 0)
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
 }
 

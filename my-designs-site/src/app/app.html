@@ -1,3 +1,11 @@
+@if (!motionService.reducedMotion()) {
+  <div class="parallax-bg" aria-hidden="true">
+    <div class="parallax-orb parallax-orb--1"></div>
+    <div class="parallax-orb parallax-orb--2"></div>
+    <div class="parallax-orb parallax-orb--3"></div>
+  </div>
+}
+
 <nav class="app-nav" [class.is-hidden]="isNavHidden()">
   <div class="app-nav-inner">
     <button class="app-nav-monogram" aria-label="Scroll to home" (click)="onNavLinkClick('hero')">

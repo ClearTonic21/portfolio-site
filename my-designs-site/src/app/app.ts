@@ -36,6 +36,7 @@ export class AppComponent implements OnDestroy {
   readonly isNavHidden = signal(false);
   readonly isMotionButtonHidden = signal(false);
 
+  // Stored as a field so the same reference can be passed to removeEventListener
   private readonly scrollHandler = () => this.onScroll();
   private lastScrollY = 0;
 
@@ -67,5 +68,6 @@ export class AppComponent implements OnDestroy {
     this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
     this.isMotionButtonHidden.set(currentScrollY > window.innerHeight * 0.8);
     this.lastScrollY = currentScrollY;
+
   }
 }
