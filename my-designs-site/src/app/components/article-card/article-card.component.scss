@@ -1,4 +1,5 @@
 @use '../../../styles/tokens' as tokens;
+@use '../../../styles/metallic-border' as mb;
 
 // ─── Host ─────────────────────────────────────────────────────────────────────
 // Acts as a flex item in the parent grid. Surface class applied via host binding.
@@ -9,18 +10,24 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  // Nullify the solid border from .surface — the gradient pseudos replace it visually
   border-color: transparent;
   transition:
     transform 250ms tokens.$easing-out-expo,
-    box-shadow 250ms tokens.$easing-out-expo;
+    box-shadow tokens.$duration-slow tokens.$easing-standard;
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 0 24px var(--accent-glow);
+    transition:
+      transform 250ms tokens.$easing-out-expo,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
 
-    &::before { opacity: 0; }
-    &::after  { opacity: 1; }
+    &::before {
+      opacity: 0;
+    }
+    &::after {
+      opacity: 1;
+    }
   }
 }
 
@@ -33,40 +40,28 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 1px;
   pointer-events: none;
-  transition: opacity 250ms tokens.$easing-out-expo;
+  // Slow — governs the fade-OUT when leaving hover
+  transition: opacity tokens.$duration-slow tokens.$easing-standard;
   // Mask punches out the interior, leaving only the 1px border ring visible
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  @include mb.ring-mask();
+}
+
+// Fast fade-IN when entering hover
+:host:hover::before,
+:host:hover::after {
+  transition: opacity tokens.$duration-fast tokens.$easing-standard;
 }
 
 // Gold metallic — light hitting the surface at 135°
 :host::before {
-  background: linear-gradient(
-    135deg,
-    rgba(100, 75, 10, 0.25) 0%,
-    rgba(201, 162, 39, 0.75) 30%,
-    rgba(255, 225, 100, 1.0) 50%,
-    rgba(201, 162, 39, 0.75) 70%,
-    rgba(100, 75, 10, 0.25) 100%
-  );
+  @include mb.ring-gold();
   opacity: 1;
 }
 
 // Teal accent — fades in on hover
 :host::after {
-  background: linear-gradient(
-    135deg,
-    rgba(56, 238, 180, 0.15) 0%,
-    rgba(56, 238, 180, 0.7) 30%,
-    rgba(56, 238, 180, 1.0) 50%,
-    rgba(56, 238, 180, 0.7) 70%,
-    rgba(56, 238, 180, 0.15) 100%
-  );
+  @include mb.ring-teal();
   opacity: 0;
 }
 

@@ -651,7 +651,7 @@ All icons in the portfolio use Lucide for consistency. Never use custom SVGs or 
 import { LucideAngularModule, Icon } from '@lucide/angular';
 
 // In component standalone imports:
-imports: [LucideAngularModule, CommonModule],
+imports: [LucideAngularModule],
 
 // In template:
 <lucide-icon name="github" size="24" stroke-width="2"></lucide-icon>

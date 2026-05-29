@@ -6,13 +6,14 @@ import {
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
+import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 
 @Component({
   selector: 'app-navigation-bar',
   standalone: true,
-  imports: [],
+  imports: [LucideChevronLeft, LucideChevronRight],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,20 +23,29 @@ export class NavigationBarComponent implements OnDestroy {
   readonly motionService = inject(MotionService);
 
   readonly isMenuOpen = signal(false);
-  // Scroll-hide only applies on mobile; CSS overrides it on desktop via &.is-hidden { transform: none }
+  // Scroll-hide on mobile; overridden to no-op on desktop via CSS
   readonly isNavHidden = signal(false);
+  // Manual/auto collapse — desktop sidebar only
+  readonly isNavCollapsed = signal(false);
 
   private readonly scrollHandler = () => this.onScroll();
+  private readonly resizeHandler = () => this.onResize();
   private lastScrollY = 0;
+
+  private static readonly DESKTOP_BREAKPOINT = 768;
+  private static readonly COMPACT_HEIGHT = 580;
 
   constructor() {
     afterNextRender(() => {
       window.addEventListener('scroll', this.scrollHandler);
+      window.addEventListener('resize', this.resizeHandler);
+      this.onResize();
     });
   }
 
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.scrollHandler);
+    window.removeEventListener('resize', this.resizeHandler);
   }
 
   navLinkClick(sectionId: string): void {
@@ -51,9 +61,19 @@ export class NavigationBarComponent implements OnDestroy {
     this.isMenuOpen.set(false);
   }
 
+  toggleNavCollapse(): void {
+    this.isNavCollapsed.update((c) => !c);
+  }
+
   private onScroll(): void {
     const currentScrollY = window.scrollY;
     this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
     this.lastScrollY = currentScrollY;
+  }
+
+  private onResize(): void {
+    if (window.innerWidth >= NavigationBarComponent.DESKTOP_BREAKPOINT) {
+      this.isNavCollapsed.set(window.innerHeight < NavigationBarComponent.COMPACT_HEIGHT);
+    }
   }
 }

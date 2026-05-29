@@ -1,38 +1,58 @@
-<nav class="nav-bar" [class.is-hidden]="isNavHidden()" aria-label="Site navigation">
-  <!-- Logo / monogram -->
-  <button class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
-    <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
-  </button>
+<nav
+  class="nav-bar"
+  [class.is-hidden]="isNavHidden()"
+  [class.is-collapsed]="isNavCollapsed()"
+  aria-label="Site navigation"
+>
+  <div class="nav-main">
+    <button class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
+      <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
+    </button>
 
-  <!--
-    nav-body: fixed left overlay on mobile, flex-1 sidebar content on desktop.
-    nav-spacer inside pushes the motion toggle to the bottom in both contexts.
-  -->
-  <div class="nav-body" [class.is-open]="isMenuOpen()">
-    <a class="nav-link" (click)="navLinkClick('about')" role="button" tabindex="0">
-      About<span class="brand-underscore">_</span>
-    </a>
-    <a class="nav-link" (click)="navLinkClick('experience')" role="button" tabindex="0">
-      Experience<span class="brand-underscore">_</span>
-    </a>
-    <a class="nav-link" (click)="navLinkClick('projects')" role="button" tabindex="0">
-      Projects<span class="brand-underscore">_</span>
-    </a>
-    <a class="nav-link" (click)="navLinkClick('contact')" role="button" tabindex="0">
-      Contact<span class="brand-underscore">_</span>
-    </a>
+    <div class="nav-body" [class.is-open]="isMenuOpen()">
+      <a class="nav-link" (click)="navLinkClick('about')" role="button" tabindex="0">
+        About<span class="brand-underscore">_</span>
+      </a>
+      <a class="nav-link" (click)="navLinkClick('experience')" role="button" tabindex="0">
+        Experience<span class="brand-underscore">_</span>
+      </a>
+      <a class="nav-link" (click)="navLinkClick('projects')" role="button" tabindex="0">
+        Projects<span class="brand-underscore">_</span>
+      </a>
+      <a class="nav-link" (click)="navLinkClick('contact')" role="button" tabindex="0">
+        Contact<span class="brand-underscore">_</span>
+      </a>
 
-    <div class="nav-spacer"></div>
+      <div class="nav-spacer"></div>
 
-    <div class="nav-footer">
-      <button
-        class="nav-motion-toggle"
-        [attr.aria-pressed]="motionService.reducedMotion()"
-        (click)="motionService.toggleReducedMotion()"
-      >
-        @if (motionService.reducedMotion()) { Enable motion } @else { Reduce motion }
-      </button>
+      <div class="nav-footer">
+        <button
+          class="nav-motion-toggle"
+          [attr.aria-pressed]="motionService.reducedMotion()"
+          (click)="motionService.toggleReducedMotion()"
+        >
+          @if (motionService.reducedMotion()) {
+            Enable motion
+          } @else {
+            Reduce motion
+          }
+        </button>
+      </div>
     </div>
+  </div>
+
+  <div class="nav-chevron-col" (click)="toggleNavCollapse()">
+    <button
+      class="nav-collapse-toggle"
+      [attr.aria-label]="isNavCollapsed() ? 'Expand navigation' : 'Collapse navigation'"
+      (click)="$event.stopPropagation(); toggleNavCollapse()"
+    >
+      @if (isNavCollapsed()) {
+        <svg lucideChevronRight [size]="16" aria-hidden="true"></svg>
+      } @else {
+        <svg lucideChevronLeft [size]="16" aria-hidden="true"></svg>
+      }
+    </button>
   </div>
 
   <!-- Mobile: hamburger (hidden on desktop) -->

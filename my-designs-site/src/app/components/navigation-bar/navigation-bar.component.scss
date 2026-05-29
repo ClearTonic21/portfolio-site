@@ -1,9 +1,10 @@
 @use '../../../styles/tokens' as tokens;
+@use '../../../styles/metallic-border' as mb;
 
 // ─── Mobile: fixed top bar ────────────────────────────────────────────────────
 
 :host {
-  display: contents; // no extra box — nav-bar and nav-backdrop sit directly in the layout
+  display: contents;
 }
 
 .nav-bar {
@@ -18,9 +19,11 @@
   padding: tokens.$spacing-3 tokens.$content-horizontal-gutter;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
-  transition: transform tokens.$duration-base tokens.$easing-standard;
+  transition:
+    transform 550ms tokens.$easing-out-expo,
+    box-shadow tokens.$duration-slow tokens.$easing-standard;
 
-  // Metallic gold border-bottom — 1px gradient strip
+  // Gold metallic border-bottom (mobile)
   &::after {
     content: '';
     position: absolute;
@@ -28,19 +31,47 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(
-      to right,
-      rgba(100, 75, 10, 0.1),
-      rgba(201, 162, 39, 0.7) 25%,
-      rgba(255, 225, 100, 1.0) 50%,
-      rgba(201, 162, 39, 0.7) 75%,
-      rgba(100, 75, 10, 0.1)
-    );
+    @include mb.strip-gold('to right');
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    @include mb.strip-teal('to right');
+    opacity: 0;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 24px var(--accent-glow);
+    transition:
+      transform 550ms tokens.$easing-out-expo,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
+    &::after {
+      opacity: 0;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+    &::before {
+      opacity: 1;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
   }
 
   &.is-hidden {
     transform: translateY(-100%);
   }
+}
+
+// ─── Main content column ──────────────────────────────────────────────────────
+
+.nav-main {
+  display: flex;
+  align-items: center;
 }
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
@@ -49,13 +80,12 @@
   display: inline-flex;
   align-items: center;
   padding: 6px 10px;
-  border: 1px solid var(--border-accent);
+  border: 1px solid transparent;
   border-radius: tokens.$border-radius-large;
-  background: var(--background-surface);
   cursor: pointer;
   transition:
-    box-shadow tokens.$duration-base tokens.$easing-standard,
-    border-color tokens.$duration-base tokens.$easing-standard;
+    border-color tokens.$duration-slow tokens.$easing-standard,
+    box-shadow tokens.$duration-slow tokens.$easing-standard;
 
   img {
     display: block;
@@ -65,15 +95,17 @@
 
   &:hover,
   &:focus-visible {
+    border-color: var(--border-accent);
     box-shadow: 0 0 28px var(--accent-glow);
-    border-color: var(--accent);
+    transition:
+      border-color tokens.$duration-fast tokens.$easing-standard,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
   }
 }
 
-// ─── Nav body — dual-purpose: mobile overlay / desktop sidebar content ─────────
+// ─── Nav body ─────────────────────────────────────────────────────────────────
 
 .nav-body {
-  // Mobile: full-height overlay that slides in from the left
   position: fixed;
   top: 0;
   left: 0;
@@ -82,7 +114,7 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  padding: 80px tokens.$spacing-4 tokens.$spacing-4; // top clears the mobile nav bar
+  padding: 80px tokens.$spacing-4 tokens.$spacing-4;
   background: var(--background);
   backdrop-filter: blur(12px);
   transform: translateX(-100%);
@@ -115,23 +147,25 @@
 // ─── Motion toggle ────────────────────────────────────────────────────────────
 
 .nav-spacer {
-  flex: 1; // pushes nav-footer to the bottom in both the mobile overlay and the desktop sidebar
+  flex: 1;
 }
 
 .nav-footer {
   padding-top: tokens.$spacing-4;
   border-top: 1px solid var(--border-default);
+  cursor: default;
 }
 
 .nav-motion-toggle {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
   font-family: tokens.$font-primary;
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: tokens.$border-radius-pill;
   border: 1px solid var(--border-default);
   background: var(--background-surface);
@@ -143,6 +177,13 @@
   &:focus-visible {
     border-color: var(--accent);
   }
+}
+
+// ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
+
+.nav-chevron-col,
+.nav-collapse-toggle {
+  display: none;
 }
 
 // ─── Hamburger ────────────────────────────────────────────────────────────────
@@ -179,25 +220,39 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 // ─── Desktop: left sidebar ────────────────────────────────────────────────────
 
 @media (min-width: tokens.$breakpoint-medium) {
   .nav-bar {
-    // Expand from top-strip to full-height left column
     right: auto;
     bottom: 0;
     width: 220px;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: stretch;
     justify-content: flex-start;
-    padding: tokens.$spacing-6 tokens.$spacing-4;
-    border-bottom: none;
+    padding: 0;
 
-    // Swap the bottom strip for a vertical right-edge strip
+    &.is-hidden {
+      transform: none;
+    }
+
+    // Snappier expand (leaving .is-collapsed) vs slow close
+    &.is-collapsed {
+      transform: translateX(calc(-100% + 36px));
+      transition:
+        transform 320ms tokens.$easing-standard,
+        box-shadow tokens.$duration-fast tokens.$easing-standard;
+    }
+
+    // Right-edge gold metallic border (vertical)
     &::after {
       bottom: 0;
       top: 0;
@@ -205,24 +260,46 @@
       left: auto;
       width: 1px;
       height: auto;
-      background: linear-gradient(
-        to bottom,
-        rgba(100, 75, 10, 0.1),
-        rgba(201, 162, 39, 0.7) 25%,
-        rgba(255, 225, 100, 1.0) 50%,
-        rgba(201, 162, 39, 0.7) 75%,
-        rgba(100, 75, 10, 0.1)
-      );
+      @include mb.strip-gold('to bottom');
     }
 
-    // Sidebar never hides on desktop — override the mobile scroll-hide
-    &.is-hidden {
-      transform: none;
+    // Right-edge teal border (vertical)
+    &::before {
+      bottom: 0;
+      top: 0;
+      right: 0;
+      left: auto;
+      width: 1px;
+      height: auto;
+      @include mb.strip-teal('to bottom');
+    }
+
+    // Glow triggers only when hovering the chevron column — not the whole bar
+    &:hover {
+      box-shadow: none;
+      &::after {
+        opacity: 1;
+        transition: opacity tokens.$duration-slow tokens.$easing-standard;
+      }
+      &::before {
+        opacity: 0;
+        transition: opacity tokens.$duration-slow tokens.$easing-standard;
+      }
     }
   }
 
+  // ─── Main column ──────────────────────────────────────────────────────────
+
+  .nav-main {
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    cursor: default;
+    padding: tokens.$spacing-6 tokens.$spacing-3;
+    min-width: 0;
+  }
+
   .nav-body {
-    // Become a normal flex child inside the sidebar — no longer an overlay
     position: static;
     width: 100%;
     background: transparent;
@@ -230,17 +307,23 @@
     padding: 0;
     flex: 1;
     margin-top: tokens.$spacing-6;
-    // Forcefully clear any leftover mobile transform; transition: none prevents a flash
     transform: none;
     transition: none;
+    cursor: default;
+  }
+
+  .nav-monogram {
+    width: 100%;
+    justify-content: center;
   }
 
   .nav-link {
-    font-size: 0.82rem;
+    display: block;
+    width: 100%;
+    font-size: 0.9rem;
     letter-spacing: 0.08em;
     padding: tokens.$spacing-unit 0;
 
-    // No underline indicator on sidebar — hover colour is the cue
     &::after {
       display: none;
     }
@@ -248,6 +331,10 @@
 
   .nav-footer {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--border-default);
+    padding-top: tokens.$spacing-3;
   }
 
   .nav-hamburger {
@@ -256,5 +343,71 @@
 
   .nav-backdrop {
     display: none;
+  }
+
+  // ─── Chevron column ────────────────────────────────────────────────────────
+
+  .nav-chevron-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; // chevron always stays centered
+    width: 36px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  // Chevron column hover drives the nav-bar border glow
+  .nav-bar:has(.nav-chevron-col:hover) {
+    box-shadow: 4px 0 24px var(--accent-glow);
+    transition:
+      transform 550ms tokens.$easing-out-expo,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+    &::after {
+      opacity: 0;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+    &::before {
+      opacity: 1;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+  }
+
+  // ─── Collapse toggle button ────────────────────────────────────────────────
+
+  .nav-collapse-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--gold);
+    transition: color tokens.$duration-base tokens.$easing-standard;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--accent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: tokens.$border-radius-small;
+    }
+  }
+
+  // Chevron and border both go accent when hovering the column
+  .nav-chevron-col:hover .nav-collapse-toggle {
+    color: var(--accent);
   }
 }
