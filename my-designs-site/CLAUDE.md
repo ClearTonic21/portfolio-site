@@ -107,28 +107,29 @@ afterNextRender(() => {
 ## 3. Repository Structure
 
 ```
-/
 ├── CLAUDE.md
 ├── angular.json
 ├── jest.config.ts
 ├── tsconfig.json
 ├── tsconfig.spec.json
 ├── package.json
+├── public/
+│   ├── 404.html
+│   ├── resume.pdf
+│   └── favicon.ico
 └── src/
     ├── main.ts
     ├── index.html
     ├── styles/
-    │   ├── _tokens.scss
-    │   ├── _typography.scss
-    │   ├── _reset.scss
-    │   └── styles.scss
+    │   ├── tokens.scss
+    │   ├── typography.scss
+    │   └── reset.scss
     ├── assets/
     │   ├── images/
-    │   │   ├── cleartonic-icon.png
-    │   │   ├── game-screenshot.png
-    │   │   ├── app-screenshot.png
-    │   │   └── resume.pdf
+    │   │   ├── game_screenshot.png
+    │   │   ├── app_screenshot.png
     │   └── icons/
+    │       └── cleartonic_icon.png
     └── app/
         ├── app.component.ts
         ├── app.component.html
@@ -622,6 +623,7 @@ LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. The
 All icons in the portfolio use Lucide for consistency. Never use custom SVGs or icon fonts unless Lucide does not provide the needed icon.
 
 **Import and usage:**
+
 ```typescript
 import { LucideAngularModule, Icon } from '@lucide/angular';
 
@@ -635,6 +637,7 @@ imports: [LucideAngularModule, CommonModule],
 **Icon sizing:** Use standard sizes (`16`, `20`, `24`, `32`). Control icon color via component CSS or inline styles aligned with the design system palette.
 
 **Accessibility:** Always pair icon-only buttons with `aria-label`:
+
 ```html
 <button aria-label="Open menu">
   <lucide-icon name="menu" size="24"></lucide-icon>
