@@ -6,59 +6,7 @@
   </div>
 }
 
-<nav class="app-nav" [class.is-hidden]="isNavHidden()">
-  <div class="app-nav-inner">
-    <button class="app-nav-monogram" aria-label="Scroll to home" (click)="onNavLinkClick('hero')">
-      <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
-    </button>
-
-    <div class="app-nav-links" [class.is-open]="isMenuOpen()">
-      <a
-        class="app-nav-link"
-        (click)="onNavLinkClick('about')"
-        role="button"
-        tabindex="0"
-      >
-        About<span class="brand-underscore">_</span>
-      </a>
-      <a
-        class="app-nav-link"
-        (click)="onNavLinkClick('experience')"
-        role="button"
-        tabindex="0"
-      >
-        Experience<span class="brand-underscore">_</span>
-      </a>
-      <a
-        class="app-nav-link"
-        (click)="onNavLinkClick('projects')"
-        role="button"
-        tabindex="0"
-      >
-        Projects<span class="brand-underscore">_</span>
-      </a>
-      <a
-        class="app-nav-link"
-        (click)="onNavLinkClick('contact')"
-        role="button"
-        tabindex="0"
-      >
-        Contact<span class="brand-underscore">_</span>
-      </a>
-    </div>
-
-    <button
-      class="app-nav-hamburger"
-      aria-label="Toggle menu"
-      [attr.aria-expanded]="isMenuOpen()"
-      (click)="toggleMenu()"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-</nav>
+<app-navigation-bar></app-navigation-bar>
 
 <main>
   <app-hero></app-hero>
@@ -67,20 +15,3 @@
   <app-projects></app-projects>
   <app-contact></app-contact>
 </main>
-
-<button
-  class="motion-toggle-button"
-  [class.is-hidden]="isMotionButtonHidden()"
-  [attr.aria-pressed]="motionService.reducedMotion()"
-  (click)="motionService.toggleReducedMotion()"
->
-  @if (motionService.reducedMotion()) {
-    Enable motion
-  } @else {
-    Reduce motion
-  }
-</button>
-
-@if (isMenuOpen()) {
-  <div class="menu-backdrop" (click)="closeMenu()" role="presentation"></div>
-}

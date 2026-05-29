@@ -1,13 +1,6 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-  inject,
-  afterNextRender,
-  OnDestroy,
-} from '@angular/core';
-import { ScrollService } from './services/scroll.service';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MotionService } from './services/motion.service';
+import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { AboutComponent } from './components/about/about.component';
 import { ExperienceComponent } from './components/experience/experience.component';
@@ -18,6 +11,7 @@ import { ContactComponent } from './components/contact/contact.component';
   selector: 'app-root',
   standalone: true,
   imports: [
+    NavigationBarComponent,
     HeroComponent,
     AboutComponent,
     ExperienceComponent,
@@ -28,46 +22,6 @@ import { ContactComponent } from './components/contact/contact.component';
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnDestroy {
-  private readonly scrollService = inject(ScrollService);
+export class AppComponent {
   readonly motionService = inject(MotionService);
-
-  readonly isMenuOpen = signal(false);
-  readonly isNavHidden = signal(false);
-  readonly isMotionButtonHidden = signal(false);
-
-  // Stored as a field so the same reference can be passed to removeEventListener
-  private readonly scrollHandler = () => this.onScroll();
-  private lastScrollY = 0;
-
-  constructor() {
-    afterNextRender(() => {
-      window.addEventListener('scroll', this.scrollHandler);
-    });
-  }
-
-  ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.scrollHandler);
-  }
-
-  onNavLinkClick(sectionId: string): void {
-    this.isMenuOpen.set(false);
-    this.scrollService.scrollToSection(sectionId);
-  }
-
-  toggleMenu(): void {
-    this.isMenuOpen.update((current) => !current);
-  }
-
-  closeMenu(): void {
-    this.isMenuOpen.set(false);
-  }
-
-  private onScroll(): void {
-    const currentScrollY = window.scrollY;
-    this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
-    this.isMotionButtonHidden.set(currentScrollY > window.innerHeight * 0.8);
-    this.lastScrollY = currentScrollY;
-
-  }
 }

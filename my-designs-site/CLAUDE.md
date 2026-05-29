@@ -141,6 +141,12 @@ afterNextRender(() => {
         ├── app.spec.ts
         ├── app.config.ts
         ├── components/
+        │   ├── navigation-bar/
+        │   │   ├── CLAUDE.md
+        │   │   ├── navigation-bar.component.ts
+        │   │   ├── navigation-bar.component.html
+        │   │   ├── navigation-bar.component.scss
+        │   │   └── navigation-bar.component.spec.ts
         │   ├── hero/
         │   │   ├── CLAUDE.md
         │   │   ├── hero.component.ts

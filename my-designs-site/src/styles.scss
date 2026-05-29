@@ -19,6 +19,13 @@ main {
   min-height: 100vh;
 }
 
+@media (min-width: tokens.$breakpoint-medium) {
+  main {
+    // Offset for the 220px fixed sidebar so content isn't obscured
+    margin-left: 220px;
+  }
+}
+
 button,
 input,
 textarea,

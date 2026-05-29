@@ -1,0 +1,226 @@
+@use '../../../styles/tokens' as tokens;
+
+// ─── Mobile: fixed top bar ────────────────────────────────────────────────────
+
+:host {
+  display: contents; // no extra box — nav-bar and nav-backdrop sit directly in the layout
+}
+
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$spacing-3 tokens.$content-horizontal-gutter;
+  background: var(--background-overlay);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-default);
+  transition: transform tokens.$duration-base tokens.$easing-standard;
+
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
+}
+
+// ─── Logo ─────────────────────────────────────────────────────────────────────
+
+.nav-monogram {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--border-accent);
+  border-radius: tokens.$border-radius-large;
+  background: var(--background-surface);
+  cursor: pointer;
+  transition:
+    box-shadow tokens.$duration-base tokens.$easing-standard,
+    border-color tokens.$duration-base tokens.$easing-standard;
+
+  img {
+    display: block;
+    height: 32px;
+    width: auto;
+  }
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 0 28px var(--accent-glow);
+    border-color: var(--accent);
+  }
+}
+
+// ─── Nav body — dual-purpose: mobile overlay / desktop sidebar content ─────────
+
+.nav-body {
+  // Mobile: full-height overlay that slides in from the left
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  padding: 80px tokens.$spacing-4 tokens.$spacing-4; // top clears the mobile nav bar
+  background: var(--background);
+  backdrop-filter: blur(12px);
+  transform: translateX(-100%);
+  transition: transform tokens.$duration-base tokens.$easing-standard;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+}
+
+// ─── Nav links ────────────────────────────────────────────────────────────────
+
+.nav-link {
+  font-family: tokens.$font-primary;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: tokens.$spacing-2 0;
+  transition: color tokens.$duration-base tokens.$easing-standard;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+  }
+}
+
+// ─── Motion toggle ────────────────────────────────────────────────────────────
+
+.nav-spacer {
+  flex: 1; // pushes nav-footer to the bottom in both the mobile overlay and the desktop sidebar
+}
+
+.nav-footer {
+  padding-top: tokens.$spacing-4;
+  border-top: 1px solid var(--border-default);
+}
+
+.nav-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  font-family: tokens.$font-primary;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: tokens.$border-radius-pill;
+  border: 1px solid var(--border-default);
+  background: var(--background-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color tokens.$duration-base tokens.$easing-standard;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--accent);
+  }
+}
+
+// ─── Hamburger ────────────────────────────────────────────────────────────────
+
+.nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    transition:
+      transform tokens.$duration-base tokens.$easing-standard,
+      opacity tokens.$duration-base tokens.$easing-standard;
+  }
+}
+
+// ─── Mobile backdrop ──────────────────────────────────────────────────────────
+
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--background-overlay);
+  backdrop-filter: blur(4px);
+  animation: fade-in tokens.$duration-base tokens.$easing-standard;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+// ─── Desktop: left sidebar ────────────────────────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .nav-bar {
+    // Expand from top-strip to full-height left column
+    right: auto;
+    bottom: 0;
+    width: 220px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: tokens.$spacing-6 tokens.$spacing-4;
+    border-bottom: none;
+    border-right: 1px solid var(--border-default);
+
+    // Sidebar never hides on desktop — override the mobile scroll-hide
+    &.is-hidden {
+      transform: none;
+    }
+  }
+
+  .nav-body {
+    // Become a normal flex child inside the sidebar — no longer an overlay
+    position: static;
+    width: 100%;
+    background: transparent;
+    backdrop-filter: none;
+    padding: 0;
+    flex: 1;
+    margin-top: tokens.$spacing-6;
+    // Forcefully clear any leftover mobile transform; transition: none prevents a flash
+    transform: none;
+    transition: none;
+  }
+
+  .nav-link {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    padding: tokens.$spacing-unit 0;
+
+    // No underline indicator on sidebar — hover colour is the cue
+    &::after {
+      display: none;
+    }
+  }
+
+  .nav-footer {
+    width: 100%;
+  }
+
+  .nav-hamburger {
+    display: none;
+  }
+
+  .nav-backdrop {
+    display: none;
+  }
+}

@@ -1,5 +1,4 @@
 @use '../styles/tokens' as *;
-@use '../styles/typography' as *;
 
 :host {
   display: block;
@@ -8,8 +7,8 @@
 
 // ─── Parallax background ──────────────────────────────────────────────────────
 // Three blurred orbs fixed to the viewport. position: fixed + z-index: 0 keeps
-// them behind <main> (which has z-index: 1 in global styles). Removed from the
-// DOM entirely when MotionService.reducedMotion() is true.
+// them behind <main> (z-index: 1 in global styles). Removed from the DOM
+// entirely when MotionService.reducedMotion() is true.
 
 .parallax-bg {
   position: fixed;
@@ -49,7 +48,7 @@
   animation-delay: -14s;
 }
 
-// Bottom-center — widest, most diffuse — gives depth to the lower half
+// Bottom-center — widest, most diffuse
 .parallax-orb--3 {
   width: 90vw;
   height: 50vh;
@@ -68,202 +67,4 @@
   60%  { transform: translate(2%,    6%  ); }
   80%  { transform: translate(-4%,   3%  ); }
   100% { transform: translate(0%,    0%  ); }
-}
-
-.app-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  backdrop-filter: blur(12px);
-  background: var(--background-overlay);
-  border-bottom: 1px solid var(--border-default);
-  transition: transform $duration-base $easing-standard;
-
-  &.is-hidden {
-    transform: translateY(-100%);
-  }
-}
-
-.app-nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: $spacing-3 $content-horizontal-gutter;
-  max-width: $content-max-width;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.app-nav-monogram {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border: 1px solid var(--border-accent);
-  border-radius: $border-radius-large;
-  background: var(--background-surface);
-  cursor: pointer;
-  transition:
-    box-shadow $duration-base $easing-standard,
-    border-color $duration-base $easing-standard;
-
-  img {
-    display: block;
-    height: 32px;
-    width: auto;
-  }
-
-  &:hover,
-  &:focus-visible {
-    box-shadow: 0 0 28px var(--accent-glow);
-    border-color: var(--accent);
-  }
-}
-
-.app-nav-links {
-  display: none;
-  gap: $spacing-6;
-
-  @media (min-width: $breakpoint-medium) {
-    display: flex;
-    position: static;
-    background: none;
-  }
-}
-
-.app-nav-link {
-  font-family: $font-primary;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  position: relative;
-  cursor: pointer;
-  transition: color $duration-base $easing-standard;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform $duration-base $easing-out-expo;
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
-
-    &::after {
-      transform: scaleX(1);
-    }
-  }
-}
-
-.app-nav-hamburger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  @media (min-width: $breakpoint-medium) {
-    display: none;
-  }
-
-  span {
-    width: 24px;
-    height: 2px;
-    background: var(--text-primary);
-    transition: all $duration-base $easing-standard;
-  }
-}
-
-.menu-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: var(--background-overlay);
-  backdrop-filter: blur(4px);
-  animation: fadeIn $duration-base $easing-standard;
-
-  @media (min-width: $breakpoint-medium) {
-    display: none;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (max-width: ($breakpoint-medium - 1px)) {
-  .app-nav-links {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1001;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: calc(#{$spacing-4} + 44px) $spacing-4 $spacing-4;
-    background: var(--background);
-    max-height: 100vh;
-    overflow-y: auto;
-    transform: translateX(-100%);
-    transition: transform $duration-base $easing-standard;
-
-    &.is-open {
-      transform: translateX(0);
-    }
-  }
-
-  .app-nav-link {
-    font-size: 1rem;
-    padding: $spacing-3 0;
-    width: 100%;
-
-    &::after {
-      display: none;
-    }
-  }
-}
-
-.motion-toggle-button {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 100;
-  display: inline-flex;
-  align-items: center;
-  font-family: $font-primary;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border-radius: $border-radius-pill;
-  border: 1px solid var(--border-default);
-  background: var(--background-surface);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: opacity $duration-base $easing-standard;
-
-  &.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
 }

@@ -1,0 +1,54 @@
+<nav class="nav-bar" [class.is-hidden]="isNavHidden()" aria-label="Site navigation">
+  <!-- Logo / monogram -->
+  <button class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
+    <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
+  </button>
+
+  <!--
+    nav-body: fixed left overlay on mobile, flex-1 sidebar content on desktop.
+    nav-spacer inside pushes the motion toggle to the bottom in both contexts.
+  -->
+  <div class="nav-body" [class.is-open]="isMenuOpen()">
+    <a class="nav-link" (click)="navLinkClick('about')" role="button" tabindex="0">
+      About<span class="brand-underscore">_</span>
+    </a>
+    <a class="nav-link" (click)="navLinkClick('experience')" role="button" tabindex="0">
+      Experience<span class="brand-underscore">_</span>
+    </a>
+    <a class="nav-link" (click)="navLinkClick('projects')" role="button" tabindex="0">
+      Projects<span class="brand-underscore">_</span>
+    </a>
+    <a class="nav-link" (click)="navLinkClick('contact')" role="button" tabindex="0">
+      Contact<span class="brand-underscore">_</span>
+    </a>
+
+    <div class="nav-spacer"></div>
+
+    <div class="nav-footer">
+      <button
+        class="nav-motion-toggle"
+        [attr.aria-pressed]="motionService.reducedMotion()"
+        (click)="motionService.toggleReducedMotion()"
+      >
+        @if (motionService.reducedMotion()) { Enable motion } @else { Reduce motion }
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile: hamburger (hidden on desktop) -->
+  <button
+    class="nav-hamburger"
+    aria-label="Toggle menu"
+    [attr.aria-expanded]="isMenuOpen()"
+    (click)="toggleMenu()"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile backdrop — tap to close overlay -->
+@if (isMenuOpen()) {
+  <div class="nav-backdrop" (click)="closeMenu()" role="presentation"></div>
+}

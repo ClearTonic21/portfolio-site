@@ -8,9 +8,13 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 88px);
+  min-height: calc(100vh - 88px); // mobile: subtract top nav bar height
   padding: 56px 24px 72px;
   // No background — the body's parallax gradient shows through
+
+  @media (min-width: 768px) {
+    min-height: 100vh; // desktop: sidebar is beside content, not above it
+  }
 }
 
 .hero-inner {
