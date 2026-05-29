@@ -37,19 +37,27 @@ main {
 }
 
 .app-nav-monogram {
-  font-family: $font-primary;
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: var(--accent);
-  padding: 0;
-  border: none;
-  background: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--border-accent);
+  border-radius: $border-radius-large;
+  background: var(--background-surface);
   cursor: pointer;
-  transition: color $duration-base $easing-standard;
+  transition:
+    box-shadow $duration-base $easing-standard,
+    border-color $duration-base $easing-standard;
+
+  img {
+    display: block;
+    height: 32px;
+    width: auto;
+  }
 
   &:hover,
   &:focus-visible {
-    color: var(--accent-hover);
+    box-shadow: 0 0 28px var(--accent-glow);
+    border-color: var(--accent);
   }
 }
 
@@ -90,10 +98,6 @@ main {
 
   &:hover,
   &:focus-visible {
-    color: var(--accent);
-  }
-
-  &.is-active {
     color: var(--accent);
 
     &::after {
@@ -174,12 +178,6 @@ main {
 
     &::after {
       display: none;
-    }
-
-    &.is-active {
-      &::after {
-        display: none;
-      }
     }
   }
 }

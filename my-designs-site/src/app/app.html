@@ -1,13 +1,12 @@
 <nav class="app-nav" [class.is-hidden]="isNavHidden()">
   <div class="app-nav-inner">
     <button class="app-nav-monogram" aria-label="Scroll to home" (click)="onNavLinkClick('hero')">
-      EP
+      <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
     </button>
 
     <div class="app-nav-links" [class.is-open]="isMenuOpen()">
       <a
         class="app-nav-link"
-        [class.is-active]="activeSection() === 'about'"
         (click)="onNavLinkClick('about')"
         role="button"
         tabindex="0"
@@ -16,7 +15,6 @@
       </a>
       <a
         class="app-nav-link"
-        [class.is-active]="activeSection() === 'experience'"
         (click)="onNavLinkClick('experience')"
         role="button"
         tabindex="0"
@@ -25,7 +23,6 @@
       </a>
       <a
         class="app-nav-link"
-        [class.is-active]="activeSection() === 'projects'"
         (click)="onNavLinkClick('projects')"
         role="button"
         tabindex="0"
@@ -34,7 +31,6 @@
       </a>
       <a
         class="app-nav-link"
-        [class.is-active]="activeSection() === 'contact'"
         (click)="onNavLinkClick('contact')"
         role="button"
         tabindex="0"
