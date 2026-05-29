@@ -17,11 +17,7 @@
                 <li class="type-body timeline-bullet">{{ bullet }}</li>
               }
             </ul>
-            <div class="timeline-tags">
-              @for (tag of entry.tags; track tag) {
-                <span class="tag">{{ tag }}</span>
-              }
-            </div>
+            <app-tag-list [tags]="entry.tags" />
           </article>
         </div>
       }

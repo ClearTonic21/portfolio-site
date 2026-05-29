@@ -29,18 +29,7 @@
 
       <div class="about-skills">
         @for (group of skillGroups; track group.category) {
-          <div class="skill-group">
-            <p class="type-eyebrow skill-group-label">{{ group.category }}</p>
-            <div class="skill-tags">
-              @for (skill of group.skills; track skill) {
-                @if (skill === 'ClearTonic Games_') {
-                  <span class="tag">ClearTonic Games<span class="brand-underscore">_</span></span>
-                } @else {
-                  <span class="tag">{{ skill }}</span>
-                }
-              }
-            </div>
-          </div>
+          <app-tag-list [title]="group.category" [tags]="group.skills" />
         }
       </div>
     </div>

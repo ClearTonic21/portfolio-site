@@ -1,0 +1,18 @@
+@use '../../../styles/tokens' as tokens;
+
+// Host acts as the skill-group wrapper — flex column with gap between label and pills
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-unit;
+}
+
+.tag-list-label {
+  margin-bottom: tokens.$spacing-unit;
+}
+
+.tag-list-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$spacing-unit;
+}

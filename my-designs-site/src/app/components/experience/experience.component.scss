@@ -104,14 +104,6 @@
   }
 }
 
-// ─── Tags ─────────────────────────────────────────────────────────────────────
-
-.timeline-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: tokens.$spacing-unit;
-}
-
 // ─── Reveal animations ────────────────────────────────────────────────────────
 
 [appReveal] {

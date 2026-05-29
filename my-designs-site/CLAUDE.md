@@ -165,6 +165,18 @@ afterNextRender(() => {
         │   │   ├── projects.component.html
         │   │   ├── projects.component.scss
         │   │   └── projects.component.spec.ts
+        │   ├── tag-list/
+        │   │   ├── CLAUDE.md
+        │   │   ├── tag-list.component.ts
+        │   │   ├── tag-list.component.html
+        │   │   ├── tag-list.component.scss
+        │   │   └── tag-list.component.spec.ts
+        │   ├── article-card/
+        │   │   ├── CLAUDE.md
+        │   │   ├── article-card.component.ts
+        │   │   ├── article-card.component.html
+        │   │   ├── article-card.component.scss
+        │   │   └── article-card.component.spec.ts
         │   └── contact/
         │       ├── CLAUDE.md
         │       ├── contact.component.ts

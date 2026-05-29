@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
+import { TagListComponent } from '../tag-list/tag-list.component';
 
 interface SkillGroup {
   readonly category: string;
@@ -9,7 +10,7 @@ interface SkillGroup {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [RevealDirective],
+  imports: [RevealDirective, TagListComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

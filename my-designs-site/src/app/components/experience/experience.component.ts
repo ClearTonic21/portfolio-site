@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
+import { TagListComponent } from '../tag-list/tag-list.component';
 
 interface TimelineEntry {
   readonly id: string;
@@ -13,7 +14,7 @@ interface TimelineEntry {
 @Component({
   selector: 'app-experience',
   standalone: true,
-  imports: [RevealDirective],
+  imports: [RevealDirective, TagListComponent],
   templateUrl: './experience.component.html',
   styleUrl: './experience.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

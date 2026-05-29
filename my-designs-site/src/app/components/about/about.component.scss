@@ -32,22 +32,6 @@
   gap: tokens.$spacing-4;
 }
 
-.skill-group {
-  display: flex;
-  flex-direction: column;
-  gap: tokens.$spacing-unit;
-}
-
-.skill-group-label {
-  margin-bottom: tokens.$spacing-unit;
-}
-
-.skill-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: tokens.$spacing-unit;
-}
-
 [appReveal] {
   opacity: 0;
   transform: translateY(20px);
