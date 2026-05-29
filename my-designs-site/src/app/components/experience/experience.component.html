@@ -6,19 +6,20 @@
     <div class="timeline">
       @for (entry of timelineEntries; track entry.id; let isEven = $even) {
         <div class="timeline-entry" [class.is-right]="isEven">
-          <article class="surface timeline-card" appReveal>
-            <header class="timeline-card-header">
-              <span class="type-caption timeline-period">{{ entry.period }}</span>
-              <h3 class="type-heading timeline-company">{{ entry.company }}</h3>
-              <p class="type-caption timeline-role">{{ entry.role }}</p>
-            </header>
+          <app-article-card
+            [highlight]="entry.period"
+            highlightVariant="caption"
+            [title]="entry.company"
+            appReveal
+          >
+            <p class="type-caption timeline-role">{{ entry.role }}</p>
             <ul class="timeline-bullets">
               @for (bullet of entry.bullets; track bullet) {
                 <li class="type-body timeline-bullet">{{ bullet }}</li>
               }
             </ul>
             <app-tag-list [tags]="entry.tags" />
-          </article>
+          </app-article-card>
         </div>
       }
     </div>

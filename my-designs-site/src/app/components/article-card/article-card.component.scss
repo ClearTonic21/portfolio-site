@@ -1,0 +1,96 @@
+@use '../../../styles/tokens' as tokens;
+
+// ─── Host ─────────────────────────────────────────────────────────────────────
+// Acts as a flex item in the parent grid. Surface class applied via host binding.
+
+:host {
+  flex: 1 1 100%; // mobile: full width
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    transform 250ms tokens.$easing-out-expo,
+    border-color 250ms tokens.$easing-out-expo,
+    box-shadow 250ms tokens.$easing-out-expo;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-accent);
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+}
+
+// ─── Image area ───────────────────────────────────────────────────────────────
+
+.article-card-image-area {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--background-subtle);
+}
+
+.article-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 350ms tokens.$easing-out-expo;
+
+  :host:hover & {
+    transform: scale(1.03);
+  }
+}
+
+.article-card-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // Uses correct token variables — var(--surface) and var(--surface-raised) do not exist
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--background-subtle),
+    var(--background-subtle) 6px,
+    var(--background-surface) 6px,
+    var(--background-surface) 12px
+  );
+}
+
+.placeholder-label {
+  color: var(--text-secondary);
+  background: var(--background-surface);
+  padding: tokens.$spacing-unit tokens.$spacing-2;
+  border-radius: tokens.$border-radius-small;
+}
+
+// ─── Body ─────────────────────────────────────────────────────────────────────
+
+.article-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-3;
+  padding: tokens.$spacing-4;
+  flex: 1;
+}
+
+.article-card-highlight {
+  // Override type-eyebrow accent color — highlight is metadata, not a call to action
+  color: var(--text-secondary);
+}
+
+.article-card-title {
+  color: var(--text-primary);
+}
+
+// ─── Desktop: 2-column / full-page variants ───────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) {
+  :host {
+    flex: 1 1 calc(50% - #{tokens.$spacing-4} / 2);
+
+    &.is-full-page {
+      flex: 1 1 100%;
+    }
+  }
+}

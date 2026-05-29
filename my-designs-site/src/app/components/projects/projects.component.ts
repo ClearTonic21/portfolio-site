@@ -1,11 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
 import { LucideArrowUpRight } from '@lucide/angular';
+import { TagListComponent } from '../tag-list/tag-list.component';
+import { ArticleCardComponent } from '../article-card/article-card.component';
 
 interface ProjectCard {
   readonly id: string;
   readonly title: string;
-  readonly isBrandTitle: boolean;
+  readonly fullPage: boolean;
   readonly eyebrow: string;
   readonly description: string;
   readonly imagePath: string;
@@ -18,7 +20,7 @@ interface ProjectCard {
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RevealDirective, LucideArrowUpRight],
+  imports: [RevealDirective, LucideArrowUpRight, TagListComponent, ArticleCardComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +30,7 @@ export class ProjectsComponent {
     {
       id: 'cleartonic-game',
       title: 'ClearTonic Games_',
-      isBrandTitle: true,
+      fullPage: false,
       eyebrow: 'Indie Game Design and Development',
       description:
         'Solo-developed pixel art games built in Godot, from concept and art direction to mechanics and release. ClearTonic Games_ is the studio label for everything I ship.',
@@ -41,7 +43,7 @@ export class ProjectsComponent {
     {
       id: 'canopy-trails',
       title: 'Canopy Trails',
-      isBrandTitle: false,
+      fullPage: false,
       eyebrow: 'Personal Project',
       description:
         'A trail and nature-spot information organizer built for hikers who want to track visited locations, save notes, and plan future adventures without a paywall.',
@@ -54,7 +56,7 @@ export class ProjectsComponent {
     {
       id: 'portfolio-site',
       title: 'This Portfolio Site',
-      isBrandTitle: false,
+      fullPage: true,
       eyebrow: 'Design & Dev',
       description:
         'An Angular 20 single-page portfolio designed from scratch and built through AI-directed development — treating Claude as a collaborative engineering partner from spec to deploy.',

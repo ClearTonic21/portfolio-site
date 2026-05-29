@@ -52,34 +52,12 @@
   }
 }
 
-// ─── Card ─────────────────────────────────────────────────────────────────────
-
-.timeline-card {
-  padding: tokens.$spacing-4;
-  display: flex;
-  flex-direction: column;
-  gap: tokens.$spacing-3;
-}
-
-.timeline-card-header {
-  display: flex;
-  flex-direction: column;
-  gap: tokens.$spacing-unit;
-}
-
-.timeline-period {
-  color: var(--text-secondary);
-}
-
-.timeline-company {
-  color: var(--text-primary);
-}
+// ─── Projected content — role, bullets, tags ──────────────────────────────────
+// Styled here because they are projected into ArticleCardComponent from this template.
 
 .timeline-role {
   color: var(--accent);
 }
-
-// ─── Bullets ──────────────────────────────────────────────────────────────────
 
 .timeline-bullets {
   display: flex;
@@ -155,8 +133,11 @@
       padding-left: calc(50% + tokens.$spacing-4);
     }
 
-    .timeline-card {
-      width: 100%;
+    // Entry padding already constrains card to half-width;
+    // override article-card's own 50% flex-basis so it fills that space correctly
+    app-article-card {
+      flex: 1 1 auto;
+      min-width: 0;
     }
   }
 }
