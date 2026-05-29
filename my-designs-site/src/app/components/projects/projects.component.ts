@@ -32,7 +32,7 @@ export class ProjectsComponent {
       eyebrow: 'Indie Game Design and Development',
       description:
         'Solo-developed pixel art games built in Godot, from concept and art direction to mechanics and release. ClearTonic Games_ is the studio label for everything I ship.',
-      imagePath: 'assets/images/game-screenshot.png',
+      imagePath: 'assets/images/game_screenshot.png',
       imageAlt: 'Screenshot of a ClearTonic Games_ indie game',
       tags: ['Godot', 'Pixel Art', 'Game Design', 'Solo Dev'],
       linkHref: 'https://github.com/ClearTonic21',

@@ -110,16 +110,19 @@ afterNextRender(() => {
 ├── CLAUDE.md
 ├── angular.json
 ├── jest.config.ts
+├── setup-jest.ts
 ├── tsconfig.json
+├── tsconfig.app.json
 ├── tsconfig.spec.json
 ├── package.json
-├── public/
+├── public/                          ← served at build root (no URL prefix)
 │   ├── 404.html
-│   ├── resume.pdf
+│   ├── Eli_Philpott_Resume.pdf
 │   └── favicon.ico
 └── src/
     ├── main.ts
     ├── index.html
+    ├── styles.scss
     ├── styles/
     │   ├── tokens.scss
     │   ├── typography.scss
@@ -129,12 +132,14 @@ afterNextRender(() => {
     │   │   ├── game_screenshot.png
     │   │   ├── app_screenshot.png
     │   └── icons/
-    │       └── cleartonic_icon.png
+    │       ├── ClearTonic icon.svg
+    │       └── ClearTonic Games_ icon.svg
     └── app/
-        ├── app.component.ts
-        ├── app.component.html
-        ├── app.component.scss
-        ├── app.component.spec.ts
+        ├── app.ts
+        ├── app.html
+        ├── app.scss
+        ├── app.spec.ts
+        ├── app.config.ts
         ├── components/
         │   ├── hero/
         │   │   ├── CLAUDE.md
@@ -184,7 +189,7 @@ afterNextRender(() => {
 - Business logic in `.ts` files only. Templates are declarative.
 - No inline `style="..."` attributes anywhere in templates.
 - Every component folder, `directives/`, and `services/` contains a `CLAUDE.md`.
-- All asset paths go through `src/assets/`.
+- Static files served at the URL root (PDF, favicon) go in `public/`. Component-consumed assets (images, icons) go in `src/assets/`.
 
 ---
 
@@ -291,7 +296,7 @@ $font-body: 'Lora', serif; // body copy only
 **Typography rules:**
 
 - The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="brand-underscore">_</span>` styled `color: var(--accent)`.
-- Section eyebrow labels follow the `/ Section Name` pattern.
+- Section eyebrow labels use a suffix underscore: `Section Name<span class="brand-underscore">_</span>` — no forward-slash prefix.
 - Never use font-weight below 500 for headings or labels.
 - Never use Arial, Inter, Roboto, or system-ui.
 
@@ -482,7 +487,7 @@ UI/UX & Software Designer
 ```
 
 - "View My Work" calls `ScrollService.scrollToSection('about')`
-- "Resume ↗" opens `assets/images/resume.pdf` in a new tab — **the only `target="_blank"` link in the entire site**
+- "Resume ↗" opens `Eli_Philpott_Resume.pdf` in a new tab — served from `public/` at the build root
 - Pixel-noise SVG texture overlay at 5% opacity on section background
 - ClearTonic Games\_ floating badge in bottom-right corner
 
@@ -528,7 +533,7 @@ Centered, flex column, `align-items: center`.
 
 - Short headline: "Let's build something."
 - Three large link items: Email, LinkedIn, GitHub — each with accent underline on hover
-- "View Resume" `.button-primary` — opens `assets/images/resume.pdf` in new tab
+- "View Resume" `.button-primary` — opens `Eli_Philpott_Resume.pdf` in new tab (served from `public/`)
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_`
 
 LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. These and the resume PDF are the only `target="_blank"` uses in the site.
