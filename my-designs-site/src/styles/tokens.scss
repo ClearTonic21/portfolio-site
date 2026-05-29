@@ -9,6 +9,8 @@ $color-accent-hover: #1abfa0;
 $color-accent-glow: rgba(56, 238, 180, 0.15);
 $color-border-default: rgba(240, 237, 230, 0.08);
 $color-border-accent: rgba(56, 238, 180, 0.3);
+$color-gold: #c9a227;
+$color-gold-border: rgba(201, 162, 39, 0.35);
 $color-error: #ff6b6b;
 
 $font-primary: 'DM Sans', sans-serif;
@@ -56,6 +58,8 @@ $duration-reveal: 700ms;
   --accent-glow: #{$color-accent-glow};
   --border-default: #{$color-border-default};
   --border-accent: #{$color-border-accent};
+  --gold: #{$color-gold};
+  --gold-border: #{$color-gold-border};
   --error: #{$color-error};
   --background-overlay: #{rgba($color-background, 0.8)};
 }

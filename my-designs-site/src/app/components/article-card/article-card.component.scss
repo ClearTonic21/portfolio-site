@@ -8,16 +8,66 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+  // Nullify the solid border from .surface — the gradient pseudos replace it visually
+  border-color: transparent;
   transition:
     transform 250ms tokens.$easing-out-expo,
-    border-color 250ms tokens.$easing-out-expo,
     box-shadow 250ms tokens.$easing-out-expo;
 
   &:hover {
     transform: translateY(-3px);
-    border-color: var(--border-accent);
     box-shadow: 0 0 24px var(--accent-glow);
+
+    &::before { opacity: 0; }
+    &::after  { opacity: 1; }
   }
+}
+
+// ─── Metallic gradient border (default) ───────────────────────────────────────
+// Uses mask-composite to carve a 1px gradient ring from the background layer.
+
+:host::before,
+:host::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  transition: opacity 250ms tokens.$easing-out-expo;
+  // Mask punches out the interior, leaving only the 1px border ring visible
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+// Gold metallic — light hitting the surface at 135°
+:host::before {
+  background: linear-gradient(
+    135deg,
+    rgba(100, 75, 10, 0.25) 0%,
+    rgba(201, 162, 39, 0.75) 30%,
+    rgba(255, 225, 100, 1.0) 50%,
+    rgba(201, 162, 39, 0.75) 70%,
+    rgba(100, 75, 10, 0.25) 100%
+  );
+  opacity: 1;
+}
+
+// Teal accent — fades in on hover
+:host::after {
+  background: linear-gradient(
+    135deg,
+    rgba(56, 238, 180, 0.15) 0%,
+    rgba(56, 238, 180, 0.7) 30%,
+    rgba(56, 238, 180, 1.0) 50%,
+    rgba(56, 238, 180, 0.7) 70%,
+    rgba(56, 238, 180, 0.15) 100%
+  );
+  opacity: 0;
 }
 
 // ─── Image area ───────────────────────────────────────────────────────────────
@@ -47,7 +97,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  // Uses correct token variables — var(--surface) and var(--surface-raised) do not exist
   background: repeating-linear-gradient(
     -45deg,
     var(--background-subtle),
@@ -75,8 +124,8 @@
 }
 
 .article-card-highlight {
-  // Override type-eyebrow accent color — highlight is metadata, not a call to action
-  color: var(--text-secondary);
+  color: var(--gold);
+  font-weight: 300;
 }
 
 .article-card-title {

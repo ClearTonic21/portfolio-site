@@ -18,8 +18,25 @@
   padding: tokens.$spacing-3 tokens.$content-horizontal-gutter;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-default);
   transition: transform tokens.$duration-base tokens.$easing-standard;
+
+  // Metallic gold border-bottom — 1px gradient strip
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      rgba(100, 75, 10, 0.1),
+      rgba(201, 162, 39, 0.7) 25%,
+      rgba(255, 225, 100, 1.0) 50%,
+      rgba(201, 162, 39, 0.7) 75%,
+      rgba(100, 75, 10, 0.1)
+    );
+  }
 
   &.is-hidden {
     transform: translateY(-100%);
@@ -179,7 +196,24 @@
     justify-content: flex-start;
     padding: tokens.$spacing-6 tokens.$spacing-4;
     border-bottom: none;
-    border-right: 1px solid var(--border-default);
+
+    // Swap the bottom strip for a vertical right-edge strip
+    &::after {
+      bottom: 0;
+      top: 0;
+      right: 0;
+      left: auto;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(
+        to bottom,
+        rgba(100, 75, 10, 0.1),
+        rgba(201, 162, 39, 0.7) 25%,
+        rgba(255, 225, 100, 1.0) 50%,
+        rgba(201, 162, 39, 0.7) 75%,
+        rgba(100, 75, 10, 0.1)
+      );
+    }
 
     // Sidebar never hides on desktop — override the mobile scroll-hide
     &.is-hidden {
