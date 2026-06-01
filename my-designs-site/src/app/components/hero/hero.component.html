@@ -14,12 +14,32 @@
     </p>
     <p class="type-heading hero-subtitle hero-animate">UI/UX &amp; Software Designer</p>
 
-    <div class="hero-actions hero-animate">
-      <button type="button" class="button-primary" (click)="viewWork()">View My Work</button>
+    <!-- Resume CTA — centered below the subtitle -->
+    <div class="hero-resume hero-animate">
       <a class="button-ghost" [href]="resumeHref" target="_blank" rel="noopener noreferrer">
-        Resume ↗
+        View Resume <span class="link-arrow" aria-hidden="true">↗</span>
       </a>
     </div>
+  </div>
+
+  <!-- Scroll cue — bottom-left, always above the nav overlay -->
+  <div
+    class="hero-scroll-cue"
+    role="button"
+    tabindex="0"
+    aria-label="Scroll to About section"
+    (click)="viewWork()"
+    (keydown.enter)="viewWork()"
+    (keydown.space)="viewWork()"
+  >
+    <span class="scroll-cue-label">View my work</span>
+    <svg
+      lucideChevronDown
+      [size]="16"
+      class="scroll-cue-chevron"
+      [class.is-animated]="!motionService.reducedMotion()"
+      aria-hidden="true"
+    ></svg>
   </div>
 
   <div class="hero-overlay" aria-hidden="true"></div>

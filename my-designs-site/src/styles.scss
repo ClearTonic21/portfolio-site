@@ -1,6 +1,7 @@
 @use 'styles/reset';
 @use 'styles/tokens' as tokens;
 @use 'styles/typography';
+@use 'styles/metallic-border' as mb;
 
 html {
   min-height: 100%;
@@ -21,8 +22,11 @@ main {
 
 @media (min-width: tokens.$breakpoint-medium) {
   main {
-    // Offset for the 220px fixed sidebar so content isn't obscured
-    margin-left: 220px;
+    // Reserve the sidebar width on BOTH sides so content centers in the true
+    // viewport rather than only the strip beside the sidebar. The left reservation
+    // also keeps content clear of the fixed sidebar.
+    padding-left: var(--sidebar-width);
+    padding-right: var(--sidebar-width);
   }
 }
 
@@ -102,6 +106,86 @@ a:focus-visible {
 .button-ghost:hover,
 .button-ghost:focus-visible {
   background: var(--accent-glow);
+}
+
+.link-arrow {
+  display: inline-block;
+  transition: transform tokens.$duration-fast tokens.$easing-out-expo;
+}
+
+.button-ghost:hover .link-arrow,
+.button-ghost:focus-visible .link-arrow {
+  transform: translate(2px, -2px);
+}
+
+// Prevent movement entirely — suppressing transition-duration alone still jumps
+[data-reduced-motion='true'] .link-arrow {
+  transform: none !important;
+  transition: none !important;
+}
+
+// ─── Glass section ────────────────────────────────────────────────────────────
+// Frosted-glass full-width section background with the site-wide gold → teal
+// hover glow. Apply via host: { class: 'glass-section' } on any section component.
+
+.glass-section {
+  position: relative;
+  background: var(--background-overlay);
+  backdrop-filter: blur(12px);
+  // Slow transition governs glow fade-OUT; hover state overrides for fast fade-IN
+  transition: box-shadow tokens.$duration-slow tokens.$easing-standard;
+
+  // Gold metallic top + bottom borders (default)
+  // Two background-image gradients on one pseudo: top pinned to top, bottom pinned to bottom.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, mb.$gold-fade, mb.$gold-mid 25%, mb.$gold-peak 50%, mb.$gold-mid 75%, mb.$gold-fade),
+      linear-gradient(to right, mb.$gold-fade, mb.$gold-mid 25%, mb.$gold-peak 50%, mb.$gold-mid 75%, mb.$gold-fade);
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: top center, bottom center;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  // Teal accent top + bottom borders (on hover)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, mb.$teal-fade, mb.$teal-mid 25%, mb.$teal-peak 50%, mb.$teal-mid 75%, mb.$teal-fade),
+      linear-gradient(to right, mb.$teal-fade, mb.$teal-mid 25%, mb.$teal-peak 50%, mb.$teal-mid 75%, mb.$teal-fade);
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: top center, bottom center;
+    opacity: 0;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 32px var(--accent-glow);
+    transition: box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+    &::after  { opacity: 0; transition: opacity tokens.$duration-fast tokens.$easing-standard; }
+    &::before { opacity: 1; transition: opacity tokens.$duration-fast tokens.$easing-standard; }
+  }
+
+  // On desktop, bleed the background across the full viewport (under the sidebar
+  // on the left, to the edge on the right) while keeping content within the same
+  // centered, sidebar-clear bounds as every other section.
+  @media (min-width: tokens.$breakpoint-medium) {
+    margin-left: calc(-1 * var(--sidebar-width));
+    padding-left: var(--sidebar-width);
+    padding-right: var(--sidebar-width);
+    // !important overrides the component-encapsulated :host { width: 100% } rule,
+    // which is injected after global styles and would otherwise win the cascade.
+    width: calc(100% + 2 * var(--sidebar-width)) !important;
+  }
 }
 
 .tag {

@@ -323,6 +323,7 @@ $font-body: 'Lora', serif; // body copy only
 ### 4.3 Spacing
 
 8px base grid. Every margin, padding, and gap value is a multiple of 8px.
+Never use spacer elements to do what padding, alignment and margins can do.
 
 ```scss
 // src/styles/_tokens.scss (continued)
@@ -494,20 +495,18 @@ Section order: `#hero` → `#about` → `#experience` → `#projects` → `#cont
 ### `#hero`
 
 ```
-/ Intro · Worthington, OH
-
 ELI
 PHILPOTT
 
 UI/UX & Software Designer
 
-[View My Work]    [Resume ↗]
+[Resume ↗]
+[View My Work]
 ```
 
 - "View My Work" calls `ScrollService.scrollToSection('about')`
 - "Resume ↗" opens `Eli_Philpott_Resume.pdf` in a new tab — served from `public/` at the build root
 - Pixel-noise SVG texture overlay at 5% opacity on section background
-- ClearTonic Games\_ floating badge in bottom-right corner
 
 ### `#about`
 
@@ -964,5 +963,8 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 | email              | `eli.philpott@gmail.com`                    |
 
 ---
+
+Next Session Bugs to squash:
+make the clickable area next to the nav-bar bigger,
 
 _Last updated: May 27 2026. All changes to this file require deliberate review — it governs the entire codebase._

@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: tokens.$spacing-3 tokens.$content-horizontal-gutter;
+  padding: 0;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
   transition:
@@ -72,9 +72,18 @@
 .nav-main {
   display: flex;
   align-items: center;
+  height: 100%;
+  padding: 0;
 }
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
+
+.nav-header {
+  padding-top: tokens.$spacing-4;
+  padding-bottom: tokens.$spacing-4;
+  width: 100%;
+  cursor: pointer;
+}
 
 .nav-monogram {
   display: inline-flex;
@@ -89,7 +98,7 @@
 
   img {
     display: block;
-    height: 32px;
+    height: 64px;
     width: auto;
   }
 
@@ -110,11 +119,10 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 280px;
+  width: fit-content;
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  padding: 80px tokens.$spacing-4 tokens.$spacing-4;
   background: var(--background);
   backdrop-filter: blur(12px);
   transform: translateX(-100%);
@@ -146,10 +154,6 @@
 
 // ─── Motion toggle ────────────────────────────────────────────────────────────
 
-.nav-spacer {
-  flex: 1;
-}
-
 .nav-footer {
   padding-top: tokens.$spacing-4;
   border-top: 1px solid var(--border-default);
@@ -164,7 +168,6 @@
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   padding: 6px 12px;
   border-radius: tokens.$border-radius-pill;
   border: 1px solid var(--border-default);
@@ -179,7 +182,7 @@
   }
 }
 
-// ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
+// ─── chevron column + collapse toggle (desktop only) ─────────
 
 .nav-chevron-col,
 .nav-collapse-toggle {
@@ -232,19 +235,14 @@
 
 @media (min-width: tokens.$breakpoint-medium) {
   .nav-bar {
-    right: auto;
-    bottom: 0;
-    width: 220px;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: flex-start;
+    height: 100%;
+    width: var(--sidebar-width);
     padding: 0;
 
     &.is-hidden {
       transform: none;
     }
 
-    // Snappier expand (leaving .is-collapsed) vs slow close
     &.is-collapsed {
       transform: translateX(calc(-100% + 36px));
       transition:
@@ -274,7 +272,6 @@
       @include mb.strip-teal('to bottom');
     }
 
-    // Glow triggers only when hovering the chevron column — not the whole bar
     &:hover {
       box-shadow: none;
       &::after {
@@ -291,22 +288,25 @@
   // ─── Main column ──────────────────────────────────────────────────────────
 
   .nav-main {
-    flex: 1;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     cursor: default;
-    padding: tokens.$spacing-6 tokens.$spacing-3;
     min-width: 0;
+    transition: opacity tokens.$duration-base tokens.$easing-standard;
+  }
+
+  .nav-bar.is-collapsed .nav-main {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .nav-body {
     position: static;
-    width: 100%;
+    width: fit-content;
     background: transparent;
     backdrop-filter: none;
-    padding: 0;
+    padding-left: 24px;
     flex: 1;
-    margin-top: tokens.$spacing-6;
     transform: none;
     transition: none;
     cursor: default;
@@ -320,7 +320,7 @@
   .nav-link {
     display: block;
     width: 100%;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     letter-spacing: 0.08em;
     padding: tokens.$spacing-unit 0;
 
@@ -329,12 +329,24 @@
     }
   }
 
+  .nav-resume-link {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.8rem;
+    text-wrap-mode: nowrap;
+  }
+
+  .nav-motion-toggle {
+    font-size: 0.8rem;
+    padding: 8px 8px;
+  }
+
   .nav-footer {
     width: 100%;
     display: flex;
+    margin: 24px 8px;
     justify-content: center;
     border-top: 1px solid var(--border-default);
-    padding-top: tokens.$spacing-3;
   }
 
   .nav-hamburger {
@@ -348,13 +360,18 @@
   // ─── Chevron column ────────────────────────────────────────────────────────
 
   .nav-chevron-col {
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; // chevron always stays centered
-    width: 36px;
-    flex-shrink: 0;
+    justify-content: center;
+    width: tokens.$spacing-4; // 32px — token-safe value
+    height: 100%;
     cursor: pointer;
+  }
+
+  .nav-bar.is-collapsed .nav-chevron-col {
+    pointer-events: auto;
   }
 
   // Chevron column hover drives the nav-bar border glow
@@ -380,8 +397,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: tokens.$spacing-4;
+    height: tokens.$spacing-4;
+    pointer-events: auto;
     padding: 0;
     border: none;
     background: none;
@@ -390,19 +408,8 @@
     transition: color tokens.$duration-base tokens.$easing-standard;
 
     svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    &:hover,
-    &:focus-visible {
-      color: var(--accent);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: tokens.$border-radius-small;
+      width: 24px;
+      height: 24px;
     }
   }
 

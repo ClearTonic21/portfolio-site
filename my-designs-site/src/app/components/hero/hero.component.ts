@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
+import { LucideChevronDown } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 
@@ -24,7 +25,7 @@ const heroEntranceAnimation = trigger('heroEntrance', [
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [],
+  imports: [LucideChevronDown],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

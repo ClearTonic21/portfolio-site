@@ -23,9 +23,7 @@ export class NavigationBarComponent implements OnDestroy {
   readonly motionService = inject(MotionService);
 
   readonly isMenuOpen = signal(false);
-  // Scroll-hide on mobile; overridden to no-op on desktop via CSS
   readonly isNavHidden = signal(false);
-  // Manual/auto collapse — desktop sidebar only
   readonly isNavCollapsed = signal(false);
 
   private readonly scrollHandler = () => this.onScroll();

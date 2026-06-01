@@ -5,9 +5,11 @@
   aria-label="Site navigation"
 >
   <div class="nav-main">
-    <button class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
-      <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
-    </button>
+    <div class="nav-header">
+      <div class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
+        <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
+      </div>
+    </div>
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
       <a class="nav-link" (click)="navLinkClick('about')" role="button" tabindex="0">
@@ -22,22 +24,28 @@
       <a class="nav-link" (click)="navLinkClick('contact')" role="button" tabindex="0">
         Contact<span class="brand-underscore">_</span>
       </a>
+    </div>
+    <a
+      class="button-ghost nav-resume-link"
+      href="Eli_Philpott_Resume.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Resume
+    </a>
 
-      <div class="nav-spacer"></div>
-
-      <div class="nav-footer">
-        <button
-          class="nav-motion-toggle"
-          [attr.aria-pressed]="motionService.reducedMotion()"
-          (click)="motionService.toggleReducedMotion()"
-        >
-          @if (motionService.reducedMotion()) {
-            Enable motion
-          } @else {
-            Reduce motion
-          }
-        </button>
-      </div>
+    <div class="nav-footer">
+      <button
+        class="nav-motion-toggle"
+        [attr.aria-pressed]="motionService.reducedMotion()"
+        (click)="motionService.toggleReducedMotion()"
+      >
+        @if (motionService.reducedMotion()) {
+          Enable motion
+        } @else {
+          Reduce motion
+        }
+      </button>
     </div>
   </div>
 
