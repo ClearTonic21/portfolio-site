@@ -1,23 +1,49 @@
-<section id="hero" class="hero-section" [@heroEntrance] [@.disabled]="motionService.reducedMotion()">
+<section
+  id="hero"
+  class="hero-section"
+  [@heroEntrance]
+  [@.disabled]="motionService.reducedMotion()"
+>
   <div class="section-inner hero-inner">
-    <p class="type-eyebrow hero-animate">/ Intro · Worthington, OH</p>
-    <h1 class="type-display hero-title hero-animate">ELI<br />PHILPOTT</h1>
-    <p class="type-body hero-copy hero-animate">
+    <h1 class="type-display hero-title hero-animate">
+      ELI<span> </span><br />PHILPOTT<span class="brand-underscore">_</span>
+    </h1>
+    <div class="type-heading hero-subtitle hero-animate">UX &amp; Software Designer</div>
+    <!-- <div class="type-body hero-copy hero-animate">
       Software Designer and indie game creator building polished digital products, thoughtful
       interfaces, and playful interactive experiences.
-    </p>
-    <p class="type-heading hero-subtitle hero-animate">UI/UX &amp; Software Designer</p>
+    </div> -->
 
-    <div class="hero-actions hero-animate">
-      <button type="button" class="button-primary" (click)="viewWork()">View My Work</button>
-      <a class="button-ghost" [href]="resumeHref" target="_blank" rel="noopener noreferrer">
-        Resume ↗
-      </a>
+    <!-- Resume CTA — centered below the subtitle -->
+    <div class="hero-resume hero-animate">
+      <app-action-call
+        text="View Resume"
+        [arrowIcon]="true"
+        href="Eli_Philpott_Resume.pdf"
+        target="_blank"
+      />
     </div>
   </div>
 
-  <div class="hero-badge">
-    <span class="type-eyebrow">ClearTonic Games</span><span class="brand-underscore">_</span>
+  <!-- Scroll cue — bottom-left, always above the nav overlay -->
+  <div
+    class="hero-scroll-cue"
+    role="button"
+    tabindex="0"
+    aria-label="Scroll to About section"
+    (click)="viewWork()"
+    (keydown.enter)="viewWork()"
+    (keydown.space)="viewWork()"
+  >
+    <span class="scroll-cue-label">View my work</span>
+    <svg
+      lucideChevronDown
+      [size]="16"
+      class="scroll-cue-chevron"
+      [class.is-animated]="!motionService.reducedMotion()"
+      aria-hidden="true"
+    ></svg>
   </div>
+
   <div class="hero-overlay" aria-hidden="true"></div>
 </section>

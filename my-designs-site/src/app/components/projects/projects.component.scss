@@ -7,7 +7,7 @@
 
 .projects-heading {
   margin-top: tokens.$spacing-3;
-  margin-bottom: tokens.$spacing-8;
+  margin-bottom: tokens.$spacing-4;
 }
 
 // ─── Grid ─────────────────────────────────────────────────────────────────────
@@ -18,102 +18,13 @@
   gap: tokens.$spacing-4;
 }
 
-// ─── Card ─────────────────────────────────────────────────────────────────────
-
-.project-card {
-  flex: 1 1 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition:
-    transform 250ms tokens.$easing-out-expo,
-    border-color 250ms tokens.$easing-out-expo,
-    box-shadow 250ms tokens.$easing-out-expo;
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: var(--border-accent);
-    box-shadow: 0 0 24px var(--accent-glow);
-  }
-}
-
-// ─── Image area ───────────────────────────────────────────────────────────────
-
-.project-image-area {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: var(--surface-raised);
-}
-
-.project-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 350ms tokens.$easing-out-expo;
-
-  .project-card:hover & {
-    transform: scale(1.03);
-  }
-}
-
-.project-image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--surface-raised),
-    var(--surface-raised) 6px,
-    var(--surface) 6px,
-    var(--surface) 12px
-  );
-}
-
-.placeholder-label {
-  color: var(--text-secondary);
-  background: var(--surface);
-  padding: tokens.$spacing-unit tokens.$spacing-2;
-  border-radius: 4px;
-}
-
-// ─── Body ─────────────────────────────────────────────────────────────────────
-
-.project-body {
-  display: flex;
-  flex-direction: column;
-  gap: tokens.$spacing-3;
-  padding: tokens.$spacing-4;
-  flex: 1;
-}
-
-.project-eyebrow {
-  color: var(--text-secondary);
-}
-
-.project-title {
-  color: var(--text-primary);
-}
-
-.brand-underscore {
-  color: var(--accent);
-}
-
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: tokens.$spacing-unit;
-}
+// ─── Projected content — description and CTA ──────────────────────────────────
+// Styled here because they are projected into ArticleCardComponent from this template.
 
 .project-description {
   color: var(--text-secondary);
   flex: 1;
 }
-
-// ─── CTA link ─────────────────────────────────────────────────────────────────
 
 .project-link {
   display: inline-flex;
@@ -159,12 +70,4 @@
 
 .projects-heading[appReveal] {
   transition-delay: 150ms;
-}
-
-// ─── Desktop: 2-column grid ───────────────────────────────────────────────────
-
-@media (min-width: tokens.$breakpoint-medium) {
-  .project-card {
-    flex: 1 1 calc(50% - #{tokens.$spacing-4} / 2);
-  }
 }

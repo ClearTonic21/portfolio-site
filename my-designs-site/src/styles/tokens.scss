@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $color-background: #1a1a1a;
 $color-background-surface: #232323;
 $color-background-subtle: #2c2c2c;
@@ -6,9 +8,12 @@ $color-text-secondary: #a89f91;
 $color-text-inverted: #1a1a1a;
 $color-accent: #38eeb4;
 $color-accent-hover: #1abfa0;
+$color-accent-bright: #d7fcf0;
 $color-accent-glow: rgba(56, 238, 180, 0.15);
 $color-border-default: rgba(240, 237, 230, 0.08);
 $color-border-accent: rgba(56, 238, 180, 0.3);
+$color-gold: #c9a227;
+$color-gold-border: rgba(201, 162, 39, 0.35);
 $color-error: #ff6b6b;
 
 $font-primary: 'DM Sans', sans-serif;
@@ -23,7 +28,7 @@ $spacing-8: 64px;
 $spacing-12: 96px;
 $spacing-16: 128px;
 
-$section-vertical-padding: clamp(#{$spacing-12}, 12vw, #{$spacing-16});
+$section-vertical-padding: clamp(#{$spacing-6}, 6vw, #{$spacing-12});
 $content-max-width: 1200px;
 $content-horizontal-gutter: clamp(#{$spacing-3}, 5vw, #{$spacing-8});
 
@@ -53,8 +58,13 @@ $duration-reveal: 700ms;
   --text-inverted: #{$color-text-inverted};
   --accent: #{$color-accent};
   --accent-hover: #{$color-accent-hover};
+  --accent-bright: #{$color-accent-bright};
   --accent-glow: #{$color-accent-glow};
   --border-default: #{$color-border-default};
   --border-accent: #{$color-border-accent};
+  --gold: #{$color-gold};
+  --gold-border: #{$color-gold-border};
   --error: #{$color-error};
+  --background-overlay: #{rgba($color-background, 0.8)};
+  --sidebar-width: 180px;
 }

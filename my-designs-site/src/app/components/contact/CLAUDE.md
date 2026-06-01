@@ -16,7 +16,7 @@ The final section. Provides Eli's contact information and the resume PDF link. S
   - Email — `mailto:` link
   - LinkedIn — opens in new tab with `rel="noopener noreferrer"`
   - GitHub — opens in new tab with `rel="noopener noreferrer"`
-- "View Resume" `.button-primary` — opens `assets/images/resume.pdf` in a new tab
+- "View Resume" `.button-primary` — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_` in `.type-caption`
 
 ## Icons

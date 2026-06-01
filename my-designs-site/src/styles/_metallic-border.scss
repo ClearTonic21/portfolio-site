@@ -1,0 +1,82 @@
+// ─── Metallic Border System ───────────────────────────────────────────────────
+// Shared gradient color stops and mixins for the gold → teal metallic border
+// effect used on the nav bar and article cards.
+//
+// Two border types:
+//   strip  — 1px directional line (nav bar bottom/right edge)
+//   ring   — 1px perimeter ring via mask-composite (article card, border-radius safe)
+//
+// Edit the stops here to change the effect site-wide.
+
+// ─── Gold gradient stops ──────────────────────────────────────────────────────
+
+$gold-fade:  rgba(100, 75, 10, 0.1);
+$gold-mid:   rgba(201, 162, 39, 0.7);
+$gold-peak:  rgba(255, 225, 100, 1.0);
+
+// ─── Teal accent gradient stops ───────────────────────────────────────────────
+
+$teal-fade:  rgba(56, 238, 180, 0.05);
+$teal-mid:   rgba(56, 238, 180, 0.7);
+$teal-peak:  rgba(56, 238, 180, 1.0);
+
+// ─── Strip mixins (single-edge, directional) ──────────────────────────────────
+// $direction: CSS gradient direction string, e.g. 'to right' or 'to bottom'
+
+@mixin strip-gold($direction: 'to right') {
+  background: linear-gradient(
+    #{$direction},
+    $gold-fade,
+    $gold-mid  25%,
+    $gold-peak 50%,
+    $gold-mid  75%,
+    $gold-fade
+  );
+}
+
+@mixin strip-teal($direction: 'to right') {
+  background: linear-gradient(
+    #{$direction},
+    $teal-fade,
+    $teal-mid  25%,
+    $teal-peak 50%,
+    $teal-mid  75%,
+    $teal-fade
+  );
+}
+
+// ─── Ring mixins (full perimeter, diagonal, border-radius safe) ───────────────
+// Pair with ring-mask() on the same element.
+
+@mixin ring-gold() {
+  background: linear-gradient(
+    135deg,
+    $gold-fade  0%,
+    $gold-mid   30%,
+    $gold-peak  50%,
+    $gold-mid   70%,
+    $gold-fade  100%
+  );
+}
+
+@mixin ring-teal() {
+  background: linear-gradient(
+    135deg,
+    $teal-fade  0%,
+    $teal-mid   30%,
+    $teal-peak  50%,
+    $teal-mid   70%,
+    $teal-fade  100%
+  );
+}
+
+// Carves out the element interior so only the 1px border ring is visible.
+// Apply on the same pseudo-element as ring-gold() or ring-teal().
+@mixin ring-mask() {
+  padding: 1px;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}

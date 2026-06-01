@@ -1,0 +1,7 @@
+// Background treatment lives in the global .glass-section class, toggled on the
+// host by the `glass` input. The desktop full-bleed rule there overrides this
+// width with !important, so keep this declaration in sync if that changes.
+:host {
+  display: block;
+  width: 100%;
+}

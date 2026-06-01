@@ -14,7 +14,7 @@ The first section the user sees. Full viewport height. Establishes Eli's name, r
 - Eyebrow label: `/ Intro · Worthington, OH` using `.type-eyebrow`
 - Subtitle: "Software Developer & Indie Game Creator" using `.type-body`
 - "View My Work" CTA (`.button-primary`) — calls `ScrollService.scrollToSection('about')`
-- "Resume" CTA (`.button-ghost`) — opens `assets/images/resume.pdf` in a new tab; the only external link on the site
+- "Resume" CTA (`.button-ghost`) — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
 - ClearTonic Games_ floating badge (icon + brand name) bottom-right corner
 - 5% opacity pixel-noise SVG texture overlay on the background
 

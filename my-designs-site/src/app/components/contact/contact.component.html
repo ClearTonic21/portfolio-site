@@ -1,7 +1,7 @@
 <section id="contact" aria-labelledby="contact-heading">
   <div class="section-inner contact-inner">
-    <p class="type-eyebrow">/ Contact</p>
-    <h2 id="contact-heading" class="contact-heading">Let's build something.</h2>
+    <p class="type-eyebrow">Contact<span class="brand-underscore">_</span></p>
+    <h2 id="contact-heading" class="type-display contact-heading">Let's build something.</h2>
 
     <nav class="contact-links" aria-label="Contact links">
       <a href="mailto:eli.philpott@gmail.com" class="contact-link">
@@ -28,14 +28,12 @@
       </a>
     </nav>
 
-    <a
-      href="assets/images/resume.pdf"
-      class="button-primary"
+    <app-action-call
+      text="View Resume"
+      [arrowIcon]="true"
+      href="Eli_Philpott_Resume.pdf"
       target="_blank"
-      rel="noopener noreferrer"
-    >
-      View Resume
-    </a>
+    />
 
     <footer class="contact-footer">
       <p class="type-caption">

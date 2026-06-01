@@ -1,3 +1,6 @@
+@use '../../../styles/tokens' as tokens;
+@use 'sass:color';
+
 :host {
   display: block;
   width: 100%;
@@ -6,45 +9,43 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 88px);
-  padding: 96px 24px 120px;
-  background: var(--background);
+  min-height: calc(100vh - 88px); // mobile: subtract top nav bar height
+  padding: 0px 72px;
+
+  @media (min-width: 768px) {
+    min-height: 100vh; // desktop: sidebar is beside content, not above it
+    padding: 0px 48px;
+  }
 }
 
 .hero-inner {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 780px;
 }
 
 .hero-title {
-  line-height: 0.9;
+  font-family: tokens.$font-primary;
+  font-size: clamp(2rem, 12vw, 10.5rem);
+  margin: 0 0 48px 0;
+  line-height: 0.88;
   letter-spacing: -0.03em;
 }
 
 .hero-copy {
-  max-width: 620px;
+  max-width: 540px;
 }
 
 .hero-subtitle {
+  display: flex;
+  justify-content: center;
   margin-top: 0;
 }
 
-.hero-actions {
+// Resume CTA
+.hero-resume {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: flex-start;
-}
-
-.hero-badge {
-  position: absolute;
-  right: 24px;
-  bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  justify-content: center;
 }
 
 .hero-overlay {
@@ -56,12 +57,76 @@
   opacity: 0.05;
 }
 
-@media (min-width: 768px) {
-  .hero-section {
-    padding: 120px 48px 140px;
+// ─── Scroll cue ───────────────────────────────────────────────────────────────
+// Positioned absolute so it sits in the bottom-left of the hero regardless of
+// content height. z-index 1002 keeps it above the mobile nav overlay (1001).
+
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  // Slow fade-out, fast fade-in convention used site-wide
+  transition:
+    color tokens.$duration-slow tokens.$easing-standard,
+    filter tokens.$duration-slow tokens.$easing-standard;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+    filter: drop-shadow(0 0 10px var(--accent-glow));
+    transition:
+      color tokens.$duration-fast tokens.$easing-standard,
+      filter tokens.$duration-fast tokens.$easing-standard;
   }
 
-  .hero-actions {
-    flex-direction: row;
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+    border-radius: tokens.$border-radius-small;
+  }
+
+  @media (min-width: 768px) {
+    bottom: 48px;
+    left: 48px;
+  }
+}
+
+.scroll-cue-label {
+  font-family: tokens.$font-primary;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.scroll-cue-chevron {
+  // Animation class toggled off when reduced motion is active
+  &.is-animated {
+    animation: scroll-bounce 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+// ─── Desktop layout ───────────────────────────────────────────────────────────
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding: 72px 48px 88px;
   }
 }

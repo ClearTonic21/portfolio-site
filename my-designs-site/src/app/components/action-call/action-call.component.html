@@ -1,0 +1,15 @@
+<a
+  class="action-call"
+  [href]="href()"
+  [attr.target]="target()"
+  [attr.rel]="target() === '_blank' ? 'noopener noreferrer' : null"
+>
+  <span class="action-call__label"
+    >{{ text() }}@if (brandUnderscore()) {<span class="brand-underscore">_</span>}</span
+  >
+  @if (arrowIcon()) {
+  <span class="action-call__icon">
+    <svg lucideArrowUpRight [size]="16"></svg>
+  </span>
+  }
+</a>

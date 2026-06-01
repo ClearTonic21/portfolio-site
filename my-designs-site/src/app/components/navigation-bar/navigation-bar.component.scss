@@ -1,0 +1,490 @@
+@use '../../../styles/tokens' as tokens;
+@use '../../../styles/metallic-border' as mb;
+
+// ─── Mobile: fixed top bar ────────────────────────────────────────────────────
+
+:host {
+  display: contents;
+}
+
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  background: var(--background-overlay);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 550ms tokens.$easing-out-expo,
+    box-shadow tokens.$duration-slow tokens.$easing-standard;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    @include mb.strip-gold('to right');
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    @include mb.strip-teal('to right');
+    opacity: 0;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 24px var(--accent-glow);
+    transition:
+      transform 550ms tokens.$easing-out-expo,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
+    &::after {
+      opacity: 0;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+    &::before {
+      opacity: 1;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+  }
+
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
+}
+
+// ─── Main content column ──────────────────────────────────────────────────────
+
+.nav-main {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+}
+
+// ─── Logo ─────────────────────────────────────────────────────────────────────
+
+.nav-header {
+  padding-top: tokens.$spacing-4;
+  padding-bottom: tokens.$spacing-4;
+  width: 100%;
+  cursor: pointer;
+}
+
+.nav-monogram {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: tokens.$border-radius-large;
+  cursor: pointer;
+  transition:
+    border-color tokens.$duration-slow tokens.$easing-standard,
+    box-shadow tokens.$duration-slow tokens.$easing-standard;
+
+  img {
+    display: block;
+    height: 64px;
+    width: auto;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--border-accent);
+    box-shadow: 0 0 28px var(--accent-glow);
+    transition:
+      border-color tokens.$duration-fast tokens.$easing-standard,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
+  }
+}
+
+// ─── Nav body ─────────────────────────────────────────────────────────────────
+
+.nav-body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: fit-content;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  backdrop-filter: blur(12px);
+  transform: translateX(-100%);
+  transition: transform tokens.$duration-base tokens.$easing-standard;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+}
+
+// ─── Nav links ────────────────────────────────────────────────────────────────
+
+.nav-link {
+  font-family: tokens.$font-primary;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: tokens.$spacing-2 0;
+  text-align: center;
+  position: relative;
+  transition: color tokens.$duration-base tokens.$easing-standard;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform tokens.$duration-base tokens.$easing-out-expo;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+// ─── Motion toggle ────────────────────────────────────────────────────────────
+
+.nav-motion-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: tokens.$border-radius-medium;
+  border: 1px solid var(--border-default);
+  background: var(--background-surface);
+  cursor: pointer;
+  transition: border-color tokens.$duration-base tokens.$easing-standard;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--accent);
+  }
+
+  &::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(100% + tokens.$spacing-unit);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: tokens.$font-primary;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: tokens.$border-radius-small;
+    background: var(--background-surface);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1001;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+}
+
+// ─── Motion icon ──────────────────────────────────────────────────────────────
+// Two overlapping circles. Dashed = left, solid = right, 8px overlap at rest.
+// On is-reduced: dashed fades out, solid slides left to the dashed position
+// and turns gold.
+
+.motion-icon {
+  position: relative;
+  // 20px icon + 12px offset = 32px wide; 8px overlap (20 - 12)
+  width: 32px;
+  height: 20px;
+}
+
+.motion-icon__dashed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text-primary);
+  opacity: 1;
+  transition: opacity tokens.$duration-base tokens.$easing-standard;
+}
+
+.motion-icon__solid {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  color: var(--text-primary);
+  transition:
+    color tokens.$duration-base tokens.$easing-standard,
+    transform tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.motion-icon.is-reduced {
+  .motion-icon__dashed {
+    opacity: 0;
+  }
+
+  .motion-icon__solid {
+    transform: translateX(-12px);
+    color: var(--gold);
+  }
+}
+
+// ─── chevron column + collapse toggle (desktop only) ─────────
+
+.nav-chevron-col,
+.nav-collapse-toggle {
+  display: none;
+}
+
+// ─── Hamburger ────────────────────────────────────────────────────────────────
+
+.nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    transition:
+      transform tokens.$duration-base tokens.$easing-standard,
+      opacity tokens.$duration-base tokens.$easing-standard;
+  }
+}
+
+// ─── Mobile backdrop ──────────────────────────────────────────────────────────
+
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--background-overlay);
+  backdrop-filter: blur(4px);
+  animation: fade-in tokens.$duration-base tokens.$easing-standard;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ─── Desktop: left sidebar ────────────────────────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .nav-bar {
+    height: 100%;
+    width: var(--sidebar-width);
+    padding: 0;
+
+    &.is-hidden {
+      transform: none;
+    }
+
+    &.is-collapsed {
+      transform: translateX(calc(-100% + 36px));
+      transition:
+        transform 320ms tokens.$easing-standard,
+        box-shadow tokens.$duration-fast tokens.$easing-standard;
+    }
+
+    &::after {
+      bottom: 0;
+      top: 0;
+      right: 0;
+      left: auto;
+      width: 1px;
+      height: auto;
+      @include mb.strip-gold('to bottom');
+    }
+
+    &::before {
+      bottom: 0;
+      top: 0;
+      right: 0;
+      left: auto;
+      width: 1px;
+      height: auto;
+      @include mb.strip-teal('to bottom');
+    }
+
+    &:hover {
+      box-shadow: none;
+      &::after {
+        opacity: 1;
+        transition: opacity tokens.$duration-slow tokens.$easing-standard;
+      }
+      &::before {
+        opacity: 0;
+        transition: opacity tokens.$duration-slow tokens.$easing-standard;
+      }
+    }
+  }
+
+  // ─── Main column ──────────────────────────────────────────────────────────
+
+  .nav-main {
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+    min-width: 0;
+    transition: opacity tokens.$duration-base tokens.$easing-standard;
+  }
+
+  .nav-bar.is-collapsed .nav-main {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav-body {
+    position: static;
+    width: fit-content;
+    background: transparent;
+    backdrop-filter: none;
+    padding-left: 24px;
+    flex: 1;
+    transform: none;
+    transition: none;
+    cursor: default;
+  }
+
+  .nav-monogram {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-link {
+    display: block;
+    width: 100%;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    padding: tokens.$spacing-unit 0;
+  }
+
+  .nav-resume-link {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.8rem;
+    text-wrap-mode: nowrap;
+  }
+
+  .nav-motion-toggle {
+    padding: 8px;
+  }
+
+  .nav-footer {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: tokens.$spacing-8 0;
+    gap: tokens.$spacing-2;
+    cursor: default;
+  }
+
+  .nav-hamburger {
+    display: none;
+  }
+
+  .nav-backdrop {
+    display: none;
+  }
+
+  // ─── Chevron column ────────────────────────────────────────────────────────
+
+  .nav-chevron-col {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    width: tokens.$spacing-4;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .nav-bar.is-collapsed .nav-chevron-col {
+    pointer-events: auto;
+  }
+
+  .nav-bar:has(.nav-chevron-col:hover) {
+    box-shadow: 4px 0 24px var(--accent-glow);
+    transition:
+      transform 550ms tokens.$easing-out-expo,
+      box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+    &::after {
+      opacity: 0;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+    &::before {
+      opacity: 1;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+  }
+
+  // ─── Collapse toggle button ────────────────────────────────────────────────
+
+  .nav-collapse-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: tokens.$spacing-4;
+    height: tokens.$spacing-4;
+    pointer-events: auto;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--gold);
+    transition: color tokens.$duration-base tokens.$easing-standard;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .nav-chevron-col:hover .nav-collapse-toggle {
+    color: var(--accent);
+  }
+}

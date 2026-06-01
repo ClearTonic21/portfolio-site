@@ -1,1 +1,330 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/reset';
+@use 'styles/tokens' as tokens;
+@use 'styles/typography';
+@use 'styles/metallic-border' as mb;
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+main {
+  // Position creates a stacking context so main content sits above the fixed parallax orbs (z-index 0)
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  main {
+    // Reserve the sidebar width on BOTH sides so content centers in the true
+    // viewport rather than only the strip beside the sidebar. The left reservation
+    // also keeps content clear of the fixed sidebar.
+    padding-left: var(--sidebar-width);
+    padding-right: var(--sidebar-width);
+  }
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.surface {
+  background: var(--background-surface);
+  border: 1px solid var(--border-default);
+  border-radius: tokens.$border-radius-large;
+}
+
+.surface--accent-highlight {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  font-family: tokens.$font-primary;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: tokens.$border-radius-pill;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--text-inverted);
+  transition:
+    background tokens.$duration-base tokens.$easing-out-expo,
+    color tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+  background: transparent;
+  color: var(--accent);
+}
+
+.button-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  font-family: tokens.$font-primary;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: tokens.$border-radius-pill;
+  border: 2px solid transparent;
+  background: transparent;
+  color: var(--accent);
+  transition:
+    background tokens.$duration-base tokens.$easing-out-expo,
+    color tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.button-ghost:hover,
+.button-ghost:focus-visible {
+  background: var(--accent-glow);
+}
+
+.link-arrow {
+  display: inline-block;
+  transition: transform tokens.$duration-fast tokens.$easing-out-expo;
+}
+
+.button-ghost:hover .link-arrow,
+.button-ghost:focus-visible .link-arrow {
+  transform: translate(2px, -2px);
+}
+
+// Prevent movement entirely — suppressing transition-duration alone still jumps
+[data-reduced-motion='true'] .link-arrow {
+  transform: none !important;
+  transition: none !important;
+}
+
+// ─── Glass section ────────────────────────────────────────────────────────────
+// Frosted-glass full-width section background with the site-wide gold → teal
+// hover glow. Apply via host: { class: 'glass-section' } on any section component.
+
+.glass-section {
+  position: relative;
+  background: var(--background-overlay);
+  backdrop-filter: blur(12px);
+  // Slow transition governs glow fade-OUT; hover state overrides for fast fade-IN
+  transition: box-shadow tokens.$duration-slow tokens.$easing-standard;
+
+  // Gold metallic top + bottom borders (default)
+  // Two background-image gradients on one pseudo: top pinned to top, bottom pinned to bottom.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        to right,
+        mb.$gold-fade,
+        mb.$gold-mid 25%,
+        mb.$gold-peak 50%,
+        mb.$gold-mid 75%,
+        mb.$gold-fade
+      ),
+      linear-gradient(
+        to right,
+        mb.$gold-fade,
+        mb.$gold-mid 25%,
+        mb.$gold-peak 50%,
+        mb.$gold-mid 75%,
+        mb.$gold-fade
+      );
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position:
+      top center,
+      bottom center;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  // Teal accent top + bottom borders (on hover)
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        to right,
+        mb.$teal-fade,
+        mb.$teal-mid 25%,
+        mb.$teal-peak 50%,
+        mb.$teal-mid 75%,
+        mb.$teal-fade
+      ),
+      linear-gradient(
+        to right,
+        mb.$teal-fade,
+        mb.$teal-mid 25%,
+        mb.$teal-peak 50%,
+        mb.$teal-mid 75%,
+        mb.$teal-fade
+      );
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position:
+      top center,
+      bottom center;
+    opacity: 0;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 32px var(--accent-glow);
+    transition: box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+    &::after {
+      opacity: 0;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+    &::before {
+      opacity: 1;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+  }
+
+  // On desktop, bleed the background across the full viewport (under the sidebar
+  // on the left, to the edge on the right) while keeping content within the same
+  // centered, sidebar-clear bounds as every other section.
+  @media (min-width: tokens.$breakpoint-medium) {
+    margin-left: calc(-1 * var(--sidebar-width));
+    padding-left: var(--sidebar-width);
+    padding-right: var(--sidebar-width);
+    // !important overrides the component-encapsulated :host { width: 100% } rule,
+    // which is injected after global styles and would otherwise win the cascade.
+    width: calc(100% + 2 * var(--sidebar-width)) !important;
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: tokens.$font-primary;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: tokens.$border-radius-pill;
+  background: var(--background-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+
+.section-inner {
+  display: flex;
+  flex-direction: column;
+  padding: tokens.$section-vertical-padding tokens.$content-horizontal-gutter;
+  max-width: tokens.$content-max-width;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.two-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-6;
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .two-column-layout {
+    flex-direction: row;
+  }
+}
+
+.card-row {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-4;
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .card-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+// ─── Scrollbar ──────────────────────────────────────────────────────────────
+// Accent thumb at rest, brightening to --accent-bright on hover / click / drag.
+// WebKit (Chrome, Edge, Safari) gets the full interactive treatment via the
+// thumb pseudo-element; Firefox falls back to a static accent thumb.
+
+// Firefox path. Scoped behind @supports because Blink DISABLES the
+// ::-webkit-scrollbar pseudo-elements the moment scrollbar-width/-color is set,
+// which kills the hover/active recolor below. The standard property can't
+// express interactive states anyway, so Firefox gets a static accent thumb.
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+// Remove the up/down stepper arrows at the ends of the bar.
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  // background-color (not the `background` shorthand) so background-clip is not
+  // reset to border-box on the hover/active recolor below.
+  background-color: var(--accent);
+  border-radius: tokens.$border-radius-pill;
+  // Transparent border carved out of the thumb via background-clip makes the
+  // bar read as a slim floating pill rather than a full-width block.
+  border: 3px solid transparent;
+  background-clip: content-box;
+  transition: background-color tokens.$duration-base tokens.$easing-standard;
+}
+
+// Hover over the bar, plus :active which covers both click and drag ("move").
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--accent-bright);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reduced-motion='true'] * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

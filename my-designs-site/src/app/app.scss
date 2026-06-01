@@ -1,211 +1,70 @@
 @use '../styles/tokens' as *;
-@use '../styles/typography' as *;
 
 :host {
   display: block;
   min-height: 100vh;
 }
 
-main {
-  min-height: 100vh;
-}
+// ─── Parallax background ──────────────────────────────────────────────────────
+// Three blurred orbs fixed to the viewport. position: fixed + z-index: 0 keeps
+// them behind <main> (z-index: 1 in global styles). Removed from the DOM
+// entirely when MotionService.reducedMotion() is true.
 
-.app-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  backdrop-filter: blur(12px);
-  background: rgba($color-background, 0.8);
-  border-bottom: 1px solid var(--border-default);
-  transition: transform $duration-base $easing-standard;
-
-  &.is-hidden {
-    transform: translateY(-100%);
-  }
-}
-
-.app-nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: $spacing-3 $content-horizontal-gutter;
-  max-width: $content-max-width;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.app-nav-monogram {
-  font-family: $font-primary;
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: var(--accent);
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  transition: color $duration-base $easing-standard;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent-hover);
-  }
-}
-
-.app-nav-links {
-  display: none;
-  gap: $spacing-6;
-
-  @media (min-width: $breakpoint-medium) {
-    display: flex;
-    position: static;
-    background: none;
-  }
-}
-
-.app-nav-link {
-  font-family: $font-primary;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  position: relative;
-  cursor: pointer;
-  transition: color $duration-base $easing-standard;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform $duration-base $easing-out-expo;
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
-  }
-
-  &.is-active {
-    color: var(--accent);
-
-    &::after {
-      transform: scaleX(1);
-    }
-  }
-}
-
-.app-nav-hamburger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  @media (min-width: $breakpoint-medium) {
-    display: none;
-  }
-
-  span {
-    width: 24px;
-    height: 2px;
-    background: var(--text-primary);
-    transition: all $duration-base $easing-standard;
-  }
-}
-
-.menu-backdrop {
+.parallax-bg {
   position: fixed;
   inset: 0;
-  z-index: 999;
-  background: rgba($color-background, 0.8);
-  backdrop-filter: blur(4px);
-  animation: fadeIn $duration-base $easing-standard;
-
-  @media (min-width: $breakpoint-medium) {
-    display: none;
-  }
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.parallax-orb {
+  position: absolute;
+  border-radius: 50%;
+  animation: orb-drift ease-in-out infinite;
 }
 
-@media (max-width: ($breakpoint-medium - 1px)) {
-  .app-nav-links {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1001;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: calc(#{$spacing-4} + 44px) $spacing-4 $spacing-4;
-    background: var(--background);
-    max-height: 100vh;
-    overflow-y: auto;
-    transform: translateX(-100%);
-    transition: transform $duration-base $easing-standard;
-
-    &.is-open {
-      transform: translateX(0);
-    }
-  }
-
-  .app-nav-link {
-    font-size: 1rem;
-    padding: $spacing-3 0;
-    width: 100%;
-
-    &::after {
-      display: none;
-    }
-
-    &.is-active {
-      &::after {
-        display: none;
-      }
-    }
-  }
+// Upper-left — largest, most prominent
+.parallax-orb--1 {
+  width: 70vw;
+  height: 60vh;
+  top: -10%;
+  left: -8%;
+  background: radial-gradient(ellipse, rgba($color-accent, 0.14) 0%, transparent 70%);
+  filter: blur(80px);
+  animation-duration: 28s;
 }
 
-.motion-toggle-button {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 100;
-  display: inline-flex;
-  align-items: center;
-  font-family: $font-primary;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border-radius: $border-radius-pill;
-  border: 1px solid var(--border-default);
-  background: var(--background-surface);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: opacity $duration-base $easing-standard;
+// Lower-right — medium, runs in opposite direction
+.parallax-orb--2 {
+  width: 60vw;
+  height: 65vh;
+  bottom: -18%;
+  right: -10%;
+  background: radial-gradient(ellipse, rgba($color-accent, 0.10) 0%, transparent 70%);
+  filter: blur(100px);
+  animation-duration: 36s;
+  animation-direction: reverse;
+  animation-delay: -14s;
+}
 
-  &.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
+// Bottom-center — widest, most diffuse
+.parallax-orb--3 {
+  width: 90vw;
+  height: 50vh;
+  top: 55%;
+  left: 5%;
+  background: radial-gradient(ellipse, rgba($color-accent, 0.07) 0%, transparent 70%);
+  filter: blur(130px);
+  animation-duration: 24s;
+  animation-delay: -9s;
+}
+
+@keyframes orb-drift {
+  0%   { transform: translate(0%,    0%  ); }
+  20%  { transform: translate(5%,   -3%  ); }
+  40%  { transform: translate(6%,    3%  ); }
+  60%  { transform: translate(2%,    6%  ); }
+  80%  { transform: translate(-4%,   3%  ); }
+  100% { transform: translate(0%,    0%  ); }
 }

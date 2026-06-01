@@ -1,0 +1,13 @@
+@if (title()) {
+  <p class="type-eyebrow tag-list-label">{{ title() }}</p>
+}
+
+<div class="tag-list-tags">
+  @for (tag of tags(); track tag) {
+    @if (tag === 'ClearTonic Games_') {
+      <span class="tag">ClearTonic Games<span class="brand-underscore">_</span></span>
+    } @else {
+      <span class="tag">{{ tag }}</span>
+    }
+  }
+</div>

@@ -1,0 +1,78 @@
+<nav
+  class="nav-bar"
+  [class.is-hidden]="isNavHidden()"
+  [class.is-collapsed]="isNavCollapsed()"
+  aria-label="Site navigation"
+>
+  <div class="nav-main">
+    <div class="nav-header">
+      <div class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
+        <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="nav-body" [class.is-open]="isMenuOpen()">
+      @for (link of navLinks(); track link.id) {
+        <a class="nav-link" (click)="navLinkClick(link.id)" role="button" tabindex="0">
+          {{ link.label }}<span class="brand-underscore">_</span>
+        </a>
+      }
+    </div>
+
+    <div class="nav-footer">
+      <!-- <a
+        class="button-ghost nav-resume-link"
+        href="Eli_Philpott_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Resume
+      </a> -->
+      <button
+        class="nav-motion-toggle"
+        [attr.data-tooltip]="
+          motionService.reducedMotion() ? 'Reduce motion: enabled' : 'Reduce motion: disabled'
+        "
+        [attr.aria-pressed]="motionService.reducedMotion()"
+        [attr.aria-label]="motionService.reducedMotion() ? 'Enable motion' : 'Reduce motion'"
+        (click)="motionService.toggleReducedMotion()"
+      >
+        <div class="motion-icon" [class.is-reduced]="motionService.reducedMotion()">
+          <svg lucideCircleDashed class="motion-icon__dashed" [size]="20" aria-hidden="true"></svg>
+          <svg lucideCircle class="motion-icon__solid" [size]="20" aria-hidden="true"></svg>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-chevron-col" (click)="toggleNavCollapse()">
+    <button
+      class="nav-collapse-toggle"
+      [attr.aria-label]="isNavCollapsed() ? 'Expand navigation' : 'Collapse navigation'"
+      (click)="$event.stopPropagation(); toggleNavCollapse()"
+    >
+      @if (isNavCollapsed()) {
+        <svg lucideChevronRight [size]="16" aria-hidden="true"></svg>
+      } @else {
+        <svg lucideChevronLeft [size]="16" aria-hidden="true"></svg>
+      }
+    </button>
+  </div>
+
+  <!-- Mobile: hamburger (hidden on desktop) -->
+  <button
+    class="nav-hamburger"
+    aria-label="Toggle menu"
+    [attr.aria-expanded]="isMenuOpen()"
+    (click)="toggleMenu()"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Mobile backdrop — tap to close overlay -->
+@if (isMenuOpen()) {
+  <div class="nav-backdrop" (click)="closeMenu()" role="presentation"></div>
+}

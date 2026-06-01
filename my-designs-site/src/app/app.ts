@@ -1,92 +1,57 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  signal,
-  inject,
-  afterNextRender,
-  OnDestroy,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ScrollService } from './services/scroll.service';
+﻿import { Component, ChangeDetectionStrategy, Type, inject } from '@angular/core';
 import { MotionService } from './services/motion.service';
+import {
+  NavigationBarComponent,
+  NavLink,
+} from './components/navigation-bar/navigation-bar.component';
+import { CrossSectionComponent } from './components/cross-section/cross-section.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { AboutComponent } from './components/about/about.component';
 import { ExperienceComponent } from './components/experience/experience.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { ContactComponent } from './components/contact/contact.component';
 
+interface CrossSection {
+  readonly id: string;
+  readonly label: string;
+  readonly component: Type<unknown>;
+  readonly enabled: boolean;
+  readonly glass: boolean;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HeroComponent, AboutComponent, ExperienceComponent, ProjectsComponent, ContactComponent],
+  imports: [NavigationBarComponent, CrossSectionComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnDestroy {
-  private readonly scrollService = inject(ScrollService);
+export class AppComponent {
   readonly motionService = inject(MotionService);
 
-  readonly isMenuOpen = signal(false);
-  readonly isNavHidden = signal(false);
-  readonly activeSection = signal<string | null>(null);
-  readonly isMotionButtonHidden = signal(false);
+  readonly sections: readonly CrossSection[] = [
+    { id: 'hero', label: 'Hero', component: HeroComponent, enabled: true, glass: false },
+    { id: 'about', label: 'About', component: AboutComponent, enabled: true, glass: true },
+    {
+      id: 'experience',
+      label: 'Experience',
+      component: ExperienceComponent,
+      enabled: true,
+      glass: false,
+    },
+    {
+      id: 'projects',
+      label: 'Projects',
+      component: ProjectsComponent,
+      enabled: true,
+      glass: false,
+    },
+    { id: 'contact', label: 'Contact', component: ContactComponent, enabled: true, glass: false },
+  ];
 
-  private intersectionObservers: IntersectionObserver[] = [];
-  private lastScrollY = 0;
-
-  constructor() {
-    afterNextRender(() => {
-      this.initializeIntersectionObservers();
-      this.initializeScrollListener();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.intersectionObservers.forEach((observer) => observer.disconnect());
-  }
-
-  onNavLinkClick(sectionId: string): void {
-    this.isMenuOpen.set(false);
-    this.scrollService.scrollToSection(sectionId);
-  }
-
-  toggleMenu(): void {
-    this.isMenuOpen.update((current) => !current);
-  }
-
-  closeMenu(): void {
-    this.isMenuOpen.set(false);
-  }
-
-  private initializeIntersectionObservers(): void {
-    const sectionIds = ['hero', 'about', 'experience', 'projects', 'contact'];
-
-    sectionIds.forEach((sectionId) => {
-      const section = document.getElementById(sectionId);
-      if (!section) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            this.activeSection.set(sectionId);
-          }
-        },
-        { threshold: 0.4 },
-      );
-
-      observer.observe(section);
-      this.intersectionObservers.push(observer);
-    });
-  }
-
-  private initializeScrollListener(): void {
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-
-      this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
-      this.isMotionButtonHidden.set(currentScrollY > window.innerHeight * 0.8);
-      this.lastScrollY = currentScrollY;
-    });
-  }
+  // Sections visible in the nav: enabled, non-hero sections only.
+  readonly navLinks: readonly NavLink[] = this.sections
+    .filter((s) => s.enabled && s.id !== 'hero')
+    .map(({ id, label }) => ({ id, label }));
 }

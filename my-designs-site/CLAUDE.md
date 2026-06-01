@@ -107,34 +107,46 @@ afterNextRender(() => {
 ## 3. Repository Structure
 
 ```
-/
 ├── CLAUDE.md
 ├── angular.json
 ├── jest.config.ts
+├── setup-jest.ts
 ├── tsconfig.json
+├── tsconfig.app.json
 ├── tsconfig.spec.json
 ├── package.json
+├── public/
+│   ├── 404.html
+│   ├── Eli_Philpott_Resume.pdf
+│   └── favicon.ico
 └── src/
     ├── main.ts
     ├── index.html
+    ├── styles.scss
     ├── styles/
-    │   ├── _tokens.scss
-    │   ├── _typography.scss
-    │   ├── _reset.scss
-    │   └── styles.scss
+    │   ├── tokens.scss
+    │   ├── typography.scss
+    │   └── reset.scss
     ├── assets/
     │   ├── images/
-    │   │   ├── cleartonic-icon.png
-    │   │   ├── game-screenshot.png
-    │   │   ├── app-screenshot.png
-    │   │   └── resume.pdf
+    │   │   ├── game_screenshot.png
+    │   │   ├── app_screenshot.png
     │   └── icons/
+    │       ├── ClearTonic icon.svg
+    │       └── ClearTonic Games_ icon.svg
     └── app/
-        ├── app.component.ts
-        ├── app.component.html
-        ├── app.component.scss
-        ├── app.component.spec.ts
+        ├── app.ts
+        ├── app.html
+        ├── app.scss
+        ├── app.spec.ts
+        ├── app.config.ts
         ├── components/
+        │   ├── navigation-bar/
+        │   │   ├── CLAUDE.md
+        │   │   ├── navigation-bar.component.ts
+        │   │   ├── navigation-bar.component.html
+        │   │   ├── navigation-bar.component.scss
+        │   │   └── navigation-bar.component.spec.ts
         │   ├── hero/
         │   │   ├── CLAUDE.md
         │   │   ├── hero.component.ts
@@ -147,6 +159,18 @@ afterNextRender(() => {
         │   │   ├── about.component.html
         │   │   ├── about.component.scss
         │   │   └── about.component.spec.ts
+        │   ├── action-call/
+        │   │   ├── CLAUDE.md
+        │   │   ├── action-call.component.ts
+        │   │   ├── action-call.component.html
+        │   │   ├── action-call.component.scss
+        │   │   └── action-call.component.spec.ts
+        │   ├── cross-section/
+        │   │   ├── CLAUDE.md
+        │   │   ├── cross-section.component.ts
+        │   │   ├── cross-section.component.html
+        │   │   ├── cross-section.component.scss
+        │   │   └── cross-section.component.spec.ts
         │   ├── experience/
         │   │   ├── CLAUDE.md
         │   │   ├── experience.component.ts
@@ -159,6 +183,18 @@ afterNextRender(() => {
         │   │   ├── projects.component.html
         │   │   ├── projects.component.scss
         │   │   └── projects.component.spec.ts
+        │   ├── tag-list/
+        │   │   ├── CLAUDE.md
+        │   │   ├── tag-list.component.ts
+        │   │   ├── tag-list.component.html
+        │   │   ├── tag-list.component.scss
+        │   │   └── tag-list.component.spec.ts
+        │   ├── article-card/
+        │   │   ├── CLAUDE.md
+        │   │   ├── article-card.component.ts
+        │   │   ├── article-card.component.html
+        │   │   ├── article-card.component.scss
+        │   │   └── article-card.component.spec.ts
         │   └── contact/
         │       ├── CLAUDE.md
         │       ├── contact.component.ts
@@ -183,7 +219,7 @@ afterNextRender(() => {
 - Business logic in `.ts` files only. Templates are declarative.
 - No inline `style="..."` attributes anywhere in templates.
 - Every component folder, `directives/`, and `services/` contains a `CLAUDE.md`.
-- All asset paths go through `src/assets/`.
+- Static files served at the URL root (PDF, favicon) go in `public/`. Component-consumed assets (images, icons) go in `src/assets/`.
 
 ---
 
@@ -290,7 +326,7 @@ $font-body: 'Lora', serif; // body copy only
 **Typography rules:**
 
 - The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="brand-underscore">_</span>` styled `color: var(--accent)`.
-- Section eyebrow labels follow the `/ Section Name` pattern.
+- Section eyebrow labels use a suffix underscore: `Section Name<span class="brand-underscore">_</span>` — no forward-slash prefix.
 - Never use font-weight below 500 for headings or labels.
 - Never use Arial, Inter, Roboto, or system-ui.
 
@@ -299,6 +335,7 @@ $font-body: 'Lora', serif; // body copy only
 ### 4.3 Spacing
 
 8px base grid. Every margin, padding, and gap value is a multiple of 8px.
+Never use spacer elements to do what padding, alignment and margins can do.
 
 ```scss
 // src/styles/_tokens.scss (continued)
@@ -457,6 +494,29 @@ Single scrolling page. All navigation is anchor scroll within the page. No Angul
 
 Section order: `#hero` → `#about` → `#experience` → `#projects` → `#contact`
 
+### Section composition — CrossSectionComponent
+
+Every page section is rendered through `CrossSectionComponent` (`app-cross-section`). `AppComponent` holds a typed `sections` array and loops over it; each entry describes one cross-section:
+
+```typescript
+interface CrossSection {
+  readonly id: string; // anchor id, owned by the inner section component
+  readonly component: Type<unknown>; // the section content component
+  readonly enabled: boolean; // feature flag — false removes the section entirely
+  readonly glass: boolean; // true → frosted-glass background + gold borders
+}
+```
+
+```html
+@for (section of sections; track section.id) { @if (section.enabled) {
+<app-cross-section [component]="section.component" [glass]="section.glass" />
+} }
+```
+
+- **Feature flag:** `enabled: false` fails the `@if`, so the cross-section and its content are never instantiated or added to the DOM.
+- **Background:** the cross-section owns the section background. `glass: true` applies the `.glass-section` treatment (frosted overlay + gold top/bottom borders that brighten to teal on hover, full-bleed on desktop); `glass: false` leaves the section transparent over the parallax background.
+- Content components (`app-hero`, `app-about`, …) render via `NgComponentOutlet` and keep their own `<section id="...">`, `.section-inner`, and content unchanged. They are not listed in `AppComponent`'s `imports`.
+
 ### Navigation (AppComponent)
 
 - Fixed top bar, `backdrop-filter: blur(12px)`, semi-transparent `var(--background)`
@@ -470,20 +530,18 @@ Section order: `#hero` → `#about` → `#experience` → `#projects` → `#cont
 ### `#hero`
 
 ```
-/ Intro · Worthington, OH
-
 ELI
 PHILPOTT
 
 UI/UX & Software Designer
 
-[View My Work]    [Resume ↗]
+[Resume ↗]
+[View My Work]
 ```
 
 - "View My Work" calls `ScrollService.scrollToSection('about')`
-- "Resume ↗" opens `assets/images/resume.pdf` in a new tab — **the only `target="_blank"` link in the entire site**
+- "Resume ↗" opens `Eli_Philpott_Resume.pdf` in a new tab — served from `public/` at the build root
 - Pixel-noise SVG texture overlay at 5% opacity on section background
-- ClearTonic Games\_ floating badge in bottom-right corner
 
 ### `#about`
 
@@ -527,7 +585,7 @@ Centered, flex column, `align-items: center`.
 
 - Short headline: "Let's build something."
 - Three large link items: Email, LinkedIn, GitHub — each with accent underline on hover
-- "View Resume" `.button-primary` — opens `assets/images/resume.pdf` in new tab
+- "View Resume" `.button-primary` — opens `Eli_Philpott_Resume.pdf` in new tab (served from `public/`)
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_`
 
 LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. These and the resume PDF are the only `target="_blank"` uses in the site.
@@ -622,19 +680,21 @@ LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. The
 All icons in the portfolio use Lucide for consistency. Never use custom SVGs or icon fonts unless Lucide does not provide the needed icon.
 
 **Import and usage:**
+
 ```typescript
-import { LucideAngularModule, Icon } from '@lucide/angular';
+import { LucideArrowUpRight } from '@lucide/angular';
 
 // In component standalone imports:
-imports: [LucideAngularModule, CommonModule],
+imports: [LucideArrowUpRight],
 
 // In template:
-<lucide-icon name="github" size="24" stroke-width="2"></lucide-icon>
+<svg lucideArrowUpRight [size]="16"></svg>
 ```
 
 **Icon sizing:** Use standard sizes (`16`, `20`, `24`, `32`). Control icon color via component CSS or inline styles aligned with the design system palette.
 
 **Accessibility:** Always pair icon-only buttons with `aria-label`:
+
 ```html
 <button aria-label="Open menu">
   <lucide-icon name="menu" size="24"></lucide-icon>
@@ -938,5 +998,8 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 | email              | `eli.philpott@gmail.com`                    |
 
 ---
+
+Next Session Bugs to squash:
+make the clickable area next to the nav-bar bigger,
 
 _Last updated: May 27 2026. All changes to this file require deliberate review — it governs the entire codebase._
