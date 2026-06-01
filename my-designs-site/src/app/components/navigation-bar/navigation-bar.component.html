@@ -12,18 +12,11 @@
     </div>
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
-      <a class="nav-link" (click)="navLinkClick('about')" role="button" tabindex="0">
-        About<span class="brand-underscore">_</span>
-      </a>
-      <a class="nav-link" (click)="navLinkClick('experience')" role="button" tabindex="0">
-        Experience<span class="brand-underscore">_</span>
-      </a>
-      <a class="nav-link" (click)="navLinkClick('projects')" role="button" tabindex="0">
-        Projects<span class="brand-underscore">_</span>
-      </a>
-      <a class="nav-link" (click)="navLinkClick('contact')" role="button" tabindex="0">
-        Contact<span class="brand-underscore">_</span>
-      </a>
+      @for (link of navLinks(); track link.id) {
+        <a class="nav-link" (click)="navLinkClick(link.id)" role="button" tabindex="0">
+          {{ link.label }}<span class="brand-underscore">_</span>
+        </a>
+      }
     </div>
     <a
       class="button-ghost nav-resume-link"

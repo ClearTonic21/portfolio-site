@@ -3,12 +3,18 @@ import {
   ChangeDetectionStrategy,
   signal,
   inject,
+  input,
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
 import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
+
+export interface NavLink {
+  readonly id: string;
+  readonly label: string;
+}
 
 @Component({
   selector: 'app-navigation-bar',
@@ -21,6 +27,7 @@ import { MotionService } from '../../services/motion.service';
 export class NavigationBarComponent implements OnDestroy {
   private readonly scrollService = inject(ScrollService);
   readonly motionService = inject(MotionService);
+  readonly navLinks = input.required<readonly NavLink[]>();
 
   readonly isMenuOpen = signal(false);
   readonly isNavHidden = signal(false);

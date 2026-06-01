@@ -14,7 +14,6 @@ interface SkillGroup {
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'glass-section' },
 })
 export class AboutComponent {
   readonly skillGroups: readonly SkillGroup[] = [

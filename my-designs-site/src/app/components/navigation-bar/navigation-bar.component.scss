@@ -23,7 +23,6 @@
     transform 550ms tokens.$easing-out-expo,
     box-shadow tokens.$duration-slow tokens.$easing-standard;
 
-  // Gold metallic border-bottom (mobile)
   &::after {
     content: '';
     position: absolute;
@@ -250,7 +249,6 @@
         box-shadow tokens.$duration-fast tokens.$easing-standard;
     }
 
-    // Right-edge gold metallic border (vertical)
     &::after {
       bottom: 0;
       top: 0;
@@ -261,7 +259,6 @@
       @include mb.strip-gold('to bottom');
     }
 
-    // Right-edge teal border (vertical)
     &::before {
       bottom: 0;
       top: 0;
@@ -363,9 +360,9 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
     justify-content: center;
-    width: tokens.$spacing-4; // 32px — token-safe value
+    width: tokens.$spacing-4;
     height: 100%;
     cursor: pointer;
   }
@@ -374,7 +371,6 @@
     pointer-events: auto;
   }
 
-  // Chevron column hover drives the nav-bar border glow
   .nav-bar:has(.nav-chevron-col:hover) {
     box-shadow: 4px 0 24px var(--accent-glow);
     transition:
@@ -413,7 +409,6 @@
     }
   }
 
-  // Chevron and border both go accent when hovering the column
   .nav-chevron-col:hover .nav-collapse-toggle {
     color: var(--accent);
   }

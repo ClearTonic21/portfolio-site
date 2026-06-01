@@ -29,6 +29,7 @@ Skill tags are text-only (no icons). If icons are added to skill groups in the f
 ## Does Not
 - Contain CTAs or links
 - Duplicate work history details (those live in ExperienceComponent)
+- Own its section background — the parent `CrossSectionComponent` applies the glass / gold-border treatment via its `glass` flag (set in `AppComponent.sections`)
 
 ## Related Files
 - `../experience/experience.component.ts` — detailed work history

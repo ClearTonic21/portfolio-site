@@ -115,7 +115,7 @@ afterNextRender(() => {
 ├── tsconfig.app.json
 ├── tsconfig.spec.json
 ├── package.json
-├── public/                          ← served at build root (no URL prefix)
+├── public/
 │   ├── 404.html
 │   ├── Eli_Philpott_Resume.pdf
 │   └── favicon.ico
@@ -159,6 +159,12 @@ afterNextRender(() => {
         │   │   ├── about.component.html
         │   │   ├── about.component.scss
         │   │   └── about.component.spec.ts
+        │   ├── cross-section/
+        │   │   ├── CLAUDE.md
+        │   │   ├── cross-section.component.ts
+        │   │   ├── cross-section.component.html
+        │   │   ├── cross-section.component.scss
+        │   │   └── cross-section.component.spec.ts
         │   ├── experience/
         │   │   ├── CLAUDE.md
         │   │   ├── experience.component.ts
@@ -481,6 +487,29 @@ $breakpoint-xlarge: 1280px; // wide desktop
 Single scrolling page. All navigation is anchor scroll within the page. No Angular Router. No page reloads.
 
 Section order: `#hero` → `#about` → `#experience` → `#projects` → `#contact`
+
+### Section composition — CrossSectionComponent
+
+Every page section is rendered through `CrossSectionComponent` (`app-cross-section`). `AppComponent` holds a typed `sections` array and loops over it; each entry describes one cross-section:
+
+```typescript
+interface CrossSection {
+  readonly id: string; // anchor id, owned by the inner section component
+  readonly component: Type<unknown>; // the section content component
+  readonly enabled: boolean; // feature flag — false removes the section entirely
+  readonly glass: boolean; // true → frosted-glass background + gold borders
+}
+```
+
+```html
+@for (section of sections; track section.id) { @if (section.enabled) {
+<app-cross-section [component]="section.component" [glass]="section.glass" />
+} }
+```
+
+- **Feature flag:** `enabled: false` fails the `@if`, so the cross-section and its content are never instantiated or added to the DOM.
+- **Background:** the cross-section owns the section background. `glass: true` applies the `.glass-section` treatment (frosted overlay + gold top/bottom borders that brighten to teal on hover, full-bleed on desktop); `glass: false` leaves the section transparent over the parallax background.
+- Content components (`app-hero`, `app-about`, …) render via `NgComponentOutlet` and keep their own `<section id="...">`, `.section-inner`, and content unchanged. They are not listed in `AppComponent`'s `imports`.
 
 ### Navigation (AppComponent)
 
