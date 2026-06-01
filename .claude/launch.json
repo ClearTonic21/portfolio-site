@@ -2,16 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Angular Dev Server",
+      "name": "portfolio",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "my-designs-site", "start"],
+      "runtimeArgs": ["start"],
       "port": 4200
-    },
-    {
-      "name": "Angular Verify 4300",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "my-designs-site", "start", "--", "--port", "4300"],
-      "port": 4300
     }
   ]
 }
