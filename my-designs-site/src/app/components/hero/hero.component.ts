@@ -3,6 +3,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
 import { LucideArrowUpRight, LucideChevronDown } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
+import { ActionCallComponent } from '../action-call/action-call.component';
 
 const heroEntranceAnimation = trigger('heroEntrance', [
   transition(':enter', [
@@ -25,7 +26,7 @@ const heroEntranceAnimation = trigger('heroEntrance', [
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [LucideChevronDown, LucideArrowUpRight],
+  imports: [LucideChevronDown, LucideArrowUpRight, ActionCallComponent],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

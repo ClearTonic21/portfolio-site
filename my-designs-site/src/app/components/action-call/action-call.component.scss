@@ -1,0 +1,60 @@
+@use '../../../styles/tokens' as tokens;
+
+:host {
+  display: inline-block;
+}
+
+.action-call {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$spacing-unit;
+  font-family: tokens.$font-primary;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: tokens.$border-radius-pill;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--text-inverted);
+  cursor: pointer;
+  transition:
+    background tokens.$duration-base tokens.$easing-out-expo,
+    color tokens.$duration-base tokens.$easing-out-expo,
+    transform tokens.$duration-fast tokens.$easing-out-expo,
+    box-shadow tokens.$duration-fast tokens.$easing-out-expo;
+
+  &:hover,
+  &:focus-visible {
+    // Stay solid — lighter tint keeps the button filled and legible
+    background: var(--accent-bright);
+    color: var(--text-inverted);
+    transform: scale(1.04);
+    // 2x glow: double opacity relative to --accent-glow (0.15 → 0.30)
+    box-shadow: 0 0 48px rgba(tokens.$color-accent, 0.3);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+// Brand underscore inherits the button's text color so it stays legible on the
+// filled accent background (the global accent color would vanish here).
+.action-call .brand-underscore {
+  color: currentColor;
+}
+
+// Icon wrapper — translated on hover to reinforce the action direction
+.action-call__icon {
+  display: inline-flex;
+  align-items: center;
+  transition: transform tokens.$duration-fast tokens.$easing-out-expo;
+}
+
+.action-call:hover .action-call__icon,
+.action-call:focus-visible .action-call__icon {
+  transform: translate(2px, -2px);
+}

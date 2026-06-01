@@ -8,17 +8,20 @@
     <h1 class="type-display hero-title hero-animate">
       ELI<span> </span><br />PHILPOTT<span class="brand-underscore">_</span>
     </h1>
-    <p class="type-heading hero-subtitle hero-animate">UI/UX &amp; Software Designer</p>
-    <p class="type-body hero-copy hero-animate">
+    <div class="type-heading hero-subtitle hero-animate">UX &amp; Software Designer</div>
+    <!-- <div class="type-body hero-copy hero-animate">
       Software Designer and indie game creator building polished digital products, thoughtful
       interfaces, and playful interactive experiences.
-    </p>
+    </div> -->
 
     <!-- Resume CTA — centered below the subtitle -->
     <div class="hero-resume hero-animate">
-      <a class="button-ghost" [href]="resumeHref" target="_blank" rel="noopener noreferrer">
-        View Resume <span class="link-arrow" aria-hidden="true">↗</span>
-      </a>
+      <app-action-call
+        text="View Resume"
+        [arrowIcon]="true"
+        href="Eli_Philpott_Resume.pdf"
+        target="_blank"
+      />
     </div>
   </div>
 

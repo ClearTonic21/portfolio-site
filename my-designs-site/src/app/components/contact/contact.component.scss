@@ -1,5 +1,4 @@
 @use '../../../styles/tokens' as tokens;
-@use 'sass:color';
 
 :host {
   display: block;
@@ -12,6 +11,8 @@
 }
 
 .contact-heading {
+  display: flex;
+  justify-content: start;
   margin-top: tokens.$spacing-3;
 }
 
@@ -54,29 +55,6 @@
 
     &::after {
       transform: scaleX(1);
-    }
-  }
-}
-
-.button-primary {
-  transition:
-    background tokens.$duration-fast tokens.$easing-out-expo,
-    color tokens.$duration-fast tokens.$easing-out-expo,
-    font-weight tokens.$easing-out-expo,
-    transform tokens.$easing-out-expo,
-    box-shadow tokens.$duration-fast tokens.$easing-out-expo;
-
-  &:hover,
-  &:focus-visible {
-    background: color.mix(white, tokens.$color-accent, 22%);
-    color: var(--text-inverted);
-    font-weight: 2400;
-    letter-spacing: 2px;
-    transform: scale(1.04);
-    box-shadow: 0 0 96px rgba(tokens.$color-accent, 0.6);
-
-    .link-arrow {
-      transform: translate(2px, -2px);
     }
   }
 }

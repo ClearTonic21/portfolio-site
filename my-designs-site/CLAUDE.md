@@ -159,6 +159,12 @@ afterNextRender(() => {
         │   │   ├── about.component.html
         │   │   ├── about.component.scss
         │   │   └── about.component.spec.ts
+        │   ├── action-call/
+        │   │   ├── CLAUDE.md
+        │   │   ├── action-call.component.ts
+        │   │   ├── action-call.component.html
+        │   │   ├── action-call.component.scss
+        │   │   └── action-call.component.spec.ts
         │   ├── cross-section/
         │   │   ├── CLAUDE.md
         │   │   ├── cross-section.component.ts
@@ -676,13 +682,13 @@ All icons in the portfolio use Lucide for consistency. Never use custom SVGs or 
 **Import and usage:**
 
 ```typescript
-import { LucideAngularModule, Icon } from '@lucide/angular';
+import { LucideArrowUpRight } from '@lucide/angular';
 
 // In component standalone imports:
-imports: [LucideAngularModule],
+imports: [LucideArrowUpRight],
 
 // In template:
-<lucide-icon name="github" size="24" stroke-width="2"></lucide-icon>
+<svg lucideArrowUpRight [size]="16"></svg>
 ```
 
 **Icon sizing:** Use standard sizes (`16`, `20`, `24`, `32`). Control icon color via component CSS or inline styles aligned with the design system palette.
