@@ -7,7 +7,7 @@ import {
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
-import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
+import { LucideChevronLeft, LucideChevronRight, LucideCircle, LucideCircleDashed } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 
@@ -19,7 +19,7 @@ export interface NavLink {
 @Component({
   selector: 'app-navigation-bar',
   standalone: true,
-  imports: [LucideChevronLeft, LucideChevronRight],
+  imports: [LucideChevronLeft, LucideChevronRight, LucideCircle, LucideCircleDashed],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

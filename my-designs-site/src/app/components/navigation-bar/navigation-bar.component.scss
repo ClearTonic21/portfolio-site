@@ -140,44 +140,122 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   cursor: pointer;
   padding: tokens.$spacing-2 0;
+  text-align: center;
+  position: relative;
   transition: color tokens.$duration-base tokens.$easing-standard;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform tokens.$duration-base tokens.$easing-out-expo;
+  }
 
   &:hover,
   &:focus-visible {
     color: var(--accent);
+
+    &::after {
+      transform: scaleX(1);
+    }
   }
 }
 
 // ─── Motion toggle ────────────────────────────────────────────────────────────
 
-.nav-footer {
-  padding-top: tokens.$spacing-4;
-  border-top: 1px solid var(--border-default);
-  cursor: default;
-}
-
 .nav-motion-toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  white-space: nowrap;
-  font-family: tokens.$font-primary;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 6px 12px;
-  border-radius: tokens.$border-radius-pill;
+  justify-content: center;
+  padding: 8px;
+  border-radius: tokens.$border-radius-medium;
   border: 1px solid var(--border-default);
   background: var(--background-surface);
-  color: var(--text-secondary);
   cursor: pointer;
   transition: border-color tokens.$duration-base tokens.$easing-standard;
 
   &:hover,
   &:focus-visible {
     border-color: var(--accent);
+  }
+
+  &::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(100% + tokens.$spacing-unit);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: tokens.$font-primary;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: tokens.$border-radius-small;
+    background: var(--background-surface);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1001;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+}
+
+// ─── Motion icon ──────────────────────────────────────────────────────────────
+// Two overlapping circles. Dashed = left, solid = right, 8px overlap at rest.
+// On is-reduced: dashed fades out, solid slides left to the dashed position
+// and turns gold.
+
+.motion-icon {
+  position: relative;
+  // 20px icon + 12px offset = 32px wide; 8px overlap (20 - 12)
+  width: 32px;
+  height: 20px;
+}
+
+.motion-icon__dashed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text-primary);
+  opacity: 1;
+  transition: opacity tokens.$duration-base tokens.$easing-standard;
+}
+
+.motion-icon__solid {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  color: var(--text-primary);
+  transition:
+    color tokens.$duration-base tokens.$easing-standard,
+    transform tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.motion-icon.is-reduced {
+  .motion-icon__dashed {
+    opacity: 0;
+  }
+
+  .motion-icon__solid {
+    transform: translateX(-12px);
+    color: var(--gold);
   }
 }
 
@@ -320,10 +398,6 @@
     font-size: 1.1rem;
     letter-spacing: 0.08em;
     padding: tokens.$spacing-unit 0;
-
-    &::after {
-      display: none;
-    }
   }
 
   .nav-resume-link {
@@ -334,16 +408,17 @@
   }
 
   .nav-motion-toggle {
-    font-size: 0.8rem;
-    padding: 8px 8px;
+    padding: 8px;
   }
 
   .nav-footer {
-    width: 100%;
     display: flex;
-    margin: 24px 8px;
+    flex-flow: wrap;
     justify-content: center;
-    border-top: 1px solid var(--border-default);
+    width: 100%;
+    margin: tokens.$spacing-8 0;
+    gap: tokens.$spacing-2;
+    cursor: default;
   }
 
   .nav-hamburger {

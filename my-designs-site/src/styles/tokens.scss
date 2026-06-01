@@ -62,7 +62,5 @@ $duration-reveal: 700ms;
   --gold-border: #{$color-gold-border};
   --error: #{$color-error};
   --background-overlay: #{rgba($color-background, 0.8)};
-  // Desktop sidebar width. Reserved symmetrically by <main> so content centers in
-  // the true viewport. Drives the nav bar, main padding, and glass-section bleed.
   --sidebar-width: 180px;
 }
