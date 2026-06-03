@@ -16,6 +16,12 @@
   margin-top: tokens.$spacing-3;
 }
 
+.build-highlight {
+  background: var(--accent);
+  color: var(--text-inverted);
+  padding: 0 0.1em;
+}
+
 .contact-links {
   display: flex;
   flex-direction: column;

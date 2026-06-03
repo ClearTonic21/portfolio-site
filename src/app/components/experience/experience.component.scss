@@ -19,7 +19,6 @@
   gap: tokens.$spacing-6;
   padding-left: tokens.$spacing-6;
 
-  // Vertical accent line — left-aligned on mobile
   &::before {
     content: '';
     position: absolute;

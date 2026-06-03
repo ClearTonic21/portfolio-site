@@ -1,12 +1,7 @@
 @if (imagePath() !== undefined) {
   <div class="article-card-image-area">
     @if (imagePath()) {
-      <img
-        class="article-card-image"
-        [src]="imagePath()"
-        [alt]="imageAlt()"
-        loading="lazy"
-      />
+      <img class="article-card-image" [src]="imagePath()" [alt]="imageAlt()" loading="lazy" />
     } @else {
       <div class="article-card-image-placeholder" aria-hidden="true">
         <span class="placeholder-label type-caption">Preview coming soon</span>
@@ -21,12 +16,14 @@
       class="article-card-highlight"
       [class.type-eyebrow]="highlightVariant() === 'eyebrow'"
       [class.type-caption]="highlightVariant() === 'caption'"
-    >{{ highlight() }}</p>
+    >
+      {{ highlight() }}
+    </p>
   }
 
   <h3 class="type-heading article-card-title">
     @if (title() === 'ClearTonic Games_') {
-      ClearTonic Games<span class="brand-underscore">_</span>
+      ClearTonic Games<span class="accent">_</span>
     } @else {
       {{ title() }}
     }

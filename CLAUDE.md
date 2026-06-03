@@ -7,7 +7,7 @@
 
 ## 1. Project Overview
 
-A single-page Angular portfolio site for **Eli Philpott** — a UI/UX and software designer who builds polished, well-structured applications and creates indie games under **ClearTonic Games\_**.
+A single-page Angular portfolio site for **Eli Philpott** a software designer and developer who builds polished, well-structured applications and creates indie games under **ClearTonic Games\_**.
 
 **Primary audience:** Hiring managers and recruiters looking for a Software Designer, App Designer, or UI/UX Designer.
 
@@ -234,7 +234,6 @@ Component SCSS always references CSS custom properties. Never hardcode hex value
 
 $color-background: #1a1a1a;
 $color-background-surface: #232323;
-$color-background-subtle: #2c2c2c;
 $color-text-primary: #f0ede6;
 $color-text-secondary: #a89f91;
 $color-text-inverted: #1a1a1a;
@@ -325,8 +324,8 @@ $font-body: 'Lora', serif; // body copy only
 
 **Typography rules:**
 
-- The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="brand-underscore">_</span>` styled `color: var(--accent)`.
-- Section eyebrow labels use a suffix underscore: `Section Name<span class="brand-underscore">_</span>` — no forward-slash prefix.
+- The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="accent">_</span>` styled `color: var(--accent)`.
+- Section eyebrow labels use a suffix underscore: `Section Name<span class="accent">_</span>` — no forward-slash prefix.
 - Never use font-weight below 500 for headings or labels.
 - Never use Arial, Inter, Roboto, or system-ui.
 

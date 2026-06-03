@@ -59,7 +59,6 @@
   opacity: 1;
 }
 
-// Teal accent — fades in on hover
 :host::after {
   @include mb.ring-teal();
   opacity: 0;

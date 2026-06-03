@@ -14,7 +14,7 @@
     <div class="nav-body" [class.is-open]="isMenuOpen()">
       @for (link of navLinks(); track link.id) {
         <a class="nav-link" (click)="navLinkClick(link.id)" role="button" tabindex="0">
-          {{ link.label }}<span class="brand-underscore">_</span>
+          {{ link.label }}<span class="accent">_</span>
         </a>
       }
     </div>

@@ -41,9 +41,7 @@
   }
 }
 
-// Brand underscore inherits the button's text color so it stays legible on the
-// filled accent background (the global accent color would vanish here).
-.action-call .brand-underscore {
+.action-call .accent {
   color: currentColor;
 }
 

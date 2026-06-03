@@ -14,7 +14,6 @@ body {
 }
 
 main {
-  // Position creates a stacking context so main content sits above the fixed parallax orbs (z-index 0)
   position: relative;
   z-index: 1;
   min-height: 100vh;
@@ -22,9 +21,6 @@ main {
 
 @media (min-width: tokens.$breakpoint-medium) {
   main {
-    // Reserve the sidebar width on BOTH sides so content centers in the true
-    // viewport rather than only the strip beside the sidebar. The left reservation
-    // also keeps content clear of the fixed sidebar.
     padding-left: var(--sidebar-width);
     padding-right: var(--sidebar-width);
   }
@@ -118,25 +114,19 @@ a:focus-visible {
   transform: translate(2px, -2px);
 }
 
-// Prevent movement entirely — suppressing transition-duration alone still jumps
 [data-reduced-motion='true'] .link-arrow {
   transform: none !important;
   transition: none !important;
 }
 
 // ─── Glass section ────────────────────────────────────────────────────────────
-// Frosted-glass full-width section background with the site-wide gold → teal
-// hover glow. Apply via host: { class: 'glass-section' } on any section component.
 
 .glass-section {
   position: relative;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
-  // Slow transition governs glow fade-OUT; hover state overrides for fast fade-IN
   transition: box-shadow tokens.$duration-slow tokens.$easing-standard;
 
-  // Gold metallic top + bottom borders (default)
-  // Two background-image gradients on one pseudo: top pinned to top, bottom pinned to bottom.
   &::after {
     content: '';
     position: absolute;
@@ -167,7 +157,6 @@ a:focus-visible {
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
 
-  // Teal accent top + bottom borders (on hover)
   &::before {
     content: '';
     position: absolute;
@@ -213,15 +202,10 @@ a:focus-visible {
     }
   }
 
-  // On desktop, bleed the background across the full viewport (under the sidebar
-  // on the left, to the edge on the right) while keeping content within the same
-  // centered, sidebar-clear bounds as every other section.
   @media (min-width: tokens.$breakpoint-medium) {
     margin-left: calc(-1 * var(--sidebar-width));
     padding-left: var(--sidebar-width);
     padding-right: var(--sidebar-width);
-    // !important overrides the component-encapsulated :host { width: 100% } rule,
-    // which is injected after global styles and would otherwise win the cascade.
     width: calc(100% + 2 * var(--sidebar-width)) !important;
   }
 }
@@ -275,14 +259,6 @@ a:focus-visible {
 }
 
 // ─── Scrollbar ──────────────────────────────────────────────────────────────
-// Accent thumb at rest, brightening to --accent-bright on hover / click / drag.
-// WebKit (Chrome, Edge, Safari) gets the full interactive treatment via the
-// thumb pseudo-element; Firefox falls back to a static accent thumb.
-
-// Firefox path. Scoped behind @supports because Blink DISABLES the
-// ::-webkit-scrollbar pseudo-elements the moment scrollbar-width/-color is set,
-// which kills the hover/active recolor below. The standard property can't
-// express interactive states anyway, so Firefox gets a static accent thumb.
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
@@ -291,32 +267,26 @@ a:focus-visible {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 0;
+  height: 0;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: 0;
 }
 
-// Remove the up/down stepper arrows at the ends of the bar.
 ::-webkit-scrollbar-button {
   display: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  // background-color (not the `background` shorthand) so background-clip is not
-  // reset to border-box on the hover/active recolor below.
   background-color: var(--accent);
   border-radius: tokens.$border-radius-pill;
-  // Transparent border carved out of the thumb via background-clip makes the
-  // bar read as a slim floating pill rather than a full-width block.
   border: 3px solid transparent;
   background-clip: content-box;
   transition: background-color tokens.$duration-base tokens.$easing-standard;
 }
 
-// Hover over the bar, plus :active which covers both click and drag ("move").
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
   background-color: var(--accent-bright);

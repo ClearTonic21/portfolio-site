@@ -19,27 +19,23 @@ export class AboutComponent {
   readonly skillGroups: readonly SkillGroup[] = [
     {
       category: 'Design',
-      skills: ['Figma', 'UI/UX Patterns', 'Accessibility', 'Responsive Design'],
+      skills: ['Figma', 'UI & UX Patterns', 'Accessibility', 'Responsive Design'],
     },
     {
       category: 'Frontend',
-      skills: ['Angular', 'TypeScript', 'SCSS', 'RxJS'],
+      skills: ['Angular', 'TypeScript', 'SCSS'],
     },
     {
       category: 'Backend',
-      skills: ['Node.js', 'RESTful APIs', 'SQL'],
-    },
-    {
-      category: 'Platforms',
-      skills: ['ServiceNow', 'Azure', 'GitHub Pages'],
+      skills: ['SQL', 'Node.js', 'RESTful APIs'],
     },
     {
       category: 'Tooling',
-      skills: ['Claude Code', 'JIRA', 'Git'],
+      skills: ['Claude AI', 'ServiceNow', 'JIRA', 'Git'],
     },
     {
       category: 'Game Dev',
-      skills: ['Pixel Art', 'Godot / Unity', 'Game Design', 'ClearTonic Games_'],
+      skills: ['Godot / Unity', 'Game Design Documents'],
     },
   ];
 }
