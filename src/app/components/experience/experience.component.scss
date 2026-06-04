@@ -35,24 +35,32 @@
 .timeline-entry {
   position: relative;
 
-  // Node dot centered on the line
-  // Line is at 20px from timeline left; entry is offset 48px in.
-  // Node left = 20 - 48 - 5 (half of 10px) = -33px → center lands at 20px ✓
   &::before {
     content: '';
     position: absolute;
     top: tokens.$spacing-4;
     left: -33px;
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
+    border: 2px solid transparent;
     background: var(--accent);
     box-shadow: 0 0 0 3px var(--background);
+    transition: box-shadow tokens.$duration-base tokens.$easing-out-expo;
+  }
+
+  &:has(app-article-card:hover)::before {
+    background: var(--accent-bright);
+    border: 2px solid var(--accent);
+    color: var(--text-inverted);
+    box-shadow:
+      0 0 0 3px var(--background),
+      0 0 32px var(--accent),
+      0 0 48px var(--accent-glow);
   }
 }
 
 // ─── Projected content — role, bullets, tags ──────────────────────────────────
-// Styled here because they are projected into ArticleCardComponent from this template.
 
 .timeline-role {
   color: var(--accent);
@@ -102,12 +110,39 @@
 
 // ─── Desktop: alternating left/right layout ───────────────────────────────────
 
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  .timeline {
+    padding-right: tokens.$spacing-6; // gutter for the right-side line + dot
+
+    &::before {
+      left: auto;
+      right: 20px;
+      transform: none;
+    }
+  }
+
+  .timeline-entry {
+    // Cancel the alternating 50% offsets — all cards flush left
+    &:not(.is-left) {
+      padding-left: 0;
+    }
+
+    &.is-left {
+      padding-right: 0;
+    }
+
+    &::before {
+      left: auto;
+      right: -33px; // dot center lands on the right-side line at 20px from edge
+    }
+  }
+}
+
 @media (min-width: tokens.$breakpoint-medium) {
   .timeline {
     padding-left: 0;
     gap: tokens.$spacing-8;
 
-    // Move line to horizontal center
     &::before {
       left: 50%;
       transform: translateX(-0.5px);
@@ -117,23 +152,18 @@
   .timeline-entry {
     display: flex;
 
-    // Node always centered on the line regardless of card side
     &::before {
       left: calc(50% - 5px);
     }
 
-    // Odd entries: card on the left half
-    &:not(.is-right) {
-      padding-right: calc(50% + tokens.$spacing-4);
-    }
-
-    // Even entries: card on the right half
-    &.is-right {
+    &:not(.is-left) {
       padding-left: calc(50% + tokens.$spacing-4);
     }
 
-    // Entry padding already constrains card to half-width;
-    // override article-card's own 50% flex-basis so it fills that space correctly
+    &.is-left {
+      padding-right: calc(50% + tokens.$spacing-4);
+    }
+
     app-article-card {
       flex: 1 1 auto;
       min-width: 0;

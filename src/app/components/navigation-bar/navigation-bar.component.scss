@@ -478,12 +478,30 @@
     transition: color tokens.$duration-base tokens.$easing-standard;
 
     svg {
-      width: 24px;
-      height: 24px;
+      width: tokens.$spacing-3;
+      height: tokens.$spacing-3;
     }
   }
 
   .nav-chevron-col:hover .nav-collapse-toggle {
     color: var(--accent);
+  }
+}
+
+// ─── Compact-height: auto-collapse the sidebar ────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  .nav-bar {
+    transform: translateX(calc(-100% + 36px));
+  }
+
+  .nav-main {
+    padding: 0 tokens.$spacing-4;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav-header {
+    padding: 0;
   }
 }

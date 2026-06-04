@@ -11,9 +11,9 @@
   overflow: hidden;
   min-height: calc(98vh - 88px);
 
-  @media (min-width: 768px) {
+  @media (min-width: tokens.$breakpoint-medium) {
     min-height: 98vh;
-    padding: 0px 48px;
+    padding: tokens.$spacing-8 tokens.$spacing-6;
   }
 }
 
@@ -26,7 +26,7 @@
 .hero-title {
   font-family: tokens.$font-primary;
   font-size: clamp(2rem, 12vw, 10.5rem);
-  margin: 0 0 48px 0;
+  margin: tokens.$spacing-16 0 tokens.$spacing-6 0;
   line-height: 0.88;
   letter-spacing: 0.02em;
 }
@@ -37,13 +37,13 @@
 
 .hero-subtitle {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   margin-top: 0;
   color: var(--accent);
 }
 
-// Resume CTA
 .hero-resume {
+  padding: 48px 48px 0 48px;
   display: flex;
   justify-content: center;
 }
@@ -58,12 +58,10 @@
 }
 
 // ─── Scroll cue ───────────────────────────────────────────────────────────────
-// Positioned absolute so it sits in the bottom-left of the hero regardless of
-// content height. z-index 1002 keeps it above the mobile nav overlay (1001).
 
 .hero-scroll-cue {
   position: absolute;
-  bottom: 24px;
+  bottom: 64px;
   left: 24px;
   z-index: 1002;
   display: flex;
@@ -72,7 +70,6 @@
   gap: 4px;
   cursor: pointer;
   color: var(--text-secondary);
-  // Slow fade-out, fast fade-in convention used site-wide
   transition:
     color tokens.$duration-slow tokens.$easing-standard,
     filter tokens.$duration-slow tokens.$easing-standard;
@@ -92,8 +89,8 @@
     border-radius: tokens.$border-radius-small;
   }
 
-  @media (min-width: 768px) {
-    bottom: 48px;
+  @media (tokens.$breakpoint-medium) {
+    bottom: 64px;
     left: 48px;
   }
 }
@@ -107,7 +104,6 @@
 }
 
 .scroll-cue-chevron {
-  // Animation class toggled off when reduced motion is active
   &.is-animated {
     animation: scroll-bounce 2.5s ease-in-out infinite;
   }

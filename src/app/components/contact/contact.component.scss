@@ -10,12 +10,6 @@
   text-align: center;
 }
 
-.contact-heading {
-  display: flex;
-  justify-content: start;
-  margin-top: tokens.$spacing-3;
-}
-
 .build-highlight {
   background: var(--accent);
   color: var(--text-inverted);

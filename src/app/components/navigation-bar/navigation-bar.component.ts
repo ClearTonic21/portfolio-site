@@ -7,7 +7,12 @@ import {
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
-import { LucideChevronLeft, LucideChevronRight, LucideCircle, LucideCircleDashed } from '@lucide/angular';
+import {
+  LucideChevronLeft,
+  LucideChevronRight,
+  LucideCircle,
+  LucideCircleDashed,
+} from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 
@@ -37,7 +42,7 @@ export class NavigationBarComponent implements OnDestroy {
   private readonly resizeHandler = () => this.onResize();
   private lastScrollY = 0;
 
-  private static readonly DESKTOP_BREAKPOINT = 768;
+  private static readonly DESKTOP_BREAKPOINT = 960;
   private static readonly COMPACT_HEIGHT = 580;
 
   constructor() {

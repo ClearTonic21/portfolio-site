@@ -27,11 +27,9 @@
 
   &:hover,
   &:focus-visible {
-    // Stay solid — lighter tint keeps the button filled and legible
     background: var(--accent-bright);
     color: var(--text-inverted);
     transform: scale(1.04);
-    // 2x glow: double opacity relative to --accent-glow (0.15 → 0.30)
     box-shadow: 0 0 48px rgba(tokens.$color-accent, 0.3);
   }
 

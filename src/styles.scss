@@ -26,6 +26,12 @@ main {
   }
 }
 
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  :root {
+    --sidebar-width: 36px;
+  }
+}
+
 button,
 input,
 textarea,

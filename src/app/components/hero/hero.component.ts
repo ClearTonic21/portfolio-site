@@ -35,7 +35,6 @@ const heroEntranceAnimation = trigger('heroEntrance', [
 export class HeroComponent {
   private readonly scrollService = inject(ScrollService);
   readonly motionService = inject(MotionService);
-  // public/ maps to the build root via angular.json, so no path prefix is needed
   readonly resumeHref = 'Eli_Philpott_Resume.pdf';
 
   viewWork(): void {

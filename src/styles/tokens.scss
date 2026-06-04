@@ -37,9 +37,10 @@ $border-radius-medium: 8px;
 $border-radius-large: 16px;
 $border-radius-pill: 999px;
 
-$breakpoint-medium: 768px;
+$breakpoint-medium: 960px;
 $breakpoint-large: 1024px;
 $breakpoint-xlarge: 1280px;
+$breakpoint-height-compact: 500px; // landscape phones and short browser windows
 
 $easing-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 $easing-standard: cubic-bezier(0.4, 0, 0.2, 1);

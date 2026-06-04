@@ -5,7 +5,7 @@
 
     <div class="timeline">
       @for (entry of timelineEntries; track entry.id; let isEven = $even) {
-        <div class="timeline-entry" [class.is-right]="isEven">
+        <div class="timeline-entry" [class.is-left]="isEven">
           <app-article-card
             [highlight]="entry.period"
             highlightVariant="caption"

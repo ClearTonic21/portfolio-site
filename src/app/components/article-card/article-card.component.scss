@@ -137,3 +137,9 @@
     }
   }
 }
+
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  :host {
+    flex: 1 1 100%;
+  }
+}
