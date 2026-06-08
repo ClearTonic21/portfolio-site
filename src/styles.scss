@@ -22,7 +22,6 @@ main {
 @media (min-width: tokens.$breakpoint-medium) {
   main {
     padding-left: var(--sidebar-width);
-    padding-right: var(--sidebar-width);
   }
 }
 
@@ -208,11 +207,36 @@ a:focus-visible {
     }
   }
 
+  // Scroll-activated: teal border + glow while the section is in the viewport.
+  // Slower transition than hover so the shift feels tied to scroll speed.
+  // Desktop relies on :hover instead — no pointer hover on touch, so mobile needs this.
+  &.is-in-view {
+    box-shadow: 0 4px 32px var(--accent-glow);
+
+    &::after {
+      opacity: 0;
+    }
+    &::before {
+      opacity: 1;
+    }
+
+    @media (min-width: tokens.$breakpoint-medium) {
+      box-shadow: none;
+
+      &::after {
+        opacity: 1;
+      }
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+
   @media (min-width: tokens.$breakpoint-medium) {
+    // main has no padding-right, so the glass only needs to extend leftward into the nav gap.
     margin-left: calc(-1 * var(--sidebar-width));
     padding-left: var(--sidebar-width);
-    padding-right: var(--sidebar-width);
-    width: calc(100% + 2 * var(--sidebar-width)) !important;
+    width: calc(100% + var(--sidebar-width)) !important;
   }
 }
 

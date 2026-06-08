@@ -126,6 +126,37 @@
   color: var(--text-primary);
 }
 
+// ─── Scroll-activated teal ring ───────────────────────────────────────────────
+// Mirrors the hover effect but triggered by IntersectionObserver.
+// Uses the fast transition so it responds crisply as the card enters view.
+
+:host.is-in-view {
+  box-shadow: 0 0 24px var(--accent-glow);
+
+  &::before {
+    opacity: 0;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  &::after {
+    opacity: 1;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  // Safety net: if the class is somehow present on desktop (e.g. after a resize),
+  // restore the gold ring and remove the glow so the effect never shows on pointer devices.
+  @media (min-width: tokens.$breakpoint-medium) {
+    box-shadow: none;
+
+    &::before {
+      opacity: 1;
+    }
+    &::after {
+      opacity: 0;
+    }
+  }
+}
+
 // ─── Desktop: 2-column / full-page variants ───────────────────────────────────
 
 @media (min-width: tokens.$breakpoint-medium) {

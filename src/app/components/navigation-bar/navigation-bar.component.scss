@@ -7,6 +7,7 @@
   display: contents;
 }
 
+// Outer container — column so the header row and dropdown stack vertically.
 .nav-bar {
   position: fixed;
   top: 0;
@@ -14,15 +15,14 @@
   right: 0;
   z-index: 1000;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0;
+  flex-direction: column;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
   transition:
     transform 550ms tokens.$easing-out-expo,
     box-shadow tokens.$duration-slow tokens.$easing-standard;
 
+  // Bottom metallic strip — gold at rest, swaps to teal on hover/open
   &::after {
     content: '';
     position: absolute;
@@ -46,18 +46,37 @@
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
 
-  &:hover {
+  // Only apply hover glow on true pointer devices — touch taps leave :hover
+  // stuck on iOS/Android, which would keep teal showing after the menu closes.
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 4px 24px var(--accent-glow);
+      transition:
+        transform 550ms tokens.$easing-out-expo,
+        box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+      &::after {
+        opacity: 0;
+        transition: opacity tokens.$duration-fast tokens.$easing-standard;
+      }
+
+      &::before {
+        opacity: 1;
+        transition: opacity tokens.$duration-fast tokens.$easing-standard;
+      }
+    }
+  }
+
+  // Open state — accent glow + teal strip, same as desktop hover
+  &.is-menu-open {
     box-shadow: 0 4px 24px var(--accent-glow);
-    transition:
-      transform 550ms tokens.$easing-out-expo,
-      box-shadow tokens.$duration-fast tokens.$easing-standard;
+
     &::after {
       opacity: 0;
-      transition: opacity tokens.$duration-fast tokens.$easing-standard;
     }
+
     &::before {
       opacity: 1;
-      transition: opacity tokens.$duration-fast tokens.$easing-standard;
     }
   }
 
@@ -67,21 +86,22 @@
 }
 
 // ─── Main content column ──────────────────────────────────────────────────────
+// On mobile this is just the header row + the dropdown below it.
 
 .nav-main {
   display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: 32px;
+  flex-direction: column;
+  width: 100%;
 }
 
-// ─── Logo ─────────────────────────────────────────────────────────────────────
+// ─── Header row: logo left, hamburger right ───────────────────────────────────
 
 .nav-header {
   display: flex;
-  justify-content: center;
-  padding-top: tokens.$spacing-4;
-  padding-bottom: tokens.$spacing-4;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$spacing-unit tokens.$spacing-2;
   cursor: pointer;
 }
 
@@ -98,7 +118,7 @@
 
   img {
     display: block;
-    height: 64px;
+    height: 40px; // compact logo height for the mobile header row
     width: auto;
   }
 
@@ -112,24 +132,35 @@
   }
 }
 
-// ─── Nav body ─────────────────────────────────────────────────────────────────
+// ─── Dropdown menu ────────────────────────────────────────────────────────────
+// Static — expands in-flow below the header row.
+// Width is 40 % of the viewport, centred within the full-width nav-bar.
 
 .nav-body {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: fit-content;
-  z-index: 1001;
+  position: static;
+  background: transparent; // inherits the nav-bar's frosted-glass backdrop
+  backdrop-filter: none;
+  transform: none;
+  transition: none;
+
   display: flex;
   flex-direction: column;
-  background: var(--background);
-  backdrop-filter: blur(12px);
-  transform: translateX(-100%);
-  transition: transform tokens.$duration-base tokens.$easing-standard;
+  align-items: center;
+  width: 40%;
+  align-self: center;
+
+  // Hidden: collapsed to zero height
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height tokens.$duration-slow tokens.$easing-out-expo,
+    opacity tokens.$duration-base tokens.$easing-standard;
 
   &.is-open {
-    transform: translateX(0);
+    max-height: 40vh;
+    opacity: 1;
+    padding: tokens.$spacing-3 0;
   }
 }
 
@@ -169,6 +200,26 @@
       transform: scaleX(1);
     }
   }
+}
+
+// ─── Footer: motion toggle ────────────────────────────────────────────────────
+// On mobile: pinned absolute to the bottom-left of the expanded nav bar.
+// Invisible until the menu opens, then fades in after the dropdown has started.
+
+.nav-footer {
+  display: flex;
+  position: absolute;
+  bottom: tokens.$spacing-2;
+  left: tokens.$spacing-2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity tokens.$duration-base tokens.$easing-standard;
+}
+
+.nav-bar.is-menu-open .nav-footer {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: tokens.$duration-base; // wait for dropdown to open first
 }
 
 // ─── Motion toggle ────────────────────────────────────────────────────────────
@@ -219,9 +270,6 @@
 }
 
 // ─── Motion icon ──────────────────────────────────────────────────────────────
-// Two overlapping circles. Dashed = left, solid = right, 8px overlap at rest.
-// On is-reduced: dashed fades out, solid slides left to the dashed position
-// and turns gold.
 
 .motion-icon {
   position: relative;
@@ -259,7 +307,7 @@
   }
 }
 
-// ─── chevron column + collapse toggle (desktop only) ─────────
+// ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
 
 .nav-chevron-col,
 .nav-collapse-toggle {
@@ -272,10 +320,11 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 0;
+  padding: tokens.$spacing-unit;
   border: none;
   background: none;
   cursor: pointer;
+  flex-shrink: 0;
 
   span {
     display: block;
@@ -288,24 +337,13 @@
   }
 }
 
-// ─── Mobile backdrop ──────────────────────────────────────────────────────────
+// ─── Backdrop: transparent tap-target to close the dropdown ───────────────────
 
 .nav-backdrop {
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: var(--background-overlay);
-  backdrop-filter: blur(4px);
-  animation: fade-in tokens.$duration-base tokens.$easing-standard;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  background: transparent;
 }
 
 // ─── Desktop: left sidebar ────────────────────────────────────────────────────
@@ -315,6 +353,7 @@
     height: 100%;
     width: var(--sidebar-width);
     padding: 0;
+    flex-direction: row; // nav-main + chevron-col side by side
 
     &.is-hidden {
       transform: none;
@@ -327,6 +366,7 @@
         box-shadow tokens.$duration-fast tokens.$easing-standard;
     }
 
+    // Metallic strip moves to the right edge (vertical)
     &::after {
       bottom: 0;
       top: 0;
@@ -347,15 +387,31 @@
       @include mb.strip-teal('to bottom');
     }
 
+    // Desktop hover: glow goes sideways
     &:hover {
       box-shadow: none;
+
       &::after {
         opacity: 1;
         transition: opacity tokens.$duration-slow tokens.$easing-standard;
       }
+
       &::before {
         opacity: 0;
         transition: opacity tokens.$duration-slow tokens.$easing-standard;
+      }
+    }
+
+    // is-menu-open is a mobile-only concern; neutralise it on desktop
+    &.is-menu-open {
+      box-shadow: none;
+
+      &::after {
+        opacity: 1;
+      }
+
+      &::before {
+        opacity: 0;
       }
     }
   }
@@ -375,20 +431,40 @@
     pointer-events: none;
   }
 
+  // Restore desktop nav-body: static sidebar content, fills remaining height
   .nav-body {
     position: static;
     width: fit-content;
+    align-self: auto;
     background: transparent;
     backdrop-filter: none;
     flex: 1;
     transform: none;
     transition: none;
-    cursor: default;
+
+    // Override the mobile collapsed state — always visible on desktop
+    max-height: none;
+    opacity: 1;
+    overflow: visible;
+    padding: 0;
   }
 
   .nav-monogram {
     width: 100%;
     justify-content: center;
+
+    img {
+      height: 64px; // full logo height in sidebar
+    }
+  }
+
+  // Desktop header: center the logo (hamburger is hidden)
+  .nav-header {
+    display: flex;
+    justify-content: center;
+    padding-top: tokens.$spacing-4;
+    padding-bottom: tokens.$spacing-4;
+    cursor: pointer;
   }
 
   .nav-link {
@@ -411,6 +487,11 @@
   }
 
   .nav-footer {
+    // Reset mobile absolute positioning for the static sidebar layout
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    transition: none;
     display: flex;
     flex-flow: wrap;
     justify-content: center;
@@ -420,6 +501,7 @@
     cursor: default;
   }
 
+  // Hamburger hidden on desktop
   .nav-hamburger {
     display: none;
   }
@@ -455,6 +537,7 @@
       opacity: 0;
       transition: opacity tokens.$duration-fast tokens.$easing-standard;
     }
+
     &::before {
       opacity: 1;
       transition: opacity tokens.$duration-fast tokens.$easing-standard;
@@ -478,8 +561,8 @@
     transition: color tokens.$duration-base tokens.$easing-standard;
 
     svg {
-      width: tokens.$spacing-3;
-      height: tokens.$spacing-3;
+      width: 24px;
+      height: 24px;
     }
   }
 
@@ -496,12 +579,7 @@
   }
 
   .nav-main {
-    padding: 0 tokens.$spacing-4;
     opacity: 0;
     pointer-events: none;
-  }
-
-  .nav-header {
-    padding: 0;
   }
 }

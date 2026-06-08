@@ -2,6 +2,7 @@
   class="nav-bar"
   [class.is-hidden]="isNavHidden()"
   [class.is-collapsed]="isNavCollapsed()"
+  [class.is-menu-open]="isMenuOpen()"
   aria-label="Site navigation"
 >
   <div class="nav-main">
@@ -9,6 +10,23 @@
       <div class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
         <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
       </div>
+
+      <!-- Hamburger lives here so it participates in the header row on mobile.
+           display: none on desktop via media query. -->
+      <button
+        class="nav-hamburger"
+        aria-label="Toggle menu"
+        [attr.aria-expanded]="isMenuOpen()"
+        (click)="toggleMenu()"
+      >
+        @if (isMenuOpen()) {
+          <svg lucideX [size]="24" aria-hidden="true"></svg>
+        } @else {
+          <span></span>
+          <span></span>
+          <span></span>
+        }
+      </button>
     </div>
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
@@ -58,20 +76,9 @@
       }
     </button>
   </div>
-
-  <button
-    class="nav-hamburger"
-    aria-label="Toggle menu"
-    [attr.aria-expanded]="isMenuOpen()"
-    (click)="toggleMenu()"
-  >
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
 </nav>
 
-<!-- Mobile backdrop — tap to close overlay -->
+<!-- Tap outside to close — transparent so the page stays readable behind the dropdown -->
 @if (isMenuOpen()) {
   <div class="nav-backdrop" (click)="closeMenu()" role="presentation"></div>
 }

@@ -43,6 +43,32 @@
   color: currentColor;
 }
 
+// ─── Scroll-activated hover (mobile / small viewports) ───────────────────────
+// Mirrors the pointer-hover state so touch users get the same feedback on scroll.
+// Disabled at the desktop breakpoint — pointer hover takes over there.
+
+:host.is-in-view .action-call {
+  background: var(--accent-bright);
+  transform: scale(1.04);
+  box-shadow: 0 0 48px rgba(tokens.$color-accent, 0.3);
+}
+
+:host.is-in-view .action-call__icon {
+  transform: translate(2px, -2px);
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  :host.is-in-view .action-call {
+    background: var(--accent);
+    transform: none;
+    box-shadow: none;
+  }
+
+  :host.is-in-view .action-call__icon {
+    transform: none;
+  }
+}
+
 // Icon wrapper — translated on hover to reinforce the action direction
 .action-call__icon {
   display: inline-flex;

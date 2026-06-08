@@ -49,7 +49,8 @@
     transition: box-shadow tokens.$duration-base tokens.$easing-out-expo;
   }
 
-  &:has(app-article-card:hover)::before {
+  &:has(app-article-card:hover)::before,
+  &:has(app-article-card.is-in-view)::before {
     background: var(--accent-bright);
     border: 2px solid var(--accent);
     color: var(--text-inverted);
