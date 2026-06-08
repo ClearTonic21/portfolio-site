@@ -1,7 +1,3 @@
-// Background treatment lives in the global .glass-section class, toggled on the
-// host by the `glass` input. The desktop full-bleed rule there overrides this
-// width with !important, so keep this declaration in sync if that changes.
-:host {
-  display: block;
-  width: 100%;
-}
+// Host display/width and the glass full-bleed treatment are global (styles.scss):
+// `app-cross-section` gets display:block + width:100%, and the .glass-section class
+// (toggled by the `glass` input) overrides width on desktop via !important.

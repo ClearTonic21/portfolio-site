@@ -1,10 +1,5 @@
 @use '../../../styles/tokens' as tokens;
 
-:host {
-  display: block;
-  width: 100%;
-}
-
 .contact-inner {
   align-items: center;
   text-align: center;
@@ -25,6 +20,8 @@
   margin-bottom: tokens.$spacing-8;
 }
 
+// Underline mechanics come from the global .link-underline class (applied in the
+// template); only the larger underline offset is specific to these big links.
 .contact-link {
   display: inline-flex;
   align-items: center;
@@ -33,29 +30,9 @@
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 600;
   color: var(--text-primary);
-  position: relative;
-  transition: color tokens.$duration-base tokens.$easing-standard;
 
   &::after {
-    content: '';
-    position: absolute;
     bottom: -4px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform tokens.$duration-base tokens.$easing-out-expo;
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
-
-    &::after {
-      transform: scaleX(1);
-    }
   }
 }
 

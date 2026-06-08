@@ -115,13 +115,70 @@ a:focus-visible {
 }
 
 .button-ghost:hover .link-arrow,
-.button-ghost:focus-visible .link-arrow {
+.button-ghost:focus-visible .link-arrow,
+body .link-underline:hover .link-arrow,
+body .link-underline:focus-visible .link-arrow {
   transform: translate(2px, -2px);
 }
 
 [data-reduced-motion='true'] .link-arrow {
   transform: none !important;
   transition: none !important;
+}
+
+// ─── Animated underline link ──────────────────────────────────────────────────
+// Shared hover/focus underline for nav links and contact links: a 2px accent bar
+// that wipes in from the left. Components own their own typography; the underline
+// offset can be nudged per use by overriding `bottom` on the ::after.
+
+.link-underline {
+  position: relative;
+  transition: color tokens.$duration-base tokens.$easing-standard;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform tokens.$duration-base tokens.$easing-out-expo;
+  }
+
+  &:hover,
+  &:focus-visible {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+// Component base-color rules (e.g. .nav-link[_ngcontent-xxx]) have specificity (0,2,0) —
+// equal to .link-underline:hover. Component styles load after globals, so they win on
+// source order and suppress the hover color. `body` prefix raises this to (0,2,1).
+body .link-underline:hover,
+body .link-underline:focus-visible {
+  color: var(--accent);
+}
+
+// ─── Scroll reveal ────────────────────────────────────────────────────────────
+// Applied by RevealDirective ([appReveal]); the directive adds .is-visible once
+// the element enters the viewport (or immediately when reduced motion is on).
+
+[appReveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity tokens.$duration-reveal tokens.$easing-out-expo,
+    transform tokens.$duration-reveal tokens.$easing-out-expo;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 // ─── Glass section ────────────────────────────────────────────────────────────
@@ -252,6 +309,19 @@ a:focus-visible {
   background: var(--background-subtle);
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
+}
+
+// Section content components render as custom elements (inline by default); make
+// them block-level and full width. CrossSectionComponent's glass full-bleed rule
+// overrides this width on desktop via !important.
+app-hero,
+app-about,
+app-experience,
+app-projects,
+app-contact,
+app-cross-section {
+  display: block;
+  width: 100%;
 }
 
 .section-inner {

@@ -6,8 +6,8 @@
   aria-label="Site navigation"
 >
   <div class="nav-main">
-    <div class="nav-header">
-      <div class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
+    <div class="nav-header" (click)="toggleMenu()">
+      <div class="nav-monogram" aria-label="Scroll to top" (click)="$event.stopPropagation(); navLinkClick('hero')">
         <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
       </div>
 
@@ -17,7 +17,7 @@
         class="nav-hamburger"
         aria-label="Toggle menu"
         [attr.aria-expanded]="isMenuOpen()"
-        (click)="toggleMenu()"
+        (click)="$event.stopPropagation(); toggleMenu()"
       >
         @if (isMenuOpen()) {
           <svg lucideX [size]="24" aria-hidden="true"></svg>
@@ -31,7 +31,12 @@
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
       @for (link of navLinks(); track link.id) {
-        <a class="nav-link" (click)="navLinkClick(link.id)" role="button" tabindex="0">
+        <a
+          class="nav-link link-underline"
+          (click)="navLinkClick(link.id)"
+          role="button"
+          tabindex="0"
+        >
           {{ link.label }}<span class="accent">_</span>
         </a>
       }

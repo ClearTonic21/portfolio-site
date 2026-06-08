@@ -556,7 +556,7 @@ Two-column layout — flex row on desktop (768px+), column on mobile.
 
 ### `#experience`
 
-Vertical timeline. 1px `var(--border-accent)` line. Cards alternate left/right on desktop (768px+), stack on mobile.
+Vertical timeline. 4px `var(--border-accent)` line. Cards alternate left/right on desktop (768px+), stack on mobile.
 
 Entries, newest first:
 

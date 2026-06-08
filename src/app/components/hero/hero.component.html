@@ -24,24 +24,5 @@
     </div>
   </div>
 
-  <div
-    class="hero-scroll-cue"
-    role="button"
-    tabindex="0"
-    aria-label="Scroll to About section"
-    (click)="viewWork()"
-    (keydown.enter)="viewWork()"
-    (keydown.space)="viewWork()"
-  >
-    <span class="scroll-cue-label">See my work</span>
-    <svg
-      lucideChevronDown
-      [size]="16"
-      class="scroll-cue-chevron"
-      [class.is-animated]="!motionService.reducedMotion()"
-      aria-hidden="true"
-    ></svg>
-  </div>
-
   <div class="hero-overlay" aria-hidden="true"></div>
 </section>

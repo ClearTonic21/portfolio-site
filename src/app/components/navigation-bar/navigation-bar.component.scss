@@ -166,6 +166,7 @@
 
 // ─── Nav links ────────────────────────────────────────────────────────────────
 
+// Underline mechanics come from the global .link-underline class (applied in the template).
 .nav-link {
   font-family: tokens.$font-primary;
   font-size: 1.1rem;
@@ -176,30 +177,6 @@
   cursor: pointer;
   padding: tokens.$spacing-2 0;
   text-align: center;
-  position: relative;
-  transition: color tokens.$duration-base tokens.$easing-standard;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform tokens.$duration-base tokens.$easing-out-expo;
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
-
-    &::after {
-      transform: scaleX(1);
-    }
-  }
 }
 
 // ─── Footer: motion toggle ────────────────────────────────────────────────────
@@ -229,7 +206,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: tokens.$spacing-unit;
   border-radius: tokens.$border-radius-medium;
   border: 1px solid var(--border-default);
   background: var(--background-surface);
@@ -325,6 +302,7 @@
   background: none;
   cursor: pointer;
   flex-shrink: 0;
+  color: var(--text-primary);
 
   span {
     display: block;
@@ -402,7 +380,7 @@
       }
     }
 
-    // is-menu-open is a mobile-only concern; neutralise it on desktop
+    // is-menu-open is a mobile-only concern; neutralize it on desktop
     &.is-menu-open {
       box-shadow: none;
 
@@ -483,7 +461,7 @@
   }
 
   .nav-motion-toggle {
-    padding: 8px;
+    padding: tokens.$spacing-unit;
   }
 
   .nav-footer {

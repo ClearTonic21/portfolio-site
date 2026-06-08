@@ -1,7 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
-import { LucideArrowUpRight, LucideChevronDown } from '@lucide/angular';
-import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 import { ActionCallComponent } from '../action-call/action-call.component';
 
@@ -26,18 +24,13 @@ const heroEntranceAnimation = trigger('heroEntrance', [
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [LucideChevronDown, LucideArrowUpRight, ActionCallComponent],
+  imports: [ActionCallComponent],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [heroEntranceAnimation],
 })
 export class HeroComponent {
-  private readonly scrollService = inject(ScrollService);
   readonly motionService = inject(MotionService);
   readonly resumeHref = 'Eli_Philpott_Resume.pdf';
-
-  viewWork(): void {
-    this.scrollService.scrollToSection('about');
-  }
 }
