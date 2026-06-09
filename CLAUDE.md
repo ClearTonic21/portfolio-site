@@ -943,7 +943,7 @@ describe('RevealDirective', () => {
 - `#38EEB4` on `#1A1A1A` — contrast ~9.5:1 ✓ (WCAG AA)
 - `#F0EDE6` on `#1A1A1A` — contrast ~14:1 ✓ (WCAG AAA)
 - Focus: `outline: 2px solid var(--accent); outline-offset: 3px` on all interactive elements. Never remove outlines.
-- Keyboard navigable navigation (nav links are focusable, role="button"). The mobile menu closes by tapping the backdrop or re-tapping the header row. (Escape-to-close is not yet wired up.)
+- Keyboard navigable navigation (nav links are focusable, role="button"). The mobile menu closes by tapping the backdrop, re-tapping the header row, or pressing Escape while it is open.
 - `aria-label` on all icon-only interactive elements.
 - Semantic landmarks: `<nav>`, `<main>`, `<section aria-labelledby="...">`, `<footer>`.
 - The motion toggle button uses `aria-pressed` to communicate its current state.

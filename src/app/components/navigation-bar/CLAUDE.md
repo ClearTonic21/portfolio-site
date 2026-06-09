@@ -14,7 +14,7 @@ scrolls to `hero`), anchor-scroll nav links, and the reduced-motion toggle.
 ## Layout behaviour
 | Viewport     | Layout                                                         |
 |--------------|----------------------------------------------------------------|
-| < 960px      | Fixed top bar (monogram left, hamburger right). Tapping anywhere on the header row toggles the menu (the monogram still scrolls to `hero`). Nav links live in an in-flow dropdown that expands below the header row (`max-height` 0 → 40vh, centered 40% width). The motion toggle fades in at the bottom-left of the expanded bar. |
+| < 960px      | Fixed top bar (monogram left, hamburger right). Tapping anywhere on the header row toggles the menu (the monogram still scrolls to `hero`). Nav links live in an in-flow dropdown that expands below the header row (`max-height` 0 → 40vh, centered 40% width). The motion toggle fades in at the bottom-left of the expanded bar. Pressing `Escape` while the menu is open closes it (`document:keydown.escape` host listener → `onEscape()`; a no-op when the menu is already closed). |
 | ≥ 960px      | Fixed left sidebar (`var(--sidebar-width)`, 180px). Links stacked vertically. Motion toggle pinned to the sidebar bottom via flexbox. A chevron column collapses/expands the sidebar (`is-collapsed`), it auto-collapses below `$breakpoint-height-compact`, and it auto-collapses on scroll past the hero (see Scroll behaviour). Nav bar never hides on scroll. |
 
 The single `.nav-body` element serves both roles — a `position: static` dropdown below the header

@@ -35,6 +35,9 @@ export interface NavLink {
   ],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
+  host: {
+    '(document:keydown.escape)': 'onEscape()',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationBarComponent implements OnDestroy {
@@ -79,6 +82,12 @@ export class NavigationBarComponent implements OnDestroy {
 
   closeMenu(): void {
     this.isMenuOpen.set(false);
+  }
+
+  onEscape(): void {
+    if (this.isMenuOpen()) {
+      this.closeMenu();
+    }
   }
 
   toggleNavCollapse(): void {

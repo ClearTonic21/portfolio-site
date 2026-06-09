@@ -11,9 +11,15 @@ The first section the user sees. Full viewport height. Establishes Eli's name, r
 
 ## Responsibilities
 - Render Eli's name in `.type-display` (massive, uppercase, DM Sans 900) with the brand underscore accent: `PHILPOTT_`
-- Subtitle: "Software Designer & Developer" using `.type-heading`
+- Subtitle: "Software Designer & Developer" using `.type-subtitle`
 - "Grab my Resume" CTA via `app-action-call` (`arrowIcon`) — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
 - 5% opacity pixel-noise SVG texture overlay on the background (`.hero-overlay`)
+
+## Layout
+The title + subtitle form a `width: fit-content` `.hero-headline` block; `.hero-inner` uses
+`align-items: center`, so the headline (and the resume CTA) center in the viewport — matching the
+other sections — while the title keeps its left-aligned, stacked format. The subtitle is
+`align-self: flex-end` (+ `text-align: right`), locking it to the right edge of the headline.
 
 ## Dependencies
 - `MotionService` — disables the staggered entrance animation when reduced motion is active
