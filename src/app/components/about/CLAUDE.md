@@ -10,21 +10,22 @@ Introduces Eli's professional philosophy and technical skillset. Two-column layo
 `app-about`
 
 ## Responsibilities
-- Eyebrow label: `/ About`
-- Left column (60%): narrative Lora body copy with entrepreneurial, creative-and-technical voice. Lorem ipsum acceptable for placeholder copy.
-- Right column (40%): skill tag groups. Each group has a `.type-eyebrow` category label and `.tag` pills.
-  - Frontend: Angular, TypeScript, SCSS, RxJS
-  - Backend: Node.js, RESTful APIs, SQL
-  - Platforms: ServiceNow, Azure, GitHub Pages
-  - Tooling: Claude Code, Copilot AI, JIRA, Git
-  - Game Dev: Pixel Art, Godot / Unity, Game Design
-- Stacks to single column on mobile (768px breakpoint)
+- Eyebrow label: `About_`; heading "The Details"
+- Left column (60%): narrative Lora body copy with an entrepreneurial, creative-and-technical voice, including a note that AI tooling is used with strict intention and never for ClearTonic Games_ work.
+- Right column (40%): skill tag groups, each rendered by `app-tag-list` (a `.type-eyebrow` category label + `.tag` pills):
+  - Design: Figma, UI & UX Patterns, Accessibility, Responsive Design
+  - Frontend: Angular, TypeScript, SCSS
+  - Backend: SQL, Node.js, RESTful APIs
+  - Tooling: Claude AI, ServiceNow, JIRA, Git
+  - Game Dev: Godot / Unity, Game Design Documents
+- Stacks to single column on mobile (`$breakpoint-medium`, 960px)
 
 ## Icons
 Skill tags are text-only (no icons). If icons are added to skill groups in the future, use Lucide from `@lucide/angular` for consistency.
 
 ## Dependencies
-- `RevealDirective` — scroll-reveal on section and key child elements
+- `RevealDirective` — scroll-reveal on the eyebrow and the two-column layout
+- `TagListComponent` — renders each skill group
 
 ## Does Not
 - Contain CTAs or links

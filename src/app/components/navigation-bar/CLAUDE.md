@@ -2,8 +2,8 @@
 
 ## Purpose
 The site's primary navigation. Renders as a fixed top bar on mobile and as a fixed left-side
-sidebar on desktop (768px+). Contains the ClearTonic logo, anchor-scroll nav links, and the
-reduced-motion toggle at the bottom.
+sidebar on desktop (`$breakpoint-medium`, 960px+). Contains the ClearTonic monogram (tapping it
+scrolls to `hero`), anchor-scroll nav links, and the reduced-motion toggle.
 
 ## Location
 `src/app/components/navigation-bar/`
@@ -14,11 +14,11 @@ reduced-motion toggle at the bottom.
 ## Layout behaviour
 | Viewport     | Layout                                                         |
 |--------------|----------------------------------------------------------------|
-| < 768px      | Fixed top bar (logo left, hamburger right). Nav links live in a left-side overlay that slides in on hamburger tap. Motion toggle is at the bottom of that overlay. |
-| ≥ 768px      | Fixed left sidebar (220px wide). Links stacked vertically. Motion toggle pinned to sidebar bottom via flexbox spacer. Nav bar never hides on scroll. |
+| < 960px      | Fixed top bar (monogram left, hamburger right). Tapping anywhere on the header row toggles the menu (the monogram still scrolls to `hero`). Nav links live in an in-flow dropdown that expands below the header row (`max-height` 0 → 40vh, centered 40% width). The motion toggle fades in at the bottom-left of the expanded bar. |
+| ≥ 960px      | Fixed left sidebar (`var(--sidebar-width)`, 180px). Links stacked vertically. Motion toggle pinned to the sidebar bottom via flexbox. A chevron column collapses/expands the sidebar (`is-collapsed`), and it auto-collapses below `$breakpoint-height-compact`. Nav bar never hides on scroll. |
 
-The single `.nav-body` element serves both roles — `position: fixed` overlay on mobile,
-`position: static; flex: 1` sidebar content on desktop.
+The single `.nav-body` element serves both roles — a `position: static` dropdown below the header
+on mobile, and `position: static; flex: 1` sidebar content on desktop.
 
 ## Scroll-hide
 Only applies on mobile. When the user scrolls down past 100px the top bar hides via

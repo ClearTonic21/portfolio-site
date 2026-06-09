@@ -10,28 +10,28 @@ The final section. Provides Eli's contact information and the resume PDF link. S
 `app-contact`
 
 ## Responsibilities
-- Eyebrow label: `/ Contact`
-- Short headline (e.g. "Let's build something great.")
-- Three large-format links with accent underline on hover:
-  - Email — `mailto:` link
-  - LinkedIn — opens in new tab with `rel="noopener noreferrer"`
-  - GitHub — opens in new tab with `rel="noopener noreferrer"`
-- "View Resume" `.button-primary` — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
+- Eyebrow label: `Contact_`
+- Short headline: "Let's build something." (the word "build" gets the accent highlight)
+- Three large-format links (`.contact-link.link-underline`) — accent underline + text color + arrow shift on hover:
+  - Email — `mailto:` link (leading Mail icon)
+  - LinkedIn — opens in new tab with `rel="noopener noreferrer"` (trailing ArrowUpRight icon)
+  - GitHub — opens in new tab with `rel="noopener noreferrer"` (trailing ArrowUpRight icon)
+- "Grab my Resume" CTA via `app-action-call` (`arrowIcon`, `target="_blank"`) — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_` in `.type-caption`
 
 ## Icons
-Use Lucide icons for external links:
-- `mail` icon for the email link
-- `linkedin` icon for the LinkedIn link (or `external-link` if preferred)
-- `github` icon for the GitHub link
+Lucide icons (`@lucide/angular`):
+- `Mail` — leads the email link
+- `ArrowUpRight` — trails the LinkedIn and GitHub links (and is inside the resume CTA, via `ActionCallComponent`)
 
-Import from `@lucide/angular` and render with `<lucide-icon name="..." size="20"></lucide-icon>`. Pair each with `aria-label` for accessibility.
+The arrow uses the global `.link-arrow` class so it shifts up-and-right on link hover.
 
 ## On External Links
 LinkedIn, GitHub, and the resume PDF are the only places in the entire site using `target="_blank"`. This is intentional — they are genuine external destinations and are documented here to justify the exception.
 
 ## Dependencies
-None.
+- `ActionCallComponent` — the resume CTA
+- `LucideMail`, `LucideArrowUpRight` — link icons
 
 ## Does Not
 - Contain form or form submission logic

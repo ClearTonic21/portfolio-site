@@ -39,6 +39,17 @@ All button styles are self-contained in this component's SCSS — no dependency 
 - Scale: `1.04×`
 - Icon translates `translate(2px, -2px)` toward upper-right
 
+## Scroll-activated hover (touch / small viewports)
+
+There is no `:hover` on touch, so an `IntersectionObserver` (`threshold: 0.15`,
+`rootMargin: '-25% 0px -25% 0px'`) sets the host `is-in-view` class while the button sits in the
+middle 50% of the viewport, mirroring the hover state above. It is only set when
+`window.innerWidth < 960`, and the SCSS resets it above `$breakpoint-medium`, so desktop uses
+pointer `:hover` exclusively.
+
+## Host bindings
+- `[class.is-in-view]` — bound to `isInView()`
+
 ## Icon & brand underscore usage
 
 Both are boolean toggles — the icon (`ArrowUpRight`) is owned internally, and the brand underscore
@@ -46,7 +57,7 @@ renders a `<span class="accent">_</span>` scoped to inherit the button's text co
 stays legible on the filled accent background.
 
 ```html
-<app-action-call text="View Resume" [arrowIcon]="true" href="..." target="_blank" />
+<app-action-call text="Grab my Resume" [arrowIcon]="true" href="..." target="_blank" />
 <app-action-call text="ClearTonic Games" [brandUnderscore]="true" href="..." />
 ```
 

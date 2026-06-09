@@ -21,13 +21,16 @@ Shared Angular attribute directives. Located at `src/app/directives/`.
 <div appReveal>content</div>
 ```
 
-**Consuming component SCSS pattern:**
+**Base styles (global):**
+The fade-up base rule lives once in `src/styles.scss`, so consuming components do **not**
+redeclare it:
 ```scss
 [appReveal] {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity $duration-reveal $easing-out-expo,
-              transform $duration-reveal $easing-out-expo;
+  transition:
+    opacity $duration-reveal $easing-out-expo,
+    transform $duration-reveal $easing-out-expo;
 
   &.is-visible {
     opacity: 1;
@@ -35,6 +38,8 @@ Shared Angular attribute directives. Located at `src/app/directives/`.
   }
 }
 ```
+Components only add per-element nuances such as a stagger delay, e.g.
+`.projects-heading[appReveal] { transition-delay: 150ms; }`.
 
 **Dependencies:**
 - `MotionService` — reads `reducedMotion` signal
