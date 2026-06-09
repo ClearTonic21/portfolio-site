@@ -17,6 +17,7 @@ main {
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  padding-left: var(--collapsed-width);
 }
 
 @media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {

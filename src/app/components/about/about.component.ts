@@ -19,7 +19,7 @@ export class AboutComponent {
   readonly skillGroups: readonly SkillGroup[] = [
     {
       category: 'Design',
-      skills: ['Figma', 'UI & UX Patterns', 'Accessibility', 'Responsive Design'],
+      skills: ['UX Patterns', 'Accessibility', 'Responsive Design'],
     },
     {
       category: 'Frontend',
@@ -31,7 +31,7 @@ export class AboutComponent {
     },
     {
       category: 'Tooling',
-      skills: ['Claude AI', 'ServiceNow', 'JIRA', 'Git'],
+      skills: ['Claude AI', 'ServiceNow', 'JIRA', 'Git', 'Figma'],
     },
     {
       category: 'Game Dev',

@@ -286,7 +286,7 @@
 
 // ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
 
-.nav-chevron-col,
+.nav-chevron-column,
 .nav-collapse-toggle {
   display: none;
 }
@@ -331,7 +331,7 @@
     height: 100%;
     width: var(--sidebar-width);
     padding: 0;
-    flex-direction: row; // nav-main + chevron-col side by side
+    flex-direction: row; // nav-main + column { side by side
 
     &.is-hidden {
       transform: none;
@@ -453,13 +453,6 @@
     padding: tokens.$spacing-unit 0;
   }
 
-  .nav-resume-link {
-    width: 100%;
-    justify-content: center;
-    font-size: 0.8rem;
-    text-wrap-mode: nowrap;
-  }
-
   .nav-motion-toggle {
     padding: tokens.$spacing-unit;
   }
@@ -490,7 +483,7 @@
 
   // ─── Chevron column ────────────────────────────────────────────────────────
 
-  .nav-chevron-col {
+  .nav-chevron-column {
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -501,11 +494,21 @@
     cursor: pointer;
   }
 
-  .nav-bar.is-collapsed .nav-chevron-col {
+  .nav-space-column {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    width: tokens.$spacing-4;
+    height: 100%;
+  }
+
+  .nav-bar.is-collapsed .nav-chevron-column {
     pointer-events: auto;
   }
 
-  .nav-bar:has(.nav-chevron-col:hover) {
+  .nav-bar:has(.nav-chevron-column:hover) {
     box-shadow: 4px 0 24px var(--accent-glow);
     transition:
       transform 550ms tokens.$easing-out-expo,
@@ -544,7 +547,7 @@
     }
   }
 
-  .nav-chevron-col:hover .nav-collapse-toggle {
+  .nav-chevron-column:hover .nav-collapse-toggle {
     color: var(--accent);
   }
 }
