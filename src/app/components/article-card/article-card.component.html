@@ -12,13 +12,7 @@
 
 <div class="article-card-body">
   @if (highlight()) {
-    <p
-      class="article-card-highlight"
-      [class.type-eyebrow]="highlightVariant() === 'eyebrow'"
-      [class.type-caption]="highlightVariant() === 'caption'"
-    >
-      {{ highlight() }}
-    </p>
+    <p class="type-eyebrow article-card-highlight">{{ highlight() }}</p>
   }
 
   <h3 class="type-heading article-card-title">
@@ -29,5 +23,24 @@
     }
   </h3>
 
+  @if (caption()) {
+    <p class="type-subtitle article-card-subtitle">{{ caption() }}</p>
+  }
+
+  <!-- Section-specific content (e.g. the experience bullets) -->
   <ng-content />
+
+  @if (description()) {
+    <p class="type-body article-card-description">{{ description() }}</p>
+  }
+
+  <!-- Optional tag list — supply an <app-tag-list> -->
+  <ng-content select="app-tag-list" />
+
+  <!-- Optional centered link — supply an <app-text-link> -->
+  @if (projectedLink()) {
+    <div class="article-card-link">
+      <ng-content select="app-text-link" />
+    </div>
+  }
 </div>

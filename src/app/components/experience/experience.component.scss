@@ -56,11 +56,8 @@
   }
 }
 
-// ─── Projected content — role, bullets, tags ──────────────────────────────────
-
-.timeline-role {
-  color: var(--accent);
-}
+// ─── Projected content — bullets, tags ────────────────────────────────────────
+// (The role is now the card's `caption` input; the period is its `highlight`.)
 
 .timeline-bullets {
   display: flex;

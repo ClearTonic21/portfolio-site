@@ -8,11 +8,10 @@
         <div class="timeline-entry" [class.is-left]="isEven">
           <app-article-card
             [highlight]="entry.period"
-            highlightVariant="caption"
             [title]="entry.company"
+            [caption]="entry.role"
             appReveal
           >
-            <p class="type-caption timeline-role">{{ entry.role }}</p>
             <ul class="timeline-bullets">
               @for (bullet of entry.bullets; track bullet) {
                 <li class="type-body timeline-bullet">{{ bullet }}</li>

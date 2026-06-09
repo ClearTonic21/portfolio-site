@@ -16,7 +16,7 @@ Chronological work history rendered as a vertical timeline. Shows career progres
   1. ServiceNow Application Developer — Capital One: custom JS + AngularJS components, REST API integrations, ITSM/HR modules, Agile, mentored junior engineers
   2. ServiceNow Application Developer — Discover Financial: enterprise ITSM application development
   3. Full-Stack Software Engineer — Experlogix Inc.: TypeScript + Angular SaaS, CRM integrations, UI/UX redesigns, API and database layer changes, Design and Product collaboration
-- Each entry is an `app-article-card` (global `.surface`): company in the card title, the period as a `caption`-variant highlight, role in `.type-caption` (accent), bullets in `.type-body`, and tags via `app-tag-list`
+- Each entry is an `app-article-card` (global `.surface`): company in the `title`, period in the `highlight` (gold eyebrow), role in the `caption` (accent, under the title), bullets projected as `.type-body` list items, and tags via a projected `app-tag-list`
 
 ## Data Model
 ```typescript

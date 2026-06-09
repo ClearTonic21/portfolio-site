@@ -126,6 +126,34 @@
   color: var(--text-primary);
 }
 
+.article-card-subtitle {
+  display: flex;
+  justify-content: end;
+  margin-top: 0;
+  margin-right: tokens.$spacing-2;
+  padding-left: tokens.$spacing-8;
+  text-align: right;
+}
+
+// Card-owned body copy. flex: 1 lets it absorb the slack so the link (when present)
+// settles at the bottom and bottom-aligns across a row of cards.
+.article-card-description {
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+// Centered link slot. Color + link typography are set here and inherited by the
+// projected <app-text-link>'s inner <a> (reset.scss sets `a { font/color: inherit }`).
+.article-card-link {
+  display: flex;
+  justify-content: center;
+  color: var(--accent);
+  font-family: tokens.$font-primary;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 // ─── Scroll-activated teal ring ───────────────────────────────────────────────
 // Mirrors the hover effect but triggered by IntersectionObserver.
 // Uses the fast transition so it responds crisply as the card enters view.

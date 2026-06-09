@@ -4,10 +4,12 @@ import {
   ElementRef,
   OnDestroy,
   afterNextRender,
+  contentChild,
   inject,
   input,
   signal,
 } from '@angular/core';
+import { TextLinkComponent } from '../text-link/text-link.component';
 
 @Component({
   selector: 'app-article-card',
@@ -27,14 +29,19 @@ export class ArticleCardComponent implements OnDestroy {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
   readonly title = input.required<string>();
+  // Eyebrow label above the title (gold).
   readonly highlight = input<string>();
-  // 'eyebrow' (default) → uppercase, wide tracking, accent color override to secondary
-  // 'caption' → compact, no uppercase — use for dates and metadata labels
-  readonly highlightVariant = input<'eyebrow' | 'caption'>('eyebrow');
+  // Caption under the title (e.g. a role or subtitle) — DM Sans, accent color.
+  readonly caption = input<string>();
   // Pass a non-empty string to show an image, '' to show the placeholder, omit to hide the image area entirely
   readonly imagePath = input<string>();
   readonly imageAlt = input<string>('');
   readonly fullPage = input<boolean>(false);
+  // Body copy rendered by the card (same treatment everywhere it's used).
+  readonly description = input<string>();
+
+  // Whether a link was projected, so the centered link slot only renders when filled.
+  readonly projectedLink = contentChild(TextLinkComponent);
 
   readonly isInView = signal(false);
 

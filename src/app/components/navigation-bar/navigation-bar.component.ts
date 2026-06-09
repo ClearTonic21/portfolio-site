@@ -49,6 +49,8 @@ export class NavigationBarComponent implements OnDestroy {
   private readonly scrollHandler = () => this.onScroll();
   private readonly resizeHandler = () => this.onResize();
   private lastScrollY = 0;
+  // Once the user works the chevron, the sidebar stops auto-collapsing/expanding on scroll.
+  private hasManuallyToggledNav = false;
 
   private static readonly DESKTOP_BREAKPOINT = 960;
   private static readonly COMPACT_HEIGHT = 580;
@@ -80,12 +82,31 @@ export class NavigationBarComponent implements OnDestroy {
   }
 
   toggleNavCollapse(): void {
+    this.hasManuallyToggledNav = true;
     this.isNavCollapsed.update((c) => !c);
   }
 
   private onScroll(): void {
     const currentScrollY = window.scrollY;
+
+    // Mobile: hide the top bar on scroll-down past 100px.
     this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
+
+    // Desktop: open at the top of the page, collapse once the user scrolls past the
+    // middle of the hero. Disabled for good once the user works the chevron manually, so
+    // their explicit choice is never overridden by scrolling.
+    if (!this.hasManuallyToggledNav && window.innerWidth >= NavigationBarComponent.DESKTOP_BREAKPOINT) {
+      const hero = document.getElementById('hero');
+      if (hero) {
+        const threshold = hero.offsetHeight * 0.5;
+        const wasPast = this.lastScrollY > threshold;
+        const isPast = currentScrollY > threshold;
+        if (isPast !== wasPast) {
+          this.isNavCollapsed.set(isPast);
+        }
+      }
+    }
+
     this.lastScrollY = currentScrollY;
   }
 

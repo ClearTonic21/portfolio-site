@@ -36,7 +36,11 @@
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
       @for (link of navLinks(); track link.id) {
-        <app-text-link [label]="link.label" (activated)="navLinkClick(link.id)" />
+        <app-text-link
+          [label]="link.label"
+          [icon]="'underscore'"
+          (activated)="navLinkClick(link.id)"
+        />
       }
     </div>
 

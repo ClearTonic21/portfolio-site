@@ -13,25 +13,8 @@
   gap: tokens.$spacing-4;
 }
 
-// ─── Projected content — description and CTA ──────────────────────────────────
-// Styled here because they are projected into ArticleCardComponent from this template.
-
-.project-description {
-  color: var(--text-secondary);
-  flex: 1;
-}
-
-// The CTA is an app-text-link (icon="arrow"). Color/typography are set on the host and
-// inherited by its inner <a>; align-self keeps it content-width and flush-left in the
-// card's flex column. The accent + underline + arrow-shift hover come from the component.
-.project-link {
-  align-self: flex-start;
-  color: var(--accent);
-  font-family: tokens.$font-primary;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
+// Card body content (description, tags, the centered CTA link) is owned by
+// ArticleCardComponent — projects only supplies the data and the projected elements.
 
 // ─── Reveal animations ────────────────────────────────────────────────────────
 // Base [appReveal] styles are global (styles.scss); only the stagger delay is local.

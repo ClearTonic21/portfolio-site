@@ -11,14 +11,11 @@
           [fullPage]="project.fullPage"
           [highlight]="project.eyebrow"
           [title]="project.title"
+          [description]="project.description"
           appReveal
         >
           <app-tag-list [tags]="project.tags" />
-
-          <p class="type-body project-description">{{ project.description }}</p>
-
           <app-text-link
-            class="project-link"
             [label]="project.linkLabel"
             icon="arrow"
             [href]="project.linkHref"
