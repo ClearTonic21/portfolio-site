@@ -19,12 +19,6 @@ main {
   min-height: 100vh;
 }
 
-@media (min-width: tokens.$breakpoint-medium) {
-  main {
-    padding-left: var(--sidebar-width);
-  }
-}
-
 @media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
   :root {
     --sidebar-width: 36px;
@@ -288,13 +282,6 @@ body .link-underline:focus-visible {
       }
     }
   }
-
-  @media (min-width: tokens.$breakpoint-medium) {
-    // main has no padding-right, so the glass only needs to extend leftward into the nav gap.
-    margin-left: calc(-1 * var(--sidebar-width));
-    padding-left: var(--sidebar-width);
-    width: calc(100% + var(--sidebar-width)) !important;
-  }
 }
 
 .tag {
@@ -312,8 +299,7 @@ body .link-underline:focus-visible {
 }
 
 // Section content components render as custom elements (inline by default); make
-// them block-level and full width. CrossSectionComponent's glass full-bleed rule
-// overrides this width on desktop via !important.
+// them block-level and full width so each section spans the viewport.
 app-hero,
 app-about,
 app-experience,
