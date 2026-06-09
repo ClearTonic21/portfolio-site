@@ -24,6 +24,9 @@ main {
   :root {
     --sidebar-width: 36px;
   }
+  main {
+    padding-left: 0;
+  }
 }
 
 button,
@@ -124,7 +127,8 @@ body .link-underline:focus-visible .link-arrow {
 // ─── Animated underline link ──────────────────────────────────────────────────
 // Shared hover/focus underline for nav links and contact links: a 2px accent bar
 // that wipes in from the left. Components own their own typography; the underline
-// offset can be nudged per use by overriding `bottom` on the ::after.
+// offset can be nudged per use via the --link-underline-offset custom property
+// (set on the link or an ancestor — it inherits through emulated encapsulation).
 
 .link-underline {
   position: relative;
@@ -133,7 +137,7 @@ body .link-underline:focus-visible .link-arrow {
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: var(--link-underline-offset, 0);
     left: 0;
     right: 0;
     height: 2px;
@@ -151,7 +155,7 @@ body .link-underline:focus-visible .link-arrow {
   }
 }
 
-// Component base-color rules (e.g. .nav-link[_ngcontent-xxx]) have specificity (0,2,0) —
+// Component base-color rules (e.g. .contact-link[_ngcontent-xxx]) have specificity (0,2,0) —
 // equal to .link-underline:hover. Component styles load after globals, so they win on
 // source order and suppress the hover color. `body` prefix raises this to (0,2,1).
 body .link-underline:hover,

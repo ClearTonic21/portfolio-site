@@ -43,12 +43,12 @@ Project cards may display an external link icon using Lucide for CTAs: `<lucide-
 - `RevealDirective` — staggered reveals
 - `ArticleCardComponent` — card shell for each project
 - `TagListComponent` — tech-stack pills
-- `LucideArrowUpRight` — CTA link icon
+- `TextLinkComponent` — the CTA link (`icon="arrow"`)
 
 ## Links
-Each card's CTA uses `linkHref` / `linkLabel`. Real destinations (GitHub) open in a new tab with
-`target="_blank"` + `rel="noopener noreferrer"`; a `#` value renders a non-navigating placeholder
-(e.g. "Coming Soon") with no `target`.
+Each card's CTA is an `app-text-link` (`icon="arrow"`, accent-colored) driven by `linkHref` /
+`linkLabel`. Real destinations (GitHub) open in a new tab — `target="_blank"` + auto
+`rel="noopener noreferrer"`; a `#` value passes no `target` (placeholder, e.g. "Coming Soon").
 
 ## Does Not
 - Contain modal or lightbox behavior

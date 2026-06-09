@@ -189,6 +189,12 @@ afterNextRender(() => {
         │   │   ├── tag-list.component.html
         │   │   ├── tag-list.component.scss
         │   │   └── tag-list.component.spec.ts
+        │   ├── text-link/
+        │   │   ├── CLAUDE.md
+        │   │   ├── text-link.component.ts
+        │   │   ├── text-link.component.html
+        │   │   ├── text-link.component.scss
+        │   │   └── text-link.component.spec.ts
         │   ├── article-card/
         │   │   ├── CLAUDE.md
         │   │   ├── article-card.component.ts

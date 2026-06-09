@@ -165,18 +165,19 @@
 }
 
 // ─── Nav links ────────────────────────────────────────────────────────────────
-
-// Underline mechanics come from the global .link-underline class (applied in the template).
-.nav-link {
+// Each link is a TextLinkComponent (icon="underscore"). Typography/color are set on
+// the host and inherited by its inner <a>; the tap-target padding is passed via the
+// --text-link-padding custom property. The accent + underline hover comes from the
+// global .link-underline class the component already applies.
+app-text-link {
   font-family: tokens.$font-primary;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-primary);
-  cursor: pointer;
-  padding: tokens.$spacing-2 0;
   text-align: center;
+  --text-link-padding: #{tokens.$spacing-2} 0;
 }
 
 // ─── Footer: motion toggle ────────────────────────────────────────────────────
@@ -445,12 +446,11 @@
     cursor: pointer;
   }
 
-  .nav-link {
+  app-text-link {
     display: block;
     width: 100%;
-    font-size: 1.1rem;
     letter-spacing: 0.08em;
-    padding: tokens.$spacing-unit 0;
+    --text-link-padding: #{tokens.$spacing-unit} 0;
   }
 
   .nav-motion-toggle {

@@ -36,14 +36,7 @@
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
       @for (link of navLinks(); track link.id) {
-        <a
-          class="nav-link link-underline"
-          (click)="navLinkClick(link.id)"
-          role="button"
-          tabindex="0"
-        >
-          {{ link.label }}<span class="accent">_</span>
-        </a>
+        <app-text-link [label]="link.label" (activated)="navLinkClick(link.id)" />
       }
     </div>
 

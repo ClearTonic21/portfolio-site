@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
-import { LucideArrowUpRight } from '@lucide/angular';
 import { TagListComponent } from '../tag-list/tag-list.component';
 import { ArticleCardComponent } from '../article-card/article-card.component';
+import { TextLinkComponent } from '../text-link/text-link.component';
 
 interface ProjectCard {
   readonly id: string;
@@ -20,7 +20,7 @@ interface ProjectCard {
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RevealDirective, LucideArrowUpRight, TagListComponent, ArticleCardComponent],
+  imports: [RevealDirective, TagListComponent, ArticleCardComponent, TextLinkComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

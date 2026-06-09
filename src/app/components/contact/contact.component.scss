@@ -20,20 +20,15 @@
   margin-bottom: tokens.$spacing-8;
 }
 
-// Underline mechanics come from the global .link-underline class (applied in the
-// template); only the larger underline offset is specific to these big links.
-.contact-link {
-  display: inline-flex;
-  align-items: center;
-  gap: tokens.$spacing-unit;
+// Each link is an app-text-link. Typography/color are set on the host and inherited by
+// its inner <a>; the larger underline offset for these big links is passed via the
+// --link-underline-offset custom property the global .link-underline reads.
+app-text-link {
   font-family: tokens.$font-primary;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 600;
   color: var(--text-primary);
-
-  &::after {
-    bottom: -4px;
-  }
+  --link-underline-offset: -4px;
 }
 
 .contact-footer {

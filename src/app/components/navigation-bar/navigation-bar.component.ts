@@ -16,6 +16,7 @@ import {
 } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
+import { TextLinkComponent } from '../text-link/text-link.component';
 
 export interface NavLink {
   readonly id: string;
@@ -24,8 +25,14 @@ export interface NavLink {
 
 @Component({
   selector: 'app-navigation-bar',
-  standalone: true,
-  imports: [LucideChevronLeft, LucideChevronRight, LucideCircle, LucideCircleDashed, LucideX],
+  imports: [
+    LucideChevronLeft,
+    LucideChevronRight,
+    LucideCircle,
+    LucideCircleDashed,
+    LucideX,
+    TextLinkComponent,
+  ],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

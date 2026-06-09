@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { LucideMail, LucideArrowUpRight } from '@lucide/angular';
 import { ActionCallComponent } from '../action-call/action-call.component';
+import { TextLinkComponent } from '../text-link/text-link.component';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [LucideMail, LucideArrowUpRight, ActionCallComponent],
+  imports: [ActionCallComponent, TextLinkComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

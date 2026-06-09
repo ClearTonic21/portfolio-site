@@ -21,31 +21,16 @@
   flex: 1;
 }
 
+// The CTA is an app-text-link (icon="arrow"). Color/typography are set on the host and
+// inherited by its inner <a>; align-self keeps it content-width and flush-left in the
+// card's flex column. The accent + underline + arrow-shift hover come from the component.
 .project-link {
-  display: inline-flex;
-  align-items: center;
-  gap: tokens.$spacing-unit;
+  align-self: flex-start;
   color: var(--accent);
-  text-decoration: none;
   font-family: tokens.$font-primary;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  width: fit-content;
-  transition: opacity 200ms ease;
-
-  svg {
-    flex-shrink: 0;
-    transition: transform 200ms tokens.$easing-out-expo;
-  }
-
-  &:hover {
-    opacity: 0.8;
-
-    svg {
-      transform: translate(2px, -2px);
-    }
-  }
 }
 
 // ─── Reveal animations ────────────────────────────────────────────────────────

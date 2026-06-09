@@ -20,18 +20,19 @@ The final section. Provides Eli's contact information and the resume PDF link. S
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_` in `.type-caption`
 
 ## Icons
-Lucide icons (`@lucide/angular`):
-- `Mail` — leads the email link
-- `ArrowUpRight` — trails the LinkedIn and GitHub links (and is inside the resume CTA, via `ActionCallComponent`)
+The three links are `app-text-link`s; their icons come from that component's `icon` input:
+- `icon="mail"` (`iconSize="20"`) for the email link
+- `icon="arrow"` for LinkedIn and GitHub (the arrow shifts up-and-right on hover via the global
+  `.link-arrow` class the component applies)
 
-The arrow uses the global `.link-arrow` class so it shifts up-and-right on link hover.
+The resume CTA's `ArrowUpRight` comes from `ActionCallComponent`.
 
 ## On External Links
 LinkedIn, GitHub, and the resume PDF are the only places in the entire site using `target="_blank"`. This is intentional — they are genuine external destinations and are documented here to justify the exception.
 
 ## Dependencies
+- `TextLinkComponent` — the three email / LinkedIn / GitHub links
 - `ActionCallComponent` — the resume CTA
-- `LucideMail`, `LucideArrowUpRight` — link icons
 
 ## Does Not
 - Contain form or form submission logic

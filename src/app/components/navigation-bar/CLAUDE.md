@@ -24,9 +24,17 @@ on mobile, and `position: static; flex: 1` sidebar content on desktop.
 Only applies on mobile. When the user scrolls down past 100px the top bar hides via
 `transform: translateY(-100%)`. `.is-hidden` is a no-op on desktop.
 
+## Nav links
+Each link is an `app-text-link` (`icon="underscore"`, button mode) whose `(activated)` output calls
+`navLinkClick(id)`. The link's typography/color are set on the `app-text-link` host in this
+component's SCSS (inherited by its inner `<a>`); the tap-target padding is passed via
+`--text-link-padding` (`$spacing-2 0` mobile, `$spacing-unit 0` desktop). The accent + underline
+hover comes from the global `.link-underline` class the component applies.
+
 ## Dependencies
 - `ScrollService` — all nav link clicks
 - `MotionService` — reduced-motion toggle
+- `TextLinkComponent` — renders each nav link
 
 ## Does Not
 - Track the active section (underlines appear on hover only)

@@ -17,15 +17,13 @@
 
           <p class="type-body project-description">{{ project.description }}</p>
 
-          <a
+          <app-text-link
             class="project-link"
+            [label]="project.linkLabel"
+            icon="arrow"
             [href]="project.linkHref"
-            [attr.target]="project.linkHref !== '#' ? '_blank' : null"
-            [attr.rel]="project.linkHref !== '#' ? 'noopener noreferrer' : null"
-          >
-            {{ project.linkLabel }}
-            <svg lucideArrowUpRight size="16" aria-hidden="true"></svg>
-          </a>
+            [target]="project.linkHref !== '#' ? '_blank' : null"
+          />
         </app-article-card>
       }
     </div>

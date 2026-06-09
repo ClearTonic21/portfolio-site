@@ -1,0 +1,21 @@
+<a
+  class="text-link link-underline"
+  [attr.href]="href()"
+  [attr.target]="target()"
+  [attr.rel]="rel()"
+  [attr.role]="href() === null ? 'button' : null"
+  [attr.tabindex]="href() === null ? 0 : null"
+  (click)="activate($event)"
+  (keydown.enter)="activate($event)"
+  (keydown.space)="activate($event)"
+>
+  <span class="text-link__label">{{ label() }}@if (icon() === 'underscore') {<span class="accent">_</span>}</span>
+  @switch (icon()) {
+    @case ('arrow') {
+      <svg lucideArrowUpRight class="link-arrow" [size]="iconSize()" aria-hidden="true"></svg>
+    }
+    @case ('mail') {
+      <svg lucideMail [size]="iconSize()" aria-hidden="true"></svg>
+    }
+  }
+</a>
