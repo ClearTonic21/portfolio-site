@@ -7,7 +7,7 @@
 
 ## 1. Project Overview
 
-A single-page Angular portfolio site for **Eli Philpott** — a UI/UX and software designer who builds polished, well-structured applications and creates indie games under **ClearTonic Games\_**.
+A single-page Angular portfolio site for **Eli Philpott** a software designer and developer who builds polished, well-structured applications and creates indie games under **ClearTonic Games\_**.
 
 **Primary audience:** Hiring managers and recruiters looking for a Software Designer, App Designer, or UI/UX Designer.
 
@@ -189,6 +189,12 @@ afterNextRender(() => {
         │   │   ├── tag-list.component.html
         │   │   ├── tag-list.component.scss
         │   │   └── tag-list.component.spec.ts
+        │   ├── text-link/
+        │   │   ├── CLAUDE.md
+        │   │   ├── text-link.component.ts
+        │   │   ├── text-link.component.html
+        │   │   ├── text-link.component.scss
+        │   │   └── text-link.component.spec.ts
         │   ├── article-card/
         │   │   ├── CLAUDE.md
         │   │   ├── article-card.component.ts
@@ -230,19 +236,22 @@ afterNextRender(() => {
 Component SCSS always references CSS custom properties. Never hardcode hex values inside component files.
 
 ```scss
-// src/styles/_tokens.scss
+// src/styles/tokens.scss
 
 $color-background: #1a1a1a;
 $color-background-surface: #232323;
 $color-background-subtle: #2c2c2c;
 $color-text-primary: #f0ede6;
-$color-text-secondary: #a89f91;
+$color-text-secondary: #d6cbb5;
 $color-text-inverted: #1a1a1a;
 $color-accent: #38eeb4;
 $color-accent-hover: #1abfa0;
+$color-accent-bright: #d7fcf0;
 $color-accent-glow: rgba(56, 238, 180, 0.15);
 $color-border-default: rgba(240, 237, 230, 0.08);
 $color-border-accent: rgba(56, 238, 180, 0.3);
+$color-gold: #c9a227;
+$color-gold-border: rgba(201, 162, 39, 0.35);
 $color-error: #ff6b6b;
 
 :root {
@@ -254,14 +263,21 @@ $color-error: #ff6b6b;
   --text-inverted: #{$color-text-inverted};
   --accent: #{$color-accent};
   --accent-hover: #{$color-accent-hover};
+  --accent-bright: #{$color-accent-bright};
   --accent-glow: #{$color-accent-glow};
   --border-default: #{$color-border-default};
   --border-accent: #{$color-border-accent};
+  --gold: #{$color-gold};
+  --gold-border: #{$color-gold-border};
   --error: #{$color-error};
+  --background-overlay: #{rgba($color-background, 0.8)};
+  --sidebar-width: 180px;
 }
 ```
 
-`#38EEB4` is the only accent color. No light mode. No additional accent hues.
+`#38EEB4` is the only accent color. No light mode, no additional accent hues. A muted gold
+(`--gold`, `#C9A227`) is used **only** for the metallic glass-section and card border treatment —
+it is a decorative border, not an accent.
 
 ---
 
@@ -325,8 +341,8 @@ $font-body: 'Lora', serif; // body copy only
 
 **Typography rules:**
 
-- The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="brand-underscore">_</span>` styled `color: var(--accent)`.
-- Section eyebrow labels use a suffix underscore: `Section Name<span class="brand-underscore">_</span>` — no forward-slash prefix.
+- The trailing `_` in **ClearTonic Games\_** is a brand element. Always render it as `<span class="accent">_</span>` styled `color: var(--accent)`.
+- Section eyebrow labels use a suffix underscore: `Section Name<span class="accent">_</span>` — no forward-slash prefix.
 - Never use font-weight below 500 for headings or labels.
 - Never use Arial, Inter, Roboto, or system-ui.
 
@@ -338,7 +354,7 @@ $font-body: 'Lora', serif; // body copy only
 Never use spacer elements to do what padding, alignment and margins can do.
 
 ```scss
-// src/styles/_tokens.scss (continued)
+// src/styles/tokens.scss (continued)
 
 $spacing-unit: 8px;
 $spacing-2: 16px;
@@ -349,7 +365,7 @@ $spacing-8: 64px;
 $spacing-12: 96px;
 $spacing-16: 128px;
 
-$section-vertical-padding: clamp(#{$spacing-12}, 12vw, #{$spacing-16});
+$section-vertical-padding: clamp(#{$spacing-6}, 6vw, #{$spacing-12});
 $content-max-width: 1200px;
 $content-horizontal-gutter: clamp(#{$spacing-3}, 5vw, #{$spacing-8});
 ```
@@ -399,7 +415,7 @@ $border-radius-pill: 999px;
   flex-direction: column; // mobile: stacked
   gap: $spacing-6;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-medium) {
     flex-direction: row; // desktop: side by side
   }
 }
@@ -410,7 +426,7 @@ $border-radius-pill: 999px;
   flex-direction: column;
   gap: $spacing-4;
 
-  @media (min-width: 768px) {
+  @media (min-width: $breakpoint-medium) {
     flex-direction: row;
     flex-wrap: wrap;
   }
@@ -421,7 +437,7 @@ $border-radius-pill: 999px;
 
 ### 4.6 Motion
 
-Motion is minimal. A "Reduce motion" button is visible in the bottom-left corner before the user scrolls.
+Motion is minimal. The reduced-motion toggle lives in the navigation bar (see Section 10).
 
 ```scss
 // src/styles/_tokens.scss (continued)
@@ -438,9 +454,10 @@ $duration-reveal: 700ms;
 **Permitted animations:**
 
 1. Scroll reveal — `opacity` + `translateY(20px)` via `RevealDirective`
-2. Nav underline — `scaleX()` on hover
-3. Project card hover — `translateY(-3px)` + border brightens
-4. Mobile menu — `opacity` + `translateY`
+2. Nav / contact link underline — `scaleX()` on hover (global `.link-underline`)
+3. Project & timeline card hover — `translateY(-3px)` + metallic border swaps gold → teal
+4. Mobile menu — `max-height` + `opacity` dropdown
+5. Scroll-activated glow — on touch/small viewports, glass sections, cards, and the action-call CTA mirror their hover state while in the middle 50% of the viewport (via `IntersectionObserver`)
 
 **Reduced motion — applied globally:**
 
@@ -461,16 +478,17 @@ Never use `transition: all`. Always specify the property name.
 
 ```scss
 // Breakpoints
-$breakpoint-medium: 768px; // tablet and up
+$breakpoint-medium: 960px; // primary mobile → desktop switch
 $breakpoint-large: 1024px; // desktop and up
 $breakpoint-xlarge: 1280px; // wide desktop
+$breakpoint-height-compact: 500px; // landscape phones / short windows
 
 // Usage pattern — always mobile-first
 .component-element {
   font-size: 1rem; // mobile base
 
   @media (min-width: $breakpoint-medium) {
-    font-size: 1.25rem; // tablet and up
+    font-size: 1.25rem; // desktop and up
   }
 }
 ```
@@ -514,50 +532,50 @@ interface CrossSection {
 ```
 
 - **Feature flag:** `enabled: false` fails the `@if`, so the cross-section and its content are never instantiated or added to the DOM.
-- **Background:** the cross-section owns the section background. `glass: true` applies the `.glass-section` treatment (frosted overlay + gold top/bottom borders that brighten to teal on hover, full-bleed on desktop); `glass: false` leaves the section transparent over the parallax background.
+- **Background:** the cross-section owns the section background. `glass: true` applies the `.glass-section` treatment (frosted overlay + gold top/bottom borders that brighten to teal on hover, or on scroll-into-view on touch/small viewports); `glass: false` leaves the section transparent over the parallax background. Sections span the full viewport (full-bleed); the page no longer reserves sidebar space, so content centers on the true viewport center with the nav floating over it.
 - Content components (`app-hero`, `app-about`, …) render via `NgComponentOutlet` and keep their own `<section id="...">`, `.section-inner`, and content unchanged. They are not listed in `AppComponent`'s `imports`.
 
-### Navigation (AppComponent)
+### Navigation (NavigationBarComponent)
 
-- Fixed top bar, `backdrop-filter: blur(12px)`, semi-transparent `var(--background)`
-- Left: **EP** monogram, DM Sans weight 900, `var(--accent)`. Clicking scrolls to `#hero`.
-- Right: anchor links — `/ About`, `/ Experience`, `/ Projects`, `/ Contact`
-- All nav links call `ScrollService.scrollToSection(sectionId)` — no `href` navigation
-- Active section tracked by `IntersectionObserver`; active link shows accent underline
-- Mobile (below 768px): hamburger button → full-screen overlay menu
-- Nav bar hides on scroll down past 100px; reappears on scroll up
+`AppComponent` renders `<app-navigation-bar [navLinks]="navLinks" />`; the bar owns all nav behaviour.
+
+- `backdrop-filter: blur(12px)`, semi-transparent `var(--background-overlay)`
+- Monogram: the ClearTonic icon (`assets/icons/`). Clicking scrolls to `#hero`.
+- Nav links — `About_`, `Experience_`, `Projects_`, `Contact_` — each call `ScrollService.scrollToSection(id)`; no `href` navigation
+- Links use the global `.link-underline` (text turns accent + underline wipes in on hover); there is **no** active-section tracking
+- Mobile (below 960px): fixed top bar; tapping anywhere on the header row toggles an in-flow dropdown of links (the monogram still scrolls to `#hero`). The bar hides on scroll-down past 100px and reappears on scroll-up.
+- Desktop (960px+): fixed left sidebar (`var(--sidebar-width)`, 180px) with a chevron to collapse/expand it; auto-collapses below `$breakpoint-height-compact`. Never hides on scroll.
 
 ### `#hero`
 
 ```
 ELI
-PHILPOTT
+PHILPOTT_
 
-UI/UX & Software Designer
+Software Designer & Developer
 
-[Resume ↗]
-[View My Work]
+[Grab my Resume ↗]
 ```
 
-- "View My Work" calls `ScrollService.scrollToSection('about')`
-- "Resume ↗" opens `Eli_Philpott_Resume.pdf` in a new tab — served from `public/` at the build root
+- The name uses `.type-display` with the brand underscore accent on `PHILPOTT_`
+- "Grab my Resume ↗" is an `app-action-call` (`arrowIcon`, `target="_blank"`) — opens `Eli_Philpott_Resume.pdf` in a new tab, served from `public/` at the build root
 - Pixel-noise SVG texture overlay at 5% opacity on section background
 
 ### `#about`
 
-Two-column layout — flex row on desktop (768px+), column on mobile.
+Two-column layout — flex row on desktop (960px+), column on mobile. Heading "The Details".
 
-- Left (flex: 0 0 60%): Lora body copy. Voice: entrepreneurial, creative and technical, clear communicator. Subtle one-sentence mention that Eli directs AI tooling closely — ensuring best practices are followed and output matches intent accurately. Lorem ipsum acceptable for placeholder copy.
-- Right (flex: 0 0 40%): skill tag groups. Category label in `.type-eyebrow`, tags as `.tag` pills.
-  - Design: Figma, UI/UX Patterns, Accessibility, Responsive Design
-  - Frontend: Angular, TypeScript, SCSS, RxJS
-  - Backend: Node.js, RESTful APIs, SQL
-  - Platforms: ServiceNow, Azure, GitHub Pages
-  - Game Dev: Pixel Art, Game Design, ClearTonic Games\_
+- Left (flex: 0 0 60%): Lora body copy. Voice: entrepreneurial, creative and technical, clear communicator. Includes a note that AI tooling is directed with strict intention — every output evaluated against design and engineering standards — and is never used for ClearTonic Games\_ work.
+- Right (flex: 0 0 40%): skill tag groups, each an `app-tag-list` (category label in `.type-eyebrow`, tags as `.tag` pills):
+  - Design: Figma, UI & UX Patterns, Accessibility, Responsive Design
+  - Frontend: Angular, TypeScript, SCSS
+  - Backend: SQL, Node.js, RESTful APIs
+  - Tooling: Claude AI, ServiceNow, JIRA, Git
+  - Game Dev: Godot / Unity, Game Design Documents
 
 ### `#experience`
 
-Vertical timeline. 1px `var(--border-accent)` line. Cards alternate left/right on desktop (768px+), stack on mobile.
+Vertical timeline. 4px `var(--border-accent)` line with an accent dot per entry. Cards (each an `app-article-card`) alternate left/right on desktop (960px+) and stack on mobile; a short-landscape override collapses to a single flush-left column with the line on the right.
 
 Entries, newest first:
 
@@ -567,28 +585,28 @@ Entries, newest first:
 
 ### `#projects`
 
-Flex row, wrapping, gap `$spacing-4`. Each card `flex: 1 1 calc(50% - $spacing-4)` on desktop, `flex: 1 1 100%` on mobile.
+Flex row, wrapping, gap `$spacing-4` (`.projects-grid`). Each card is an `app-article-card`: `flex: 1 1 calc(50% - $spacing-4 / 2)` on desktop, `flex: 1 1 100%` on mobile (and 100% when `fullPage`).
 
-Cards: image area, eyebrow tag, `.type-heading` title, `.tag` pills, `.type-body` description, CTA link.
+Cards: image area, highlight eyebrow, `.type-heading` title, `app-tag-list` pills, `.type-body` description, CTA link (the tags, description, and link are projected into the card).
 
 Projects:
 
-1. **ClearTonic Games\_ — [Game Name]** — `assets/images/game-screenshot.png` — GitHub: `https://github.com/ClearTonic21` (link to repo, no live demo)
-2. **Canopy Trails** — `assets/images/app-screenshot.png` — GitHub: `https://github.com/ClearTonic21` (link to repo)
-3. **This Portfolio Site** — AI-directed design and development case study — GitHub: `https://github.com/ClearTonic21`
+1. **ClearTonic Games\_** — indie game design & development — `assets/images/game_screenshot.png` — "View on GitHub" → `https://github.com/ClearTonic21`
+2. **Canopy Trails** — trail/nature-spot information organizer — `assets/images/app_screenshot.png` — "Coming Soon" (`#` placeholder, no navigation)
+3. **This Portfolio Site** — AI-directed Angular 20 development — no image (placeholder shown) — "View Source" → GitHub
 
-All project CTAs link to the GitHub profile or specific repos. No other external navigation.
+Real CTAs open in a new tab with `rel="noopener noreferrer"`; a `#` value renders a non-navigating placeholder.
 
 ### `#contact`
 
 Centered, flex column, `align-items: center`.
 
-- Short headline: "Let's build something."
-- Three large link items: Email, LinkedIn, GitHub — each with accent underline on hover
-- "View Resume" `.button-primary` — opens `Eli_Philpott_Resume.pdf` in new tab (served from `public/`)
+- Short headline: "Let's build something." (the word "build" gets the accent highlight)
+- Three large link items: Email (leading Mail icon), LinkedIn, GitHub (trailing ArrowUpRight) — each `.link-underline`: text turns accent + underline wipes in on hover
+- "Grab my Resume" — an `app-action-call` (`arrowIcon`, `target="_blank"`) opening `Eli_Philpott_Resume.pdf` in a new tab (served from `public/`)
 - Footer: `© 2026 Eli Philpott · ClearTonic Games_`
 
-LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. These and the resume PDF are the only `target="_blank"` uses in the site.
+The contact LinkedIn/GitHub links, the resume PDF, and the project GitHub CTAs are the only `target="_blank"` uses in the site, each with `rel="noopener noreferrer"`.
 
 ---
 
@@ -655,12 +673,11 @@ LinkedIn and GitHub links open in new tabs with `rel="noopener noreferrer"`. The
 
 ### Section Wrapper (every section)
 
-```scss
-:host {
-  display: block;
-  width: 100%;
-}
+`display: block; width: 100%` for the section host elements is set once globally in `styles.scss`
+(a grouped `app-hero, app-about, … , app-cross-section { … }` selector), so individual section
+components do not redeclare it. Each section keeps its own `.section-inner`:
 
+```scss
 .section-inner {
   display: flex;
   flex-direction: column;
@@ -744,7 +761,8 @@ Adds `is-visible` class to host element when it enters viewport.
 - Unobserves after first trigger (plays once)
 - When `MotionService.reducedMotion()` is true, adds `is-visible` immediately on init
 
-Consuming component SCSS:
+The `[appReveal]` base style lives once in `styles.scss` (global); components only add per-element
+nuances such as a stagger delay (e.g. `.projects-heading[appReveal] { transition-delay: 150ms; }`):
 
 ```scss
 [appReveal] {
@@ -765,46 +783,31 @@ Consuming component SCSS:
 
 ## 10. Reduced-Motion Toggle Button
 
-Fixed bottom-left. Visible only when `scrollY < window.innerHeight * 0.8`. Hides via `opacity: 0; pointer-events: none` after that threshold (not `display: none`).
+The toggle lives inside `NavigationBarComponent` (`.nav-motion-toggle`), pinned to the sidebar
+bottom on desktop and to the bottom-left of the expanded bar on mobile (it fades in only while the
+mobile menu is open). It is an icon button — a Lucide `Circle` / `CircleDashed` pair that animates
+between the "motion on" and "reduced" states — with a `data-tooltip` label and `aria-pressed`
+reflecting the current state.
 
 ```html
 <button
-  class="motion-toggle-button"
-  [class.is-hidden]="isMotionButtonHidden()"
+  class="nav-motion-toggle"
+  [attr.data-tooltip]="
+    motionService.reducedMotion() ? 'Reduce motion: enabled' : 'Reduce motion: disabled'
+  "
   [attr.aria-pressed]="motionService.reducedMotion()"
+  [attr.aria-label]="motionService.reducedMotion() ? 'Enable motion' : 'Reduce motion'"
   (click)="motionService.toggleReducedMotion()"
 >
-  @if (motionService.reducedMotion()) { Enable motion } @else { Reduce motion }
+  <div class="motion-icon" [class.is-reduced]="motionService.reducedMotion()">
+    <svg lucideCircleDashed class="motion-icon__dashed" [size]="20" aria-hidden="true"></svg>
+    <svg lucideCircle class="motion-icon__solid" [size]="20" aria-hidden="true"></svg>
+  </div>
 </button>
 ```
 
-```scss
-.motion-toggle-button {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 100;
-  display: inline-flex;
-  align-items: center;
-  font-family: $font-primary;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border-radius: $border-radius-pill;
-  border: 1px solid var(--border-default);
-  background: var(--background-surface);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: opacity $duration-base $easing-standard;
-
-  &.is-hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-}
-```
+`MotionService` persists the choice to `localStorage` and writes `document.body.dataset.reducedMotion`,
+which the global reduced-motion CSS keys off of (see Section 4.6).
 
 ---
 
@@ -940,7 +943,7 @@ describe('RevealDirective', () => {
 - `#38EEB4` on `#1A1A1A` — contrast ~9.5:1 ✓ (WCAG AA)
 - `#F0EDE6` on `#1A1A1A` — contrast ~14:1 ✓ (WCAG AAA)
 - Focus: `outline: 2px solid var(--accent); outline-offset: 3px` on all interactive elements. Never remove outlines.
-- Keyboard navigable navigation. Escape key closes mobile menu.
+- Keyboard navigable navigation (nav links are focusable, role="button"). The mobile menu closes by tapping the backdrop, re-tapping the header row, or pressing Escape while it is open.
 - `aria-label` on all icon-only interactive elements.
 - Semantic landmarks: `<nav>`, `<main>`, `<section aria-labelledby="...">`, `<footer>`.
 - The motion toggle button uses `aria-pressed` to communicate its current state.
@@ -963,7 +966,7 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 - Use `any` in TypeScript or `!` non-null assertions
 - Write inline styles (`style="..."`)
 - Hardcode hex color values in component SCSS files
-- Use `target="_blank"` on any link you don't have yet: the resume PDF and the contact section's LinkedIn and GitHub links are available
+- Use `target="_blank"` on any link beyond the approved set: the resume PDF, the contact section's LinkedIn and GitHub links, and the project GitHub CTAs
 - Use CSS Grid — use Flexbox
 - Write desktop-first media queries — always mobile-first (`min-width`)
 - Add sections not listed in Section 6 without being asked
@@ -980,7 +983,7 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 | Background         | `#1A1A1A` / `var(--background)`             |
 | Surface            | `#232323` / `var(--background-surface)`     |
 | Text primary       | `#F0EDE6` / `var(--text-primary)`           |
-| Text secondary     | `#A89F91` / `var(--text-secondary)`         |
+| Text secondary     | `#D6CBB5` / `var(--text-secondary)`         |
 | Accent             | `#38EEB4` / `var(--accent)`                 |
 | Primary font       | `DM Sans`                                   |
 | Body font          | `Lora`                                      |
@@ -988,18 +991,15 @@ Comments explain _why_ something is done — never _what_ the code does. Aim for
 | Content max width  | `1200px`                                    |
 | Card border radius | `16px`                                      |
 | Accent glow        | `rgba(56, 238, 180, 0.15)`                  |
-| Mobile breakpoint  | `768px`                                     |
+| Mobile breakpoint  | `960px` (`$breakpoint-medium`)              |
 | Layout approach    | Flexbox only                                |
 | Style direction    | Mobile-first                                |
 | Test runner        | Jest                                        |
 | TypeScript         | strict — all checks on                      |
 | GitHub             | `https://github.com/ClearTonic21`           |
 | LinkedIn           | `https://www.linkedin.com/in/eli-philpott/` |
-| email              | `eli.philpott@gmail.com`                    |
+| email              | `eli.philpott21@gmail.com`                  |
 
 ---
 
-Next Session Bugs to squash:
-make the clickable area next to the nav-bar bigger,
-
-_Last updated: May 27 2026. All changes to this file require deliberate review — it governs the entire codebase._
+_Last updated: June 8 2026. All changes to this file require deliberate review — it governs the entire codebase._

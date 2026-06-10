@@ -10,27 +10,29 @@ Showcases Eli's personal projects and indie game development. The most visually 
 `app-projects`
 
 ## Responsibilities
-- Eyebrow label: `/ Projects`
-- 2-column grid on desktop (768px+), 1-column on mobile
-- Each card: image area, eyebrow tag, `.type-heading` title, tag pills, `.type-body` description, CTA link
-- Card hover: `translateY(-3px)` + transition to `.surface--accent-highlight`
+- Eyebrow label: `Projects_`; heading "Things I've Built"
+- Cards rendered by `app-article-card` in a wrapping flex row (`.projects-grid`): two per row on desktop (`$breakpoint-medium`, 960px), one per row on mobile. A `fullPage` card spans the full row width. (Flexbox, not CSS Grid.)
+- Each card: image area, highlight eyebrow, `.type-heading` title, tag pills, description, and a centered CTA link. The description is the card's `description` input; the tags and link are supplied as `<app-tag-list>` / `<app-text-link>` projected into the card's slots. No project-specific markup or styling remains — projects and experience differ only in what they pass to `app-article-card`.
+- Card hover / scroll-in-view: `translateY(-3px)` lift + accent glow + metallic border swaps gold → teal (owned by `ArticleCardComponent`)
 
 ## Projects (display order)
-1. **ClearTonic Games_ — [Game Name]** — image: `assets/images/game-screenshot.png`
-2. **Canopy Trails** — information organizer — image: `assets/images/app-screenshot.png`
-3. **This Portfolio Site** — AI-directed Angular development — image TBD
+1. **ClearTonic Games_** — indie game design & development — image `assets/images/game_screenshot.png` — links to the GitHub profile
+2. **Canopy Trails** — trail/nature-spot information organizer — image `assets/images/app_screenshot.png` — "Coming Soon" (`#` placeholder, no navigation)
+3. **This Portfolio Site** — AI-directed Angular 20 development — no image (placeholder shown) — links to source on GitHub
 
 ## Data Model
 ```typescript
 interface ProjectCard {
-  id: string;
-  title: string;
-  eyebrow: string;
-  description: string;
-  imagePath: string;
-  imageAlt: string;
-  tags: string[];
-  linkHref: string;
+  readonly id: string;
+  readonly title: string;
+  readonly fullPage: boolean;
+  readonly eyebrow: string;
+  readonly description: string;
+  readonly imagePath: string;
+  readonly imageAlt: string;
+  readonly tags: readonly string[];
+  readonly linkHref: string;
+  readonly linkLabel: string;
 }
 ```
 
@@ -38,8 +40,15 @@ interface ProjectCard {
 Project cards may display an external link icon using Lucide for CTAs: `<lucide-icon name="external-link" size="16"></lucide-icon>` or `<lucide-icon name="arrow-up-right" size="16"></lucide-icon>`. Import from `@lucide/angular` for consistency.
 
 ## Dependencies
-- `RevealDirective`
+- `RevealDirective` — staggered reveals
+- `ArticleCardComponent` — card shell for each project
+- `TagListComponent` — tech-stack pills
+- `TextLinkComponent` — the CTA link (`icon="arrow"`)
+
+## Links
+Each card's CTA is an `app-text-link` (`icon="arrow"`, accent-colored) driven by `linkHref` /
+`linkLabel`. Real destinations (GitHub) open in a new tab — `target="_blank"` + auto
+`rel="noopener noreferrer"`; a `#` value passes no `target` (placeholder, e.g. "Coming Soon").
 
 ## Does Not
-- Navigate to external URLs (all `linkHref` values are `#` placeholders)
 - Contain modal or lightbox behavior

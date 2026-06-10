@@ -59,7 +59,6 @@
   opacity: 1;
 }
 
-// Teal accent — fades in on hover
 :host::after {
   @include mb.ring-teal();
   opacity: 0;
@@ -127,6 +126,65 @@
   color: var(--text-primary);
 }
 
+.article-card-subtitle {
+  display: flex;
+  justify-content: end;
+  margin-top: 0;
+  margin-right: tokens.$spacing-2;
+  padding-left: tokens.$spacing-8;
+  text-align: right;
+}
+
+// Card-owned body copy. flex: 1 lets it absorb the slack so the link (when present)
+// settles at the bottom and bottom-aligns across a row of cards.
+.article-card-description {
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+// Centered link slot. Color + link typography are set here and inherited by the
+// projected <app-text-link>'s inner <a> (reset.scss sets `a { font/color: inherit }`).
+.article-card-link {
+  display: flex;
+  justify-content: center;
+  color: var(--accent);
+  font-family: tokens.$font-primary;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+// ─── Scroll-activated teal ring ───────────────────────────────────────────────
+// Mirrors the hover effect but triggered by IntersectionObserver.
+// Uses the fast transition so it responds crisply as the card enters view.
+
+:host.is-in-view {
+  box-shadow: 0 0 24px var(--accent-glow);
+
+  &::before {
+    opacity: 0;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  &::after {
+    opacity: 1;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  // Safety net: if the class is somehow present on desktop (e.g. after a resize),
+  // restore the gold ring and remove the glow so the effect never shows on pointer devices.
+  @media (min-width: tokens.$breakpoint-medium) {
+    box-shadow: none;
+
+    &::before {
+      opacity: 1;
+    }
+    &::after {
+      opacity: 0;
+    }
+  }
+}
+
 // ─── Desktop: 2-column / full-page variants ───────────────────────────────────
 
 @media (min-width: tokens.$breakpoint-medium) {
@@ -136,5 +194,11 @@
     &.is-full-page {
       flex: 1 1 100%;
     }
+  }
+}
+
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  :host {
+    flex: 1 1 100%;
   }
 }

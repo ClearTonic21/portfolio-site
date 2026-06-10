@@ -10,23 +10,23 @@ Chronological work history rendered as a vertical timeline. Shows career progres
 `app-experience`
 
 ## Responsibilities
-- Eyebrow label: `/ Experience`
-- Vertical timeline: 1px `var(--border-accent)` line, cards staggered left/right on desktop, stacked on mobile (768px breakpoint)
+- Eyebrow label: `Experience_`; heading "Work History"
+- Vertical timeline: 4px `var(--border-accent)` line with an accent dot per entry; cards alternate left/right on desktop (`$breakpoint-medium`, 960px) and stack on mobile. A short-landscape override (`max-height: $breakpoint-height-compact`) collapses to a single flush-left column with the line on the right.
 - Three entries, newest first:
   1. ServiceNow Application Developer — Capital One: custom JS + AngularJS components, REST API integrations, ITSM/HR modules, Agile, mentored junior engineers
   2. ServiceNow Application Developer — Discover Financial: enterprise ITSM application development
   3. Full-Stack Software Engineer — Experlogix Inc.: TypeScript + Angular SaaS, CRM integrations, UI/UX redesigns, API and database layer changes, Design and Product collaboration
-- Each card: `.surface` base, company in `.type-heading`, role in `.type-caption` (accent color), 2-3 bullets in `.type-body`, tag pills
+- Each entry is an `app-article-card` (global `.surface`): company in the `title`, period in the `highlight` (gold eyebrow), role in the `caption` (accent, under the title), bullets projected as `.type-body` list items, and tags via a projected `app-tag-list`
 
 ## Data Model
 ```typescript
 interface TimelineEntry {
-  id: string;
-  company: string;
-  role: string;
-  period: string;
-  bullets: string[];
-  tags: string[];
+  readonly id: string;
+  readonly company: string;
+  readonly role: string;
+  readonly period: string;
+  readonly bullets: readonly string[];
+  readonly tags: readonly string[];
 }
 ```
 Defined as a typed array in the component class. No HTTP calls or external data.
@@ -36,6 +36,8 @@ Timeline entries are text-only. If company logos or role icons are added in the 
 
 ## Dependencies
 - `RevealDirective` — staggered card reveals
+- `ArticleCardComponent` — timeline card shell
+- `TagListComponent` — per-entry tag pills
 
 ## Does Not
 - Link to external URLs

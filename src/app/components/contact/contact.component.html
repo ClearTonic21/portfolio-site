@@ -1,35 +1,33 @@
 <section id="contact" aria-labelledby="contact-heading">
   <div class="section-inner contact-inner">
-    <p class="type-eyebrow">Contact<span class="brand-underscore">_</span></p>
-    <h2 id="contact-heading" class="type-display contact-heading">Let's build something.</h2>
+    <p class="type-eyebrow">Contact<span class="accent">_</span></p>
+    <h2 id="contact-heading" class="type-display contact-heading">
+      Let's <span class="build-highlight">build</span> something.
+    </h2>
 
     <nav class="contact-links" aria-label="Contact links">
-      <a href="mailto:eli.philpott@gmail.com" class="contact-link">
-        <svg lucideMail [size]="20"></svg>
-        <span>eli.philpott@gmail.com</span>
-      </a>
-      <a
+      <app-text-link
+        label="eli.philpott21@gmail.com"
+        icon="mail"
+        [iconSize]="20"
+        href="mailto:eli.philpott21@gmail.com"
+      />
+      <app-text-link
+        label="LinkedIn"
+        icon="arrow"
         href="https://www.linkedin.com/in/eli-philpott/"
-        class="contact-link"
         target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span>LinkedIn</span>
-        <svg lucideArrowUpRight [size]="16"></svg>
-      </a>
-      <a
+      />
+      <app-text-link
+        label="GitHub"
+        icon="arrow"
         href="https://github.com/ClearTonic21"
-        class="contact-link"
         target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span>GitHub</span>
-        <svg lucideArrowUpRight [size]="16"></svg>
-      </a>
+      />
     </nav>
 
     <app-action-call
-      text="View Resume"
+      text="Grab my Resume"
       [arrowIcon]="true"
       href="Eli_Philpott_Resume.pdf"
       target="_blank"
@@ -37,7 +35,7 @@
 
     <footer class="contact-footer">
       <p class="type-caption">
-        © 2026 Eli Philpott · ClearTonic Games<span class="brand-underscore">_</span>
+        © 2026 Eli Philpott · ClearTonic Games<span class="accent">_</span>
       </p>
     </footer>
   </div>

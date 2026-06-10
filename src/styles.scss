@@ -14,19 +14,18 @@ body {
 }
 
 main {
-  // Position creates a stacking context so main content sits above the fixed parallax orbs (z-index 0)
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  padding-left: var(--collapsed-width);
 }
 
-@media (min-width: tokens.$breakpoint-medium) {
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  :root {
+    --sidebar-width: 36px;
+  }
   main {
-    // Reserve the sidebar width on BOTH sides so content centers in the true
-    // viewport rather than only the strip beside the sidebar. The left reservation
-    // also keeps content clear of the fixed sidebar.
-    padding-left: var(--sidebar-width);
-    padding-right: var(--sidebar-width);
+    padding-left: 0;
   }
 }
 
@@ -114,29 +113,81 @@ a:focus-visible {
 }
 
 .button-ghost:hover .link-arrow,
-.button-ghost:focus-visible .link-arrow {
+.button-ghost:focus-visible .link-arrow,
+body .link-underline:hover .link-arrow,
+body .link-underline:focus-visible .link-arrow {
   transform: translate(2px, -2px);
 }
 
-// Prevent movement entirely — suppressing transition-duration alone still jumps
 [data-reduced-motion='true'] .link-arrow {
   transform: none !important;
   transition: none !important;
 }
 
+// ─── Animated underline link ──────────────────────────────────────────────────
+// Shared hover/focus underline for nav links and contact links: a 2px accent bar
+// that wipes in from the left. Components own their own typography; the underline
+// offset can be nudged per use via the --link-underline-offset custom property
+// (set on the link or an ancestor — it inherits through emulated encapsulation).
+
+.link-underline {
+  position: relative;
+  transition: color tokens.$duration-base tokens.$easing-standard;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: var(--link-underline-offset, 0);
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform tokens.$duration-base tokens.$easing-out-expo;
+  }
+
+  &:hover,
+  &:focus-visible {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+// Component base-color rules (e.g. .contact-link[_ngcontent-xxx]) have specificity (0,2,0) —
+// equal to .link-underline:hover. Component styles load after globals, so they win on
+// source order and suppress the hover color. `body` prefix raises this to (0,2,1).
+body .link-underline:hover,
+body .link-underline:focus-visible {
+  color: var(--accent);
+}
+
+// ─── Scroll reveal ────────────────────────────────────────────────────────────
+// Applied by RevealDirective ([appReveal]); the directive adds .is-visible once
+// the element enters the viewport (or immediately when reduced motion is on).
+
+[appReveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity tokens.$duration-reveal tokens.$easing-out-expo,
+    transform tokens.$duration-reveal tokens.$easing-out-expo;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 // ─── Glass section ────────────────────────────────────────────────────────────
-// Frosted-glass full-width section background with the site-wide gold → teal
-// hover glow. Apply via host: { class: 'glass-section' } on any section component.
 
 .glass-section {
   position: relative;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
-  // Slow transition governs glow fade-OUT; hover state overrides for fast fade-IN
   transition: box-shadow tokens.$duration-slow tokens.$easing-standard;
 
-  // Gold metallic top + bottom borders (default)
-  // Two background-image gradients on one pseudo: top pinned to top, bottom pinned to bottom.
   &::after {
     content: '';
     position: absolute;
@@ -167,7 +218,6 @@ a:focus-visible {
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
 
-  // Teal accent top + bottom borders (on hover)
   &::before {
     content: '';
     position: absolute;
@@ -213,16 +263,29 @@ a:focus-visible {
     }
   }
 
-  // On desktop, bleed the background across the full viewport (under the sidebar
-  // on the left, to the edge on the right) while keeping content within the same
-  // centered, sidebar-clear bounds as every other section.
-  @media (min-width: tokens.$breakpoint-medium) {
-    margin-left: calc(-1 * var(--sidebar-width));
-    padding-left: var(--sidebar-width);
-    padding-right: var(--sidebar-width);
-    // !important overrides the component-encapsulated :host { width: 100% } rule,
-    // which is injected after global styles and would otherwise win the cascade.
-    width: calc(100% + 2 * var(--sidebar-width)) !important;
+  // Scroll-activated: teal border + glow while the section is in the viewport.
+  // Slower transition than hover so the shift feels tied to scroll speed.
+  // Desktop relies on :hover instead — no pointer hover on touch, so mobile needs this.
+  &.is-in-view {
+    box-shadow: 0 4px 32px var(--accent-glow);
+
+    &::after {
+      opacity: 0;
+    }
+    &::before {
+      opacity: 1;
+    }
+
+    @media (min-width: tokens.$breakpoint-medium) {
+      box-shadow: none;
+
+      &::after {
+        opacity: 1;
+      }
+      &::before {
+        opacity: 0;
+      }
+    }
   }
 }
 
@@ -238,6 +301,18 @@ a:focus-visible {
   background: var(--background-subtle);
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
+}
+
+// Section content components render as custom elements (inline by default); make
+// them block-level and full width so each section spans the viewport.
+app-hero,
+app-about,
+app-experience,
+app-projects,
+app-contact,
+app-cross-section {
+  display: block;
+  width: 100%;
 }
 
 .section-inner {
@@ -275,14 +350,6 @@ a:focus-visible {
 }
 
 // ─── Scrollbar ──────────────────────────────────────────────────────────────
-// Accent thumb at rest, brightening to --accent-bright on hover / click / drag.
-// WebKit (Chrome, Edge, Safari) gets the full interactive treatment via the
-// thumb pseudo-element; Firefox falls back to a static accent thumb.
-
-// Firefox path. Scoped behind @supports because Blink DISABLES the
-// ::-webkit-scrollbar pseudo-elements the moment scrollbar-width/-color is set,
-// which kills the hover/active recolor below. The standard property can't
-// express interactive states anyway, so Firefox gets a static accent thumb.
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
@@ -291,32 +358,26 @@ a:focus-visible {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 0;
+  height: 0;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: 0;
 }
 
-// Remove the up/down stepper arrows at the ends of the bar.
 ::-webkit-scrollbar-button {
   display: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  // background-color (not the `background` shorthand) so background-clip is not
-  // reset to border-box on the hover/active recolor below.
   background-color: var(--accent);
   border-radius: tokens.$border-radius-pill;
-  // Transparent border carved out of the thumb via background-clip makes the
-  // bar read as a slim floating pill rather than a full-width block.
   border: 3px solid transparent;
   background-clip: content-box;
   transition: background-color tokens.$duration-base tokens.$easing-standard;
 }
 
-// Hover over the bar, plus :active which covers both click and drag ("move").
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
   background-color: var(--accent-bright);

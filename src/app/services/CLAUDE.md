@@ -16,8 +16,7 @@ scrollToSection(sectionId: string): void
 Calls `document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })`.
 
 **Used by:**
-- `AppComponent` — nav link clicks
-- `HeroComponent` — "View My Work" CTA
+- `NavigationBarComponent` — nav link clicks and the monogram (scrolls to `hero`)
 
 **Spec file:** `scroll.service.spec.ts`
 
@@ -44,7 +43,9 @@ toggleReducedMotion(): void
 - Global SCSS `[data-reduced-motion="true"] * { transition-duration: 0.01ms !important; }` handles visual suppression
 
 **Used by:**
-- `AppComponent` — motion toggle button and visibility guard
-- `RevealDirective` — skips `IntersectionObserver` delay when reduced motion is active
+- `AppComponent` — gates the parallax background (`@if (!reducedMotion())`)
+- `NavigationBarComponent` — hosts the reduced-motion toggle button
+- `HeroComponent` — disables the staggered entrance animation when reduced motion is active
+- `RevealDirective` — adds `is-visible` immediately (skips the observer) when reduced motion is active
 
 **Spec file:** `motion.service.spec.ts`

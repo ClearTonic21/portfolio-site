@@ -1,49 +1,52 @@
 @use '../../../styles/tokens' as tokens;
 @use 'sass:color';
 
-:host {
-  display: block;
-  width: 100%;
-}
-
 .hero-section {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 88px); // mobile: subtract top nav bar height
-  padding: 0px 72px;
+  min-height: calc(98vh - 88px);
 
-  @media (min-width: 768px) {
-    min-height: 100vh; // desktop: sidebar is beside content, not above it
-    padding: 0px 48px;
+  @media (min-width: tokens.$breakpoint-medium) {
+    min-height: 98vh;
+    padding: 72px tokens.$spacing-6 88px;
   }
 }
 
 .hero-inner {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: tokens.$spacing-3;
+  align-items: center; // center the headline block and the resume in the viewport
+}
+
+// Title + subtitle as one unit, sized to the (wider) title so it centers cleanly while
+// the title keeps its left-aligned, stacked format.
+.hero-headline {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-3;
+  width: fit-content;
 }
 
 .hero-title {
   font-family: tokens.$font-primary;
   font-size: clamp(2rem, 12vw, 10.5rem);
-  margin: 0 0 48px 0;
   line-height: 0.88;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.02em;
+}
+
+.hero-subtitle {
+  align-self: flex-end; // locked to the right edge of the headline
+  text-align: right;
+  margin-top: 0;
 }
 
 .hero-copy {
   max-width: 540px;
 }
 
-.hero-subtitle {
-  display: flex;
-  justify-content: center;
-  margin-top: 0;
-}
-
-// Resume CTA
 .hero-resume {
+  padding: tokens.$spacing-6 tokens.$spacing-6 0;
   display: flex;
   justify-content: center;
 }
@@ -55,78 +58,4 @@
   background-image: radial-gradient(circle, rgba(240, 237, 230, 0.05) 1px, transparent 1px);
   background-size: 14px 14px;
   opacity: 0.05;
-}
-
-// ─── Scroll cue ───────────────────────────────────────────────────────────────
-// Positioned absolute so it sits in the bottom-left of the hero regardless of
-// content height. z-index 1002 keeps it above the mobile nav overlay (1001).
-
-.hero-scroll-cue {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  z-index: 1002;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  // Slow fade-out, fast fade-in convention used site-wide
-  transition:
-    color tokens.$duration-slow tokens.$easing-standard,
-    filter tokens.$duration-slow tokens.$easing-standard;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
-    filter: drop-shadow(0 0 10px var(--accent-glow));
-    transition:
-      color tokens.$duration-fast tokens.$easing-standard,
-      filter tokens.$duration-fast tokens.$easing-standard;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 6px;
-    border-radius: tokens.$border-radius-small;
-  }
-
-  @media (min-width: 768px) {
-    bottom: 48px;
-    left: 48px;
-  }
-}
-
-.scroll-cue-label {
-  font-family: tokens.$font-primary;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.scroll-cue-chevron {
-  // Animation class toggled off when reduced motion is active
-  &.is-animated {
-    animation: scroll-bounce 2.5s ease-in-out infinite;
-  }
-}
-
-@keyframes scroll-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
-  }
-}
-
-// ─── Desktop layout ───────────────────────────────────────────────────────────
-
-@media (min-width: 768px) {
-  .hero-section {
-    padding: 72px 48px 88px;
-  }
 }

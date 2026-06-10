@@ -1,10 +1,5 @@
 @use '../../../styles/tokens' as tokens;
 
-:host {
-  display: block;
-  width: 100%;
-}
-
 .projects-heading {
   margin-top: tokens.$spacing-3;
   margin-bottom: tokens.$spacing-4;
@@ -18,55 +13,11 @@
   gap: tokens.$spacing-4;
 }
 
-// ─── Projected content — description and CTA ──────────────────────────────────
-// Styled here because they are projected into ArticleCardComponent from this template.
-
-.project-description {
-  color: var(--text-secondary);
-  flex: 1;
-}
-
-.project-link {
-  display: inline-flex;
-  align-items: center;
-  gap: tokens.$spacing-unit;
-  color: var(--accent);
-  text-decoration: none;
-  font-family: tokens.$font-primary;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  width: fit-content;
-  transition: opacity 200ms ease;
-
-  svg {
-    flex-shrink: 0;
-    transition: transform 200ms tokens.$easing-out-expo;
-  }
-
-  &:hover {
-    opacity: 0.8;
-
-    svg {
-      transform: translate(2px, -2px);
-    }
-  }
-}
+// Card body content (description, tags, the centered CTA link) is owned by
+// ArticleCardComponent — projects only supplies the data and the projected elements.
 
 // ─── Reveal animations ────────────────────────────────────────────────────────
-
-[appReveal] {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity tokens.$duration-reveal tokens.$easing-out-expo,
-    transform tokens.$duration-reveal tokens.$easing-out-expo;
-
-  &.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-}
+// Base [appReveal] styles are global (styles.scss); only the stagger delay is local.
 
 .projects-heading[appReveal] {
   transition-delay: 150ms;

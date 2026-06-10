@@ -26,11 +26,19 @@ rendered this way.
 ## Background ownership
 The host element carries the background, not the inner section component:
 - `glass()` true → global `.glass-section` class (frosted `backdrop-filter` overlay + gold
-  metallic top/bottom borders that brighten to teal on hover; full-bleed on desktop).
+  metallic top/bottom borders that brighten to teal on hover). The host is `width: 100%` and the
+  page no longer reserves sidebar space, so a glass section spans the full viewport (full-bleed).
 - `glass()` false → no class; the section is transparent over the parallax background.
 
 The `.glass-section` styling itself is defined globally in `src/styles.scss` and shares the gold
 and teal gradient stops in `src/styles/_metallic-border.scss`.
+
+## Scroll-activated glow
+On touch/small viewports there is no `:hover`, so an `IntersectionObserver`
+(`threshold: 0.15`, `rootMargin: '-25% 0px -25% 0px'`) sets the `is-in-view` class while the
+section passes through the middle 50% of the viewport, swapping the gold border to teal with a
+glow. It is only set when `window.innerWidth < 960`; the global `.glass-section.is-in-view` rule
+also resets the effect above `$breakpoint-medium`, so desktop relies purely on `:hover`.
 
 ## Feature flag
 There is no `enabled` input. Visibility is a property of each entry in `AppComponent.sections`;
@@ -39,6 +47,7 @@ instantiated or added to the DOM. This is the intended "hide the whole section" 
 
 ## Host bindings
 - `[class.glass-section]` — bound to `glass()`
+- `[class.is-in-view]` — bound to `isInView()` (scroll-activated glow; see above)
 
 ## Dependencies
 - `NgComponentOutlet` (`@angular/common`)

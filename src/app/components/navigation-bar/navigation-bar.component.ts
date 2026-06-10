@@ -7,9 +7,16 @@ import {
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
-import { LucideChevronLeft, LucideChevronRight, LucideCircle, LucideCircleDashed } from '@lucide/angular';
+import {
+  LucideChevronLeft,
+  LucideChevronRight,
+  LucideCircle,
+  LucideCircleDashed,
+  LucideX,
+} from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
+import { TextLinkComponent } from '../text-link/text-link.component';
 
 export interface NavLink {
   readonly id: string;
@@ -18,10 +25,19 @@ export interface NavLink {
 
 @Component({
   selector: 'app-navigation-bar',
-  standalone: true,
-  imports: [LucideChevronLeft, LucideChevronRight, LucideCircle, LucideCircleDashed],
+  imports: [
+    LucideChevronLeft,
+    LucideChevronRight,
+    LucideCircle,
+    LucideCircleDashed,
+    LucideX,
+    TextLinkComponent,
+  ],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
+  host: {
+    '(document:keydown.escape)': 'onEscape()',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationBarComponent implements OnDestroy {
@@ -36,8 +52,10 @@ export class NavigationBarComponent implements OnDestroy {
   private readonly scrollHandler = () => this.onScroll();
   private readonly resizeHandler = () => this.onResize();
   private lastScrollY = 0;
+  // Once the user works the chevron, the sidebar stops auto-collapsing/expanding on scroll.
+  private hasManuallyToggledNav = false;
 
-  private static readonly DESKTOP_BREAKPOINT = 768;
+  private static readonly DESKTOP_BREAKPOINT = 960;
   private static readonly COMPACT_HEIGHT = 580;
 
   constructor() {
@@ -66,13 +84,38 @@ export class NavigationBarComponent implements OnDestroy {
     this.isMenuOpen.set(false);
   }
 
+  onEscape(): void {
+    if (this.isMenuOpen()) {
+      this.closeMenu();
+    }
+  }
+
   toggleNavCollapse(): void {
+    this.hasManuallyToggledNav = true;
     this.isNavCollapsed.update((c) => !c);
   }
 
   private onScroll(): void {
     const currentScrollY = window.scrollY;
+
+    // Mobile: hide the top bar on scroll-down past 100px.
     this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);
+
+    // Desktop: open at the top of the page, collapse once the user scrolls past the
+    // middle of the hero. Disabled for good once the user works the chevron manually, so
+    // their explicit choice is never overridden by scrolling.
+    if (!this.hasManuallyToggledNav && window.innerWidth >= NavigationBarComponent.DESKTOP_BREAKPOINT) {
+      const hero = document.getElementById('hero');
+      if (hero) {
+        const threshold = hero.offsetHeight * 0.5;
+        const wasPast = this.lastScrollY > threshold;
+        const isPast = currentScrollY > threshold;
+        if (isPast !== wasPast) {
+          this.isNavCollapsed.set(isPast);
+        }
+      }
+    }
+
     this.lastScrollY = currentScrollY;
   }
 

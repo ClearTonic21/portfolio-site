@@ -1,0 +1,20 @@
+@use '../../../styles/tokens' as tokens;
+
+// Default to an inline link; consumers can make the host block/full-width via an
+// element selector (it wins over :host on specificity). Typography and color are
+// inherited from the host (reset.scss sets `a { font: inherit; color: inherit }`),
+// so context controls those without reaching past encapsulation.
+:host {
+  display: inline-flex;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$spacing-unit;
+  width: 100%;
+  // Tap-target padding is context-specific; consumers set --text-link-padding.
+  padding: var(--text-link-padding, 0);
+  cursor: pointer;
+}

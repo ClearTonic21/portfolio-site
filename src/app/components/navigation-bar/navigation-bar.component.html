@@ -2,32 +2,49 @@
   class="nav-bar"
   [class.is-hidden]="isNavHidden()"
   [class.is-collapsed]="isNavCollapsed()"
+  [class.is-menu-open]="isMenuOpen()"
   aria-label="Site navigation"
 >
+  <div class="nav-space-column"></div>
   <div class="nav-main">
-    <div class="nav-header">
-      <div class="nav-monogram" aria-label="Scroll to top" (click)="navLinkClick('hero')">
+    <div class="nav-header" (click)="toggleMenu()">
+      <div
+        class="nav-monogram"
+        aria-label="Scroll to top"
+        (click)="$event.stopPropagation(); navLinkClick('hero')"
+      >
         <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
       </div>
+
+      <!-- Hamburger lives here so it participates in the header row on mobile.
+           display: none on desktop via media query. -->
+      <button
+        class="nav-hamburger"
+        aria-label="Toggle menu"
+        [attr.aria-expanded]="isMenuOpen()"
+        (click)="$event.stopPropagation(); toggleMenu()"
+      >
+        @if (isMenuOpen()) {
+          <svg lucideX [size]="24" aria-hidden="true"></svg>
+        } @else {
+          <span></span>
+          <span></span>
+          <span></span>
+        }
+      </button>
     </div>
 
     <div class="nav-body" [class.is-open]="isMenuOpen()">
       @for (link of navLinks(); track link.id) {
-        <a class="nav-link" (click)="navLinkClick(link.id)" role="button" tabindex="0">
-          {{ link.label }}<span class="brand-underscore">_</span>
-        </a>
+        <app-text-link
+          [label]="link.label"
+          [icon]="'underscore'"
+          (activated)="navLinkClick(link.id)"
+        />
       }
     </div>
 
     <div class="nav-footer">
-      <!-- <a
-        class="button-ghost nav-resume-link"
-        href="Eli_Philpott_Resume.pdf"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Resume
-      </a> -->
       <button
         class="nav-motion-toggle"
         [attr.data-tooltip]="
@@ -45,7 +62,7 @@
     </div>
   </div>
 
-  <div class="nav-chevron-col" (click)="toggleNavCollapse()">
+  <div class="nav-chevron-column" (click)="toggleNavCollapse()">
     <button
       class="nav-collapse-toggle"
       [attr.aria-label]="isNavCollapsed() ? 'Expand navigation' : 'Collapse navigation'"
@@ -58,21 +75,9 @@
       }
     </button>
   </div>
-
-  <!-- Mobile: hamburger (hidden on desktop) -->
-  <button
-    class="nav-hamburger"
-    aria-label="Toggle menu"
-    [attr.aria-expanded]="isMenuOpen()"
-    (click)="toggleMenu()"
-  >
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
 </nav>
 
-<!-- Mobile backdrop — tap to close overlay -->
+<!-- Tap outside to close — transparent so the page stays readable behind the dropdown -->
 @if (isMenuOpen()) {
   <div class="nav-backdrop" (click)="closeMenu()" role="presentation"></div>
 }

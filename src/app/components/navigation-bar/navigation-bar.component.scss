@@ -7,6 +7,7 @@
   display: contents;
 }
 
+// Outer container — column so the header row and dropdown stack vertically.
 .nav-bar {
   position: fixed;
   top: 0;
@@ -14,15 +15,14 @@
   right: 0;
   z-index: 1000;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0;
+  flex-direction: column;
   background: var(--background-overlay);
   backdrop-filter: blur(12px);
   transition:
     transform 550ms tokens.$easing-out-expo,
     box-shadow tokens.$duration-slow tokens.$easing-standard;
 
+  // Bottom metallic strip — gold at rest, swaps to teal on hover/open
   &::after {
     content: '';
     position: absolute;
@@ -46,18 +46,37 @@
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
 
-  &:hover {
+  // Only apply hover glow on true pointer devices — touch taps leave :hover
+  // stuck on iOS/Android, which would keep teal showing after the menu closes.
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 4px 24px var(--accent-glow);
+      transition:
+        transform 550ms tokens.$easing-out-expo,
+        box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+      &::after {
+        opacity: 0;
+        transition: opacity tokens.$duration-fast tokens.$easing-standard;
+      }
+
+      &::before {
+        opacity: 1;
+        transition: opacity tokens.$duration-fast tokens.$easing-standard;
+      }
+    }
+  }
+
+  // Open state — accent glow + teal strip, same as desktop hover
+  &.is-menu-open {
     box-shadow: 0 4px 24px var(--accent-glow);
-    transition:
-      transform 550ms tokens.$easing-out-expo,
-      box-shadow tokens.$duration-fast tokens.$easing-standard;
+
     &::after {
       opacity: 0;
-      transition: opacity tokens.$duration-fast tokens.$easing-standard;
     }
+
     &::before {
       opacity: 1;
-      transition: opacity tokens.$duration-fast tokens.$easing-standard;
     }
   }
 
@@ -67,20 +86,22 @@
 }
 
 // ─── Main content column ──────────────────────────────────────────────────────
+// On mobile this is just the header row + the dropdown below it.
 
 .nav-main {
   display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 0;
+  flex-direction: column;
+  width: 100%;
 }
 
-// ─── Logo ─────────────────────────────────────────────────────────────────────
+// ─── Header row: logo left, hamburger right ───────────────────────────────────
 
 .nav-header {
-  padding-top: tokens.$spacing-4;
-  padding-bottom: tokens.$spacing-4;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$spacing-unit tokens.$spacing-2;
   cursor: pointer;
 }
 
@@ -97,7 +118,7 @@
 
   img {
     display: block;
-    height: 64px;
+    height: 40px; // compact logo height for the mobile header row
     width: auto;
   }
 
@@ -111,63 +132,72 @@
   }
 }
 
-// ─── Nav body ─────────────────────────────────────────────────────────────────
+// ─── Dropdown menu ────────────────────────────────────────────────────────────
+// Static — expands in-flow below the header row.
+// Width is 40 % of the viewport, centred within the full-width nav-bar.
 
 .nav-body {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: fit-content;
-  z-index: 1001;
+  position: static;
+  background: transparent; // inherits the nav-bar's frosted-glass backdrop
+  backdrop-filter: none;
+  transform: none;
+  transition: none;
+
   display: flex;
   flex-direction: column;
-  background: var(--background);
-  backdrop-filter: blur(12px);
-  transform: translateX(-100%);
-  transition: transform tokens.$duration-base tokens.$easing-standard;
+  align-items: center;
+  width: 40%;
+  align-self: center;
+
+  // Hidden: collapsed to zero height
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height tokens.$duration-slow tokens.$easing-out-expo,
+    opacity tokens.$duration-base tokens.$easing-standard;
 
   &.is-open {
-    transform: translateX(0);
+    max-height: 40vh;
+    opacity: 1;
+    padding: tokens.$spacing-3 0;
   }
 }
 
 // ─── Nav links ────────────────────────────────────────────────────────────────
-
-.nav-link {
+// Each link is a TextLinkComponent (icon="underscore"). Typography/color are set on
+// the host and inherited by its inner <a>; the tap-target padding is passed via the
+// --text-link-padding custom property. The accent + underline hover comes from the
+// global .link-underline class the component already applies.
+app-text-link {
   font-family: tokens.$font-primary;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-primary);
-  cursor: pointer;
-  padding: tokens.$spacing-2 0;
   text-align: center;
-  position: relative;
-  transition: color tokens.$duration-base tokens.$easing-standard;
+  --text-link-padding: #{tokens.$spacing-2} 0;
+}
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform tokens.$duration-base tokens.$easing-out-expo;
-  }
+// ─── Footer: motion toggle ────────────────────────────────────────────────────
+// On mobile: pinned absolute to the bottom-left of the expanded nav bar.
+// Invisible until the menu opens, then fades in after the dropdown has started.
 
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
+.nav-footer {
+  display: flex;
+  position: absolute;
+  bottom: tokens.$spacing-2;
+  left: tokens.$spacing-2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity tokens.$duration-base tokens.$easing-standard;
+}
 
-    &::after {
-      transform: scaleX(1);
-    }
-  }
+.nav-bar.is-menu-open .nav-footer {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: tokens.$duration-base; // wait for dropdown to open first
 }
 
 // ─── Motion toggle ────────────────────────────────────────────────────────────
@@ -177,7 +207,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: tokens.$spacing-unit;
   border-radius: tokens.$border-radius-medium;
   border: 1px solid var(--border-default);
   background: var(--background-surface);
@@ -218,13 +248,9 @@
 }
 
 // ─── Motion icon ──────────────────────────────────────────────────────────────
-// Two overlapping circles. Dashed = left, solid = right, 8px overlap at rest.
-// On is-reduced: dashed fades out, solid slides left to the dashed position
-// and turns gold.
 
 .motion-icon {
   position: relative;
-  // 20px icon + 12px offset = 32px wide; 8px overlap (20 - 12)
   width: 32px;
   height: 20px;
 }
@@ -259,9 +285,9 @@
   }
 }
 
-// ─── chevron column + collapse toggle (desktop only) ─────────
+// ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
 
-.nav-chevron-col,
+.nav-chevron-column,
 .nav-collapse-toggle {
   display: none;
 }
@@ -272,10 +298,12 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 0;
+  padding: tokens.$spacing-unit;
   border: none;
   background: none;
   cursor: pointer;
+  flex-shrink: 0;
+  color: var(--text-primary);
 
   span {
     display: block;
@@ -288,24 +316,13 @@
   }
 }
 
-// ─── Mobile backdrop ──────────────────────────────────────────────────────────
+// ─── Backdrop: transparent tap-target to close the dropdown ───────────────────
 
 .nav-backdrop {
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: var(--background-overlay);
-  backdrop-filter: blur(4px);
-  animation: fade-in tokens.$duration-base tokens.$easing-standard;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  background: transparent;
 }
 
 // ─── Desktop: left sidebar ────────────────────────────────────────────────────
@@ -315,6 +332,7 @@
     height: 100%;
     width: var(--sidebar-width);
     padding: 0;
+    flex-direction: row; // nav-main + column { side by side
 
     &.is-hidden {
       transform: none;
@@ -327,6 +345,7 @@
         box-shadow tokens.$duration-fast tokens.$easing-standard;
     }
 
+    // Metallic strip moves to the right edge (vertical)
     &::after {
       bottom: 0;
       top: 0;
@@ -347,15 +366,31 @@
       @include mb.strip-teal('to bottom');
     }
 
+    // Desktop hover: glow goes sideways
     &:hover {
       box-shadow: none;
+
       &::after {
         opacity: 1;
         transition: opacity tokens.$duration-slow tokens.$easing-standard;
       }
+
       &::before {
         opacity: 0;
         transition: opacity tokens.$duration-slow tokens.$easing-standard;
+      }
+    }
+
+    // is-menu-open is a mobile-only concern; neutralize it on desktop
+    &.is-menu-open {
+      box-shadow: none;
+
+      &::after {
+        opacity: 1;
+      }
+
+      &::before {
+        opacity: 0;
       }
     }
   }
@@ -375,43 +410,59 @@
     pointer-events: none;
   }
 
+  // Restore desktop nav-body: static sidebar content, fills remaining height
   .nav-body {
     position: static;
     width: fit-content;
+    align-self: auto;
     background: transparent;
     backdrop-filter: none;
-    padding-left: 24px;
     flex: 1;
     transform: none;
     transition: none;
-    cursor: default;
+
+    // Override the mobile collapsed state — always visible on desktop
+    max-height: none;
+    opacity: 1;
+    overflow: visible;
+    padding: 0;
   }
 
   .nav-monogram {
     width: 100%;
     justify-content: center;
+
+    img {
+      height: 64px; // full logo height in sidebar
+    }
   }
 
-  .nav-link {
+  // Desktop header: center the logo (hamburger is hidden)
+  .nav-header {
+    display: flex;
+    justify-content: center;
+    padding-top: tokens.$spacing-4;
+    padding-bottom: tokens.$spacing-4;
+    cursor: pointer;
+  }
+
+  app-text-link {
     display: block;
     width: 100%;
-    font-size: 1.1rem;
     letter-spacing: 0.08em;
-    padding: tokens.$spacing-unit 0;
-  }
-
-  .nav-resume-link {
-    width: 100%;
-    justify-content: center;
-    font-size: 0.8rem;
-    text-wrap-mode: nowrap;
+    --text-link-padding: #{tokens.$spacing-unit} 0;
   }
 
   .nav-motion-toggle {
-    padding: 8px;
+    padding: tokens.$spacing-unit;
   }
 
   .nav-footer {
+    // Reset mobile absolute positioning for the static sidebar layout
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    transition: none;
     display: flex;
     flex-flow: wrap;
     justify-content: center;
@@ -421,6 +472,7 @@
     cursor: default;
   }
 
+  // Hamburger hidden on desktop
   .nav-hamburger {
     display: none;
   }
@@ -431,7 +483,7 @@
 
   // ─── Chevron column ────────────────────────────────────────────────────────
 
-  .nav-chevron-col {
+  .nav-chevron-column {
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -442,11 +494,21 @@
     cursor: pointer;
   }
 
-  .nav-bar.is-collapsed .nav-chevron-col {
+  .nav-space-column {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    width: tokens.$spacing-4;
+    height: 100%;
+  }
+
+  .nav-bar.is-collapsed .nav-chevron-column {
     pointer-events: auto;
   }
 
-  .nav-bar:has(.nav-chevron-col:hover) {
+  .nav-bar:has(.nav-chevron-column:hover) {
     box-shadow: 4px 0 24px var(--accent-glow);
     transition:
       transform 550ms tokens.$easing-out-expo,
@@ -456,6 +518,7 @@
       opacity: 0;
       transition: opacity tokens.$duration-fast tokens.$easing-standard;
     }
+
     &::before {
       opacity: 1;
       transition: opacity tokens.$duration-fast tokens.$easing-standard;
@@ -484,7 +547,20 @@
     }
   }
 
-  .nav-chevron-col:hover .nav-collapse-toggle {
+  .nav-chevron-column:hover .nav-collapse-toggle {
     color: var(--accent);
+  }
+}
+
+// ─── Compact-height: auto-collapse the sidebar ────────────────────────────────
+
+@media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+  .nav-bar {
+    transform: translateX(calc(-100% + 36px));
+  }
+
+  .nav-main {
+    opacity: 0;
+    pointer-events: none;
   }
 }

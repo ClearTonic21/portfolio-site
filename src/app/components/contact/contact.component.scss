@@ -1,19 +1,14 @@
 @use '../../../styles/tokens' as tokens;
 
-:host {
-  display: block;
-  width: 100%;
-}
-
 .contact-inner {
   align-items: center;
   text-align: center;
 }
 
-.contact-heading {
-  display: flex;
-  justify-content: start;
-  margin-top: tokens.$spacing-3;
+.build-highlight {
+  background: var(--accent);
+  color: var(--text-inverted);
+  padding: 0 0.1em;
 }
 
 .contact-links {
@@ -25,38 +20,15 @@
   margin-bottom: tokens.$spacing-8;
 }
 
-.contact-link {
-  display: inline-flex;
-  align-items: center;
-  gap: tokens.$spacing-unit;
+// Each link is an app-text-link. Typography/color are set on the host and inherited by
+// its inner <a>; the larger underline offset for these big links is passed via the
+// --link-underline-offset custom property the global .link-underline reads.
+app-text-link {
   font-family: tokens.$font-primary;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 600;
   color: var(--text-primary);
-  position: relative;
-  transition: color tokens.$duration-base tokens.$easing-standard;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform tokens.$duration-base tokens.$easing-out-expo;
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: var(--accent);
-
-    &::after {
-      transform: scaleX(1);
-    }
-  }
+  --link-underline-offset: -4px;
 }
 
 .contact-footer {

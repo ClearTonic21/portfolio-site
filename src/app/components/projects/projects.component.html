@@ -1,6 +1,6 @@
 <section id="projects" aria-labelledby="projects-heading">
   <div class="section-inner">
-    <p class="type-eyebrow" appReveal>Projects<span class="brand-underscore">_</span></p>
+    <p class="type-eyebrow" appReveal>Projects<span class="accent">_</span></p>
     <h2 id="projects-heading" class="type-heading projects-heading" appReveal>Things I've Built</h2>
 
     <div class="projects-grid">
@@ -11,21 +11,16 @@
           [fullPage]="project.fullPage"
           [highlight]="project.eyebrow"
           [title]="project.title"
+          [description]="project.description"
           appReveal
         >
           <app-tag-list [tags]="project.tags" />
-
-          <p class="type-body project-description">{{ project.description }}</p>
-
-          <a
-            class="project-link"
+          <app-text-link
+            [label]="project.linkLabel"
+            icon="arrow"
             [href]="project.linkHref"
-            [attr.target]="project.linkHref !== '#' ? '_blank' : null"
-            [attr.rel]="project.linkHref !== '#' ? 'noopener noreferrer' : null"
-          >
-            {{ project.linkLabel }}
-            <svg lucideArrowUpRight size="16" aria-hidden="true"></svg>
-          </a>
+            [target]="project.linkHref !== '#' ? '_blank' : null"
+          />
         </app-article-card>
       }
     </div>

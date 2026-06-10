@@ -1,7 +1,7 @@
 # CLAUDE.md — HeroComponent
 
 ## Purpose
-The first section the user sees. Full viewport height. Establishes Eli's name, role, and brand identity. Contains the two primary calls to action.
+The first section the user sees. Full viewport height. Establishes Eli's name, role, and brand identity, with a single resume call to action.
 
 ## Location
 `src/app/components/hero/`
@@ -10,23 +10,27 @@ The first section the user sees. Full viewport height. Establishes Eli's name, r
 `app-hero`
 
 ## Responsibilities
-- Render Eli's name in `.type-display` (massive, uppercase, DM Sans 900)
-- Eyebrow label: `/ Intro · Worthington, OH` using `.type-eyebrow`
-- Subtitle: "Software Developer & Indie Game Creator" using `.type-body`
-- "View My Work" CTA (`.button-primary`) — calls `ScrollService.scrollToSection('about')`
-- "Resume" CTA (`.button-ghost`) — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
-- ClearTonic Games_ floating badge (icon + brand name) bottom-right corner
-- 5% opacity pixel-noise SVG texture overlay on the background
+- Render Eli's name in `.type-display` (massive, uppercase, DM Sans 900) with the brand underscore accent: `PHILPOTT_`
+- Subtitle: "Software Designer & Developer" using `.type-subtitle`
+- "Grab my Resume" CTA via `app-action-call` (`arrowIcon`) — opens `Eli_Philpott_Resume.pdf` in a new tab (served from `public/` via angular.json)
+- 5% opacity pixel-noise SVG texture overlay on the background (`.hero-overlay`)
+
+## Layout
+The title + subtitle form a `width: fit-content` `.hero-headline` block; `.hero-inner` uses
+`align-items: center`, so the headline (and the resume CTA) center in the viewport — matching the
+other sections — while the title keeps its left-aligned, stacked format. The subtitle is
+`align-self: flex-end` (+ `text-align: right`), locking it to the right edge of the headline.
 
 ## Dependencies
-- `ScrollService` — for CTA scroll handler
-- `MotionService` — to guard stagger animation
+- `MotionService` — disables the staggered entrance animation when reduced motion is active
+- `ActionCallComponent` — the resume CTA
+- `LucideArrowUpRight` — arrow icon inside the CTA
 
 ## Animation
 Name lines fade up with stagger on load via `@angular/animations`. Respects `MotionService.reducedMotion`.
 
 ## Icons
-The "Resume" CTA button may display an external link icon using Lucide: `<lucide-icon name="external-link" size="16"></lucide-icon>` inside or next to the button text. Use `@lucide/angular` for consistency.
+The resume CTA shows a Lucide `ArrowUpRight` icon, supplied by `ActionCallComponent` via its `arrowIcon` input.
 
 ## Does Not
 - Contain navigation logic

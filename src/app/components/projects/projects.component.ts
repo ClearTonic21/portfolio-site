@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RevealDirective } from '../../directives/reveal.directive';
-import { LucideArrowUpRight } from '@lucide/angular';
 import { TagListComponent } from '../tag-list/tag-list.component';
 import { ArticleCardComponent } from '../article-card/article-card.component';
+import { TextLinkComponent } from '../text-link/text-link.component';
 
 interface ProjectCard {
   readonly id: string;
@@ -20,7 +20,7 @@ interface ProjectCard {
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RevealDirective, LucideArrowUpRight, TagListComponent, ArticleCardComponent],
+  imports: [RevealDirective, TagListComponent, ArticleCardComponent, TextLinkComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +33,7 @@ export class ProjectsComponent {
       fullPage: false,
       eyebrow: 'Indie Game Design and Development',
       description:
-        'Solo-developed pixel art games built in Godot, from concept and art direction to mechanics and release. ClearTonic Games_ is the studio label for everything I ship.',
+        'Solo-developed pixel art game built in Godot, from concept and art direction to mechanics. ClearTonic Games_ is the studio label for every game I create.',
       imagePath: 'assets/images/game_screenshot.png',
       imageAlt: 'Screenshot of a ClearTonic Games_ indie game',
       tags: ['Godot', 'Pixel Art', 'Game Design', 'Solo Dev'],
@@ -46,7 +46,7 @@ export class ProjectsComponent {
       fullPage: false,
       eyebrow: 'Personal Project',
       description:
-        'A trail and nature-spot information organizer built for hikers who want to track visited locations, save notes, and plan future adventures without a paywall.',
+        'Organize your thoughts into vibrant forest trails. Create each trail with any number of connected "trees", and fill them with individual "leaves" of information. Watch your ideas grow into a beautiful forest',
       imagePath: 'assets/images/app_screenshot.png',
       imageAlt: 'Screenshot of the Canopy Trails app',
       tags: ['Angular', 'TypeScript', 'SCSS', 'UX Design'],
