@@ -7,7 +7,7 @@ import {
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
-import { LucideChevronLeft, LucideChevronRight, LucideX } from '@lucide/angular';
+import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 import { TextLinkComponent } from '../text-link/text-link.component';
@@ -23,7 +23,6 @@ export interface NavLink {
   imports: [
     LucideChevronLeft,
     LucideChevronRight,
-    LucideX,
     TextLinkComponent,
     IconButtonComponent,
   ],
@@ -104,6 +103,12 @@ export class NavigationBarComponent implements OnDestroy {
 
   private onScroll(): void {
     const currentScrollY = window.scrollY;
+
+    // Scrolling dismisses an open menu: the dropdown collapses and the control cluster fades out
+    // (both keyed off isMenuOpen), so they don't linger over the page as the user reads.
+    if (this.isMenuOpen()) {
+      this.closeMenu();
+    }
 
     // Mobile: hide the top bar on scroll-down past 100px.
     this.isNavHidden.set(currentScrollY > this.lastScrollY && currentScrollY > 100);

@@ -20,17 +20,14 @@
            display: none on desktop via media query. -->
       <button
         class="nav-hamburger"
+        [class.is-open]="isMenuOpen()"
         aria-label="Toggle menu"
         [attr.aria-expanded]="isMenuOpen()"
         (click)="$event.stopPropagation(); toggleMenu()"
       >
-        @if (isMenuOpen()) {
-          <svg lucideX [size]="24" aria-hidden="true"></svg>
-        } @else {
-          <span></span>
-          <span></span>
-          <span></span>
-        }
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
 

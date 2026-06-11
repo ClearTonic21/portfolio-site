@@ -276,9 +276,23 @@ app-text-link {
     height: 2px;
     background: var(--text-primary);
     transition:
-      transform tokens.$duration-base tokens.$easing-standard,
-      opacity tokens.$duration-base tokens.$easing-standard;
+      transform tokens.$duration-base tokens.$easing-out-expo,
+      opacity tokens.$duration-fast tokens.$easing-standard;
   }
+}
+
+// Open: the three bars animate into an X — top and bottom rotate and meet at the centre line
+// (a 7px travel = 2px bar + 5px gap), the middle fades out.
+.nav-hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 // ─── Backdrop: transparent tap-target to close the dropdown ───────────────────
