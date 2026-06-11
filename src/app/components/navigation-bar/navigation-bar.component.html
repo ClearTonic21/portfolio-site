@@ -43,32 +43,6 @@
         />
       }
     </div>
-
-    <div class="nav-footer">
-      <app-icon-button
-        icon="theme"
-        [active]="isLightMode()"
-        [label]="isLightMode() ? 'Switch to dark mode' : 'Switch to light mode'"
-        [tooltip]="isLightMode() ? 'Light mode: enabled' : 'Dark mode: enabled'"
-        (activated)="toggleLightMode()"
-      />
-      <app-icon-button
-        icon="contrast"
-        [active]="isHighContrast()"
-        [label]="isHighContrast() ? 'Disable high contrast' : 'Enable high contrast'"
-        [tooltip]="isHighContrast() ? 'High contrast: enabled' : 'High contrast: disabled'"
-        (activated)="toggleHighContrast()"
-      />
-      <app-icon-button
-        icon="motion"
-        [active]="motionService.reducedMotion()"
-        [label]="motionService.reducedMotion() ? 'Enable motion' : 'Reduce motion'"
-        [tooltip]="
-          motionService.reducedMotion() ? 'Reduce motion: enabled' : 'Reduce motion: disabled'
-        "
-        (activated)="motionService.toggleReducedMotion()"
-      />
-    </div>
   </div>
 
   <div class="nav-chevron-column" (click)="toggleNavCollapse()">
@@ -85,6 +59,39 @@
     </button>
   </div>
 </nav>
+
+<!-- Appearance + motion controls. Kept outside the frosted .nav-bar so they can be viewport-fixed.
+     Mobile: float at the bottom-right, sliding up + unstacking when the menu opens. Desktop: docked
+     at the bottom of the sidebar, riding its collapse animation. -->
+<div
+  class="nav-controls"
+  [class.is-collapsed]="isNavCollapsed()"
+  [class.is-menu-open]="isMenuOpen()"
+>
+  <app-icon-button
+    icon="theme"
+    [active]="isLightMode()"
+    [label]="isLightMode() ? 'Switch to dark mode' : 'Switch to light mode'"
+    [tooltip]="isLightMode() ? 'Light mode: enabled' : 'Dark mode: enabled'"
+    (activated)="toggleLightMode()"
+  />
+  <app-icon-button
+    icon="contrast"
+    [active]="isHighContrast()"
+    [label]="isHighContrast() ? 'Disable high contrast' : 'Enable high contrast'"
+    [tooltip]="isHighContrast() ? 'High contrast: enabled' : 'High contrast: disabled'"
+    (activated)="toggleHighContrast()"
+  />
+  <app-icon-button
+    icon="motion"
+    [active]="motionService.reducedMotion()"
+    [label]="motionService.reducedMotion() ? 'Enable motion' : 'Reduce motion'"
+    [tooltip]="
+      motionService.reducedMotion() ? 'Reduce motion: enabled' : 'Reduce motion: disabled'
+    "
+    (activated)="motionService.toggleReducedMotion()"
+  />
+</div>
 
 <!-- Tap outside to close — transparent so the page stays readable behind the dropdown -->
 @if (isMenuOpen()) {
