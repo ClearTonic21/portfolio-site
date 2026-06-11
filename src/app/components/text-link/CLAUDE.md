@@ -40,6 +40,10 @@ inside the label (no gap), and `none` renders no icon — neither needs a Lucide
 ## Styling
 - The inner `<a>` carries `.link-underline` (accent text + underline on hover/focus, global) and the
   arrow carries `.link-arrow` (up-right shift on the link's hover, global).
+- The `mail` icon is wrapped in `.link-mail`: on the link's hover/focus it grows (`scale` on the
+  wrapper, easing back out) and the inner `<svg>` plays a one-shot rotational jiggle
+  (`link-mail-jiggle` keyframes). Scoped to this component, so every `icon="mail"` link reacts the
+  same way; the global reduced-motion rule neutralizes both the grow and the jiggle.
 - Typography and color are **inherited** from the host (reset.scss sets `a { font: inherit; color:
   inherit }`), so a consumer styles the `app-text-link` element directly — those inheritable props
   cascade to the `<a>`. `:host` defaults to `display: inline-flex`; a consumer's element selector
