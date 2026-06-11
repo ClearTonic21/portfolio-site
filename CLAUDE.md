@@ -367,7 +367,7 @@ $spacing-16: 128px;
 
 $section-vertical-padding: clamp(#{$spacing-6}, 6vw, #{$spacing-12});
 $content-max-width: 1200px;
-$content-horizontal-gutter: clamp(#{$spacing-3}, 5vw, #{$spacing-8});
+$content-horizontal-gutter: clamp(#{$spacing-2}, 5vw, #{$spacing-8});
 ```
 
 ---

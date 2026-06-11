@@ -160,7 +160,7 @@
   &.is-open {
     max-height: 40vh;
     opacity: 1;
-    padding: tokens.$spacing-3 0;
+    padding: 0 0 tokens.$spacing-3 0;
   }
 }
 
@@ -180,109 +180,74 @@ app-text-link {
   --text-link-padding: #{tokens.$spacing-2} 0;
 }
 
-// ─── Footer: motion toggle ────────────────────────────────────────────────────
-// On mobile: pinned absolute to the bottom-left of the expanded nav bar.
-// Invisible until the menu opens, then fades in after the dropdown has started.
+// ─── Appearance + motion controls ─────────────────────────────────────────────
+// Floating cluster of icon-button toggles (light-dark, high contrast, reduced motion), kept
+// outside the frosted .nav-bar so it can be truly viewport-fixed (backdrop-filter would otherwise
+// trap a fixed descendant inside the bar). Mobile: bottom-right, hidden until the menu opens; on
+// open the cluster slides up as an overlapping stack, then unstacks into a column.
+//
+// Stack geometry: three 38px-tall buttons with a 16px column gap → 54px step. Closed, the upper two
+// are pulled down onto the bottom (motion) button leaving an 8px peek (offsets 92px / 46px / 0).
 
-.nav-footer {
-  display: flex;
-  position: absolute;
+.nav-controls {
+  position: fixed;
+  right: tokens.$spacing-2;
   bottom: tokens.$spacing-2;
-  left: tokens.$spacing-2;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: tokens.$spacing-2;
   opacity: 0;
   pointer-events: none;
-  transition: opacity tokens.$duration-base tokens.$easing-standard;
+  transform: translateY(160%);
+  transition:
+    transform tokens.$duration-slow tokens.$easing-out-expo,
+    opacity tokens.$duration-slow tokens.$easing-standard;
 }
 
-.nav-bar.is-menu-open .nav-footer {
+.nav-controls app-icon-button {
+  transition: transform tokens.$duration-base tokens.$easing-out-expo;
+}
+
+// :where keeps these at (0,1,1) so the desktop reset (same specificity, later in source) wins.
+.nav-controls app-icon-button:where(:nth-child(1)) {
+  transform: translateY(92px);
+}
+
+.nav-controls app-icon-button:where(:nth-child(2)) {
+  transform: translateY(46px);
+}
+
+.nav-controls app-icon-button:where(:nth-child(3)) {
+  transform: translateY(0);
+}
+
+.nav-controls.is-menu-open {
   opacity: 1;
   pointer-events: auto;
-  transition-delay: tokens.$duration-base; // wait for dropdown to open first
+  transform: translateY(0);
 }
 
-// ─── Motion toggle ────────────────────────────────────────────────────────────
+// Unstack only after the cluster has slid up.
+.nav-controls.is-menu-open app-icon-button {
+  transform: translateY(0);
+  transition-delay: tokens.$duration-slow;
+}
 
-.nav-motion-toggle {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: tokens.$spacing-unit;
-  border-radius: tokens.$border-radius-medium;
-  border: 1px solid var(--border-default);
-  background: var(--background-surface);
-  cursor: pointer;
-  transition: border-color tokens.$duration-base tokens.$easing-standard;
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--accent);
-  }
-
-  &::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: calc(100% + tokens.$spacing-unit);
-    top: 50%;
-    transform: translateY(-50%);
-    white-space: nowrap;
-    font-family: tokens.$font-primary;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    padding: 4px 10px;
-    border-radius: tokens.$border-radius-small;
-    background: var(--background-surface);
-    border: 1px solid var(--border-default);
-    color: var(--text-secondary);
-    pointer-events: none;
-    opacity: 0;
-    z-index: 1001;
-    transition: opacity tokens.$duration-fast tokens.$easing-standard;
-  }
-
-  &:hover::before,
-  &:focus-visible::before {
-    opacity: 1;
+// Reduced motion keeps the layout but drops the staged unstack delay so the cluster doesn't sit
+// waiting before settling. Covers both triggers: the OS preference (media query) and the in-app
+// toggle (the body's data attribute, reached via :host-context since it sits outside this view).
+@media (prefers-reduced-motion: reduce) {
+  .nav-controls,
+  .nav-controls app-icon-button {
+    transition-delay: 0ms !important;
   }
 }
 
-// ─── Motion icon ──────────────────────────────────────────────────────────────
-
-.motion-icon {
-  position: relative;
-  width: 32px;
-  height: 20px;
-}
-
-.motion-icon__dashed {
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--text-primary);
-  opacity: 1;
-  transition: opacity tokens.$duration-base tokens.$easing-standard;
-}
-
-.motion-icon__solid {
-  position: absolute;
-  left: 12px;
-  top: 0;
-  color: var(--text-primary);
-  transition:
-    color tokens.$duration-base tokens.$easing-standard,
-    transform tokens.$duration-base tokens.$easing-out-expo;
-}
-
-.motion-icon.is-reduced {
-  .motion-icon__dashed {
-    opacity: 0;
-  }
-
-  .motion-icon__solid {
-    transform: translateX(-12px);
-    color: var(--gold);
-  }
+:host-context([data-reduced-motion='true']) .nav-controls,
+:host-context([data-reduced-motion='true']) .nav-controls app-icon-button {
+  transition-delay: 0ms !important;
 }
 
 // ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
@@ -311,9 +276,23 @@ app-text-link {
     height: 2px;
     background: var(--text-primary);
     transition:
-      transform tokens.$duration-base tokens.$easing-standard,
-      opacity tokens.$duration-base tokens.$easing-standard;
+      transform tokens.$duration-base tokens.$easing-out-expo,
+      opacity tokens.$duration-fast tokens.$easing-standard;
   }
+}
+
+// Open: the three bars animate into an X — top and bottom rotate and meet at the centre line
+// (a 7px travel = 2px bar + 5px gap), the middle fades out.
+.nav-hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 // ─── Backdrop: transparent tap-target to close the dropdown ───────────────────
@@ -453,23 +432,43 @@ app-text-link {
     --text-link-padding: #{tokens.$spacing-unit} 0;
   }
 
-  .nav-motion-toggle {
-    padding: tokens.$spacing-unit;
-  }
-
-  .nav-footer {
-    // Reset mobile absolute positioning for the static sidebar layout
-    position: static;
+  // Controls dock to the bottom of the sidebar and ride its collapse animation.
+  .nav-controls {
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: var(--sidebar-width);
+    padding-bottom: tokens.$spacing-8;
+    gap: tokens.$spacing-2;
     opacity: 1;
     pointer-events: auto;
-    transition: none;
-    display: flex;
-    flex-flow: wrap;
-    justify-content: center;
-    width: 100%;
-    margin: tokens.$spacing-8 0;
-    gap: tokens.$spacing-2;
+    transform: none;
     cursor: default;
+    transition:
+      transform 160ms tokens.$easing-standard,
+      opacity tokens.$duration-base tokens.$easing-standard;
+  }
+
+  // No mobile stacking on desktop — buttons sit in a plain column.
+  .nav-controls app-icon-button,
+  .nav-controls.is-menu-open app-icon-button {
+    transform: none;
+    transition: none;
+  }
+
+  // is-menu-open is mobile-only; keep the cluster put on desktop.
+  .nav-controls.is-menu-open {
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  // Slide and fade out with the sidebar when collapsed.
+  .nav-controls.is-collapsed,
+  .nav-controls.is-menu-open.is-collapsed {
+    transform: translateX(calc(-100% + 36px));
+    opacity: 0;
+    pointer-events: none;
   }
 
   // Hamburger hidden on desktop
@@ -560,6 +559,12 @@ app-text-link {
   }
 
   .nav-main {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav-controls {
+    transform: translateX(calc(-100% + 36px));
     opacity: 0;
     pointer-events: none;
   }

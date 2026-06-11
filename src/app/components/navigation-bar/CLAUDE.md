@@ -3,7 +3,9 @@
 ## Purpose
 The site's primary navigation. Renders as a fixed top bar on mobile and as a fixed left-side
 sidebar on desktop (`$breakpoint-medium`, 960px+). Contains the ClearTonic monogram (tapping it
-scrolls to `hero`), anchor-scroll nav links, and the reduced-motion toggle.
+scrolls to `hero`) and anchor-scroll nav links. A separate `.nav-controls` cluster of
+`app-icon-button` appearance toggles (light-dark mode, high contrast, reduced motion) floats
+alongside the bar (see Appearance toggles).
 
 ## Location
 `src/app/components/navigation-bar/`
@@ -14,8 +16,8 @@ scrolls to `hero`), anchor-scroll nav links, and the reduced-motion toggle.
 ## Layout behaviour
 | Viewport     | Layout                                                         |
 |--------------|----------------------------------------------------------------|
-| < 960px      | Fixed top bar (monogram left, hamburger right). Tapping anywhere on the header row toggles the menu (the monogram still scrolls to `hero`). Nav links live in an in-flow dropdown that expands below the header row (`max-height` 0 → 40vh, centered 40% width). The motion toggle fades in at the bottom-left of the expanded bar. Pressing `Escape` while the menu is open closes it (`document:keydown.escape` host listener → `onEscape()`; a no-op when the menu is already closed). |
-| ≥ 960px      | Fixed left sidebar (`var(--sidebar-width)`, 180px). Links stacked vertically. Motion toggle pinned to the sidebar bottom via flexbox. A chevron column collapses/expands the sidebar (`is-collapsed`), it auto-collapses below `$breakpoint-height-compact`, and it auto-collapses on scroll past the hero (see Scroll behaviour). Nav bar never hides on scroll. |
+| < 960px      | Fixed top bar (monogram left, hamburger right). Tapping anywhere on the header row toggles the menu (the monogram still scrolls to `hero`). Nav links live in an in-flow dropdown that expands below the header row (`max-height` 0 → 40vh, centered 40% width). The `.nav-controls` cluster floats at the bottom-right of the **screen** (not in the bar), hidden until the menu opens. Pressing `Escape` while the menu is open closes it (`document:keydown.escape` host listener → `onEscape()`; a no-op when the menu is already closed). |
+| ≥ 960px      | Fixed left sidebar (`var(--sidebar-width)`, 180px). Links stacked vertically. The `.nav-controls` cluster docks to the bottom of the sidebar (centered column) and rides the sidebar's collapse. A chevron column collapses/expands the sidebar (`is-collapsed`), it auto-collapses below `$breakpoint-height-compact`, and it auto-collapses on scroll past the hero (see Scroll behaviour). Nav bar never hides on scroll. |
 
 The single `.nav-body` element serves both roles — a `position: static` dropdown below the header
 on mobile, and `position: static; flex: 1` sidebar content on desktop.
@@ -37,8 +39,26 @@ hover comes from the global `.link-underline` class the component applies.
 
 ## Dependencies
 - `ScrollService` — all nav link clicks
-- `MotionService` — reduced-motion toggle
+- `MotionService` — backs the reduced-motion toggle
 - `TextLinkComponent` — renders each nav link
+- `IconButtonComponent` — renders each `.nav-controls` toggle (light-dark, high contrast, motion)
+
+## Appearance toggles
+`.nav-controls` holds three `app-icon-button` toggles, top to bottom: light-dark mode (`theme`),
+high contrast (`contrast`), reduced motion (`motion`) — same order and width on both layouts. It is
+a **sibling of `<nav>`**, not a child, because the bar's `backdrop-filter` would trap a
+`position: fixed` descendant; living outside lets the cluster be viewport-fixed.
+- **Mobile:** fixed at the bottom-right of the screen, hidden (`translateY(160%)`, `opacity: 0`)
+  until `is-menu-open`. On open the cluster slides up while the buttons are piled in an overlapping
+  stack (per-button `translateY` offsets), then they unstack into the column — the unstack is
+  `transition-delay`-ed by the slide duration so it happens *after* the slide. Reduced motion drops
+  that delay so nothing waits.
+- **Desktop:** docked at the sidebar bottom (centered column) and shares the sidebar's collapse —
+  `is-collapsed` (and the compact-height query) slide/fade it out in step with the bar.
+
+Only the motion toggle is wired to real behaviour (`MotionService`). Light-dark and high contrast
+are presentational placeholders — local signals (`isLightMode`, `isHighContrast`) flip the button's
+own state but do not yet change site colors.
 
 ## Does Not
 - Track the active section (underlines appear on hover only)

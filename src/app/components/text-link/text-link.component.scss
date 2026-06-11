@@ -18,3 +18,40 @@
   padding: var(--text-link-padding, 0);
   cursor: pointer;
 }
+
+// Mail icon — grows and does a quick rotational jiggle on the link's hover/focus, so any
+// icon="mail" link (e.g. the contact email) reacts the same way. The wrapper owns the smooth
+// grow (it eases back on hover-out); the inner svg owns the one-shot wobble.
+.link-mail {
+  display: inline-flex;
+  align-items: center;
+  transition: transform tokens.$duration-base tokens.$easing-out-expo;
+}
+
+.text-link:hover .link-mail,
+.text-link:focus-visible .link-mail {
+  transform: scale(1.05);
+}
+
+.text-link:hover .link-mail svg,
+.text-link:focus-visible .link-mail svg {
+  animation: link-mail-jiggle tokens.$duration-base tokens.$easing-standard;
+}
+
+@keyframes link-mail-jiggle {
+  0% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-12deg);
+  }
+  40% {
+    transform: rotate(9deg);
+  }
+  60% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}

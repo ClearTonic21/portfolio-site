@@ -1,0 +1,198 @@
+@use '../../../styles/tokens' as tokens;
+
+:host {
+  display: inline-flex;
+}
+
+// ─── Button shell ─────────────────────────────────────────────────────────────
+
+.icon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$spacing-unit;
+  border-radius: tokens.$border-radius-medium;
+  border: 1px solid var(--border-default);
+  background: var(--background-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color tokens.$duration-base tokens.$easing-standard;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--accent);
+  }
+
+  // Tooltip — sits to the right of the button (suits the desktop sidebar). Suppressed
+  // when no tooltip text is supplied so an empty bubble never renders.
+  &::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(100% + tokens.$spacing-unit);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: tokens.$font-primary;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: tokens.$border-radius-small;
+    background: var(--background-surface);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1001;
+    transition: opacity tokens.$duration-fast tokens.$easing-standard;
+  }
+
+  &:not([data-tooltip])::before {
+    content: none;
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+}
+
+// ─── Glyph slot ───────────────────────────────────────────────────────────────
+
+.icon-button__glyph {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    display: block;
+  }
+}
+
+// Motion: two overlapping circles that merge into one gold circle when active. The
+// 32×20 geometry is tuned for the default 20px icon size (its only use here).
+.icon-button__glyph--slide {
+  width: 32px;
+  height: 20px;
+
+  .glyph-outgoing,
+  .glyph-incoming {
+    position: absolute;
+    top: 0;
+    color: var(--text-primary);
+  }
+
+  .glyph-outgoing {
+    left: 0;
+    opacity: 1;
+    transition: opacity tokens.$duration-base tokens.$easing-standard;
+  }
+
+  .glyph-incoming {
+    left: 12px;
+    transition:
+      color tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-base tokens.$easing-out-expo;
+  }
+}
+
+.icon-button.is-active .icon-button__glyph--slide {
+  .glyph-outgoing {
+    opacity: 0;
+  }
+
+  .glyph-incoming {
+    transform: translateX(-12px);
+    color: var(--gold);
+  }
+}
+
+// Theme: the visible icon rests at its final color (accent for the moon / dark, gold for the
+// sun / light), 32px wide to match the motion glyph. On a toggle the leaving icon snaps to
+// --text-primary instantly while the arriving icon travels in as --text-primary, blooming to
+// its final color only once the slide settles (color transition delayed by the slide duration).
+// Each icon plays both roles, so the color timing lives per state: instant when heading to the
+// hidden state (outgoing), delayed when heading to the visible state (incoming).
+.icon-button__glyph--cross {
+  width: 32px;
+  height: 20px;
+
+  .glyph-outgoing,
+  .glyph-incoming {
+    position: absolute;
+    top: 0;
+  }
+
+  // Moon — dark mode (resting): locked left, accent. Arriving (light → dark) it colors in
+  // only after the slide ends.
+  .glyph-outgoing {
+    left: 0;
+    opacity: 1;
+    color: var(--accent);
+    transition:
+      opacity tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-base tokens.$easing-out-expo,
+      color tokens.$duration-base tokens.$easing-standard tokens.$duration-base;
+  }
+
+  // Sun — light mode (active): locked right, gold. Hidden at rest, parked on the moon's spot
+  // and neutral; leaving (light → dark) it snaps to --text-primary instantly.
+  .glyph-incoming {
+    left: 12px;
+    opacity: 0;
+    color: var(--text-primary);
+    transform: translateX(-12px);
+    transition:
+      opacity tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-base tokens.$easing-out-expo,
+      color 0s;
+  }
+}
+
+.icon-button.is-active .icon-button__glyph--cross {
+  // Leaving icon slides toward the other's locked spot, fading and snapping neutral instantly.
+  .glyph-outgoing {
+    opacity: 0;
+    transform: translateX(12px);
+    color: var(--text-primary);
+    transition:
+      opacity tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-base tokens.$easing-out-expo,
+      color 0s;
+  }
+
+  // Arriving icon travels in neutral, then blooms to gold once the slide settles.
+  .glyph-incoming {
+    opacity: 1;
+    transform: none;
+    color: var(--gold);
+    transition:
+      opacity tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-base tokens.$easing-out-expo,
+      color tokens.$duration-base tokens.$easing-standard tokens.$duration-base;
+  }
+}
+
+// Contrast: a single glyph locked right at rest; when active it slides left, flips 180°,
+// and tints gold. The 32px width matches the motion glyph so the buttons align.
+.icon-button__glyph--single {
+  width: 32px;
+  height: 20px;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    color: var(--text-primary);
+    transition:
+      color tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-base tokens.$easing-out-expo;
+  }
+}
+
+.icon-button.is-active .icon-button__glyph--single svg {
+  transform: translateX(-12px) rotate(-180deg);
+  color: var(--gold);
+}

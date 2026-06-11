@@ -4,20 +4,33 @@
 @use 'styles/metallic-border' as mb;
 
 html {
-  min-height: 100%;
+  min-height: 98%;
+  // A long single word in the hero title can exceed a narrow viewport; clip the horizontal
+  // overflow so it never produces a horizontal scrollbar (which would eat the bottom of the
+  // screen where the fixed control cluster lives) or shift content off the right edge.
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
   background: var(--background);
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 main {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  padding-left: var(--collapsed-width);
+}
+
+// Only the desktop sidebar leaves a collapsed sliver at the left edge; reserve space for it so
+// content doesn't slide under it. Mobile's nav is a top bar, so it reserves nothing — full-bleed
+// sections must reach the left edge there.
+@media (min-width: tokens.$breakpoint-medium) {
+  main {
+    padding-left: var(--collapsed-width);
+  }
 }
 
 @media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
@@ -350,20 +363,32 @@ app-cross-section {
 }
 
 // ─── Scrollbar ──────────────────────────────────────────────────────────────
+// Mobile shows a thin accent scrollbar with a fully transparent track; desktop keeps it hidden
+// (it was hidden everywhere before). On touch devices the scrollbar overlays content and reserves
+// no width, so it doesn't pad the page away from the right edge.
+
+// Firefox (no ::-webkit-scrollbar support) — standard properties.
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
   }
+
+  @media (min-width: tokens.$breakpoint-medium) {
+    * {
+      scrollbar-width: none;
+    }
+  }
 }
 
 ::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 4px;
+  height: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {
-  background: 0;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-button {
@@ -373,14 +398,20 @@ app-cross-section {
 ::-webkit-scrollbar-thumb {
   background-color: var(--accent);
   border-radius: tokens.$border-radius-pill;
-  border: 3px solid transparent;
-  background-clip: content-box;
   transition: background-color tokens.$duration-base tokens.$easing-standard;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
   background-color: var(--accent-bright);
+}
+
+// Desktop keeps scrollbars hidden — the visible accent scrollbar is a mobile affordance.
+@media (min-width: tokens.$breakpoint-medium) {
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
