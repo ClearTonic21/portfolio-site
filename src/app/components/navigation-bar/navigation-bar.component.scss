@@ -180,12 +180,15 @@ app-text-link {
   --text-link-padding: #{tokens.$spacing-2} 0;
 }
 
-// ─── Footer: motion toggle ────────────────────────────────────────────────────
+// ─── Footer: appearance + motion toggles ──────────────────────────────────────
+// A vertical stack of icon-button toggles (light-dark, high contrast, reduced motion).
 // On mobile: pinned absolute to the bottom-left of the expanded nav bar.
 // Invisible until the menu opens, then fades in after the dropdown has started.
 
 .nav-footer {
   display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-unit;
   position: absolute;
   bottom: tokens.$spacing-2;
   left: tokens.$spacing-2;
@@ -198,91 +201,6 @@ app-text-link {
   opacity: 1;
   pointer-events: auto;
   transition-delay: tokens.$duration-base; // wait for dropdown to open first
-}
-
-// ─── Motion toggle ────────────────────────────────────────────────────────────
-
-.nav-motion-toggle {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: tokens.$spacing-unit;
-  border-radius: tokens.$border-radius-medium;
-  border: 1px solid var(--border-default);
-  background: var(--background-surface);
-  cursor: pointer;
-  transition: border-color tokens.$duration-base tokens.$easing-standard;
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--accent);
-  }
-
-  &::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: calc(100% + tokens.$spacing-unit);
-    top: 50%;
-    transform: translateY(-50%);
-    white-space: nowrap;
-    font-family: tokens.$font-primary;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    padding: 4px 10px;
-    border-radius: tokens.$border-radius-small;
-    background: var(--background-surface);
-    border: 1px solid var(--border-default);
-    color: var(--text-secondary);
-    pointer-events: none;
-    opacity: 0;
-    z-index: 1001;
-    transition: opacity tokens.$duration-fast tokens.$easing-standard;
-  }
-
-  &:hover::before,
-  &:focus-visible::before {
-    opacity: 1;
-  }
-}
-
-// ─── Motion icon ──────────────────────────────────────────────────────────────
-
-.motion-icon {
-  position: relative;
-  width: 32px;
-  height: 20px;
-}
-
-.motion-icon__dashed {
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--text-primary);
-  opacity: 1;
-  transition: opacity tokens.$duration-base tokens.$easing-standard;
-}
-
-.motion-icon__solid {
-  position: absolute;
-  left: 12px;
-  top: 0;
-  color: var(--text-primary);
-  transition:
-    color tokens.$duration-base tokens.$easing-standard,
-    transform tokens.$duration-base tokens.$easing-out-expo;
-}
-
-.motion-icon.is-reduced {
-  .motion-icon__dashed {
-    opacity: 0;
-  }
-
-  .motion-icon__solid {
-    transform: translateX(-12px);
-    color: var(--gold);
-  }
 }
 
 // ─── Chevron column + collapse toggle (desktop only) ──────────────────────────
@@ -453,10 +371,6 @@ app-text-link {
     --text-link-padding: #{tokens.$spacing-unit} 0;
   }
 
-  .nav-motion-toggle {
-    padding: tokens.$spacing-unit;
-  }
-
   .nav-footer {
     // Reset mobile absolute positioning for the static sidebar layout
     position: static;
@@ -464,8 +378,8 @@ app-text-link {
     pointer-events: auto;
     transition: none;
     display: flex;
-    flex-flow: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     margin: tokens.$spacing-8 0;
     gap: tokens.$spacing-2;

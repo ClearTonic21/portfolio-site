@@ -7,16 +7,11 @@ import {
   afterNextRender,
   OnDestroy,
 } from '@angular/core';
-import {
-  LucideChevronLeft,
-  LucideChevronRight,
-  LucideCircle,
-  LucideCircleDashed,
-  LucideX,
-} from '@lucide/angular';
+import { LucideChevronLeft, LucideChevronRight, LucideX } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 import { TextLinkComponent } from '../text-link/text-link.component';
+import { IconButtonComponent } from '../icon-button/icon-button.component';
 
 export interface NavLink {
   readonly id: string;
@@ -28,10 +23,9 @@ export interface NavLink {
   imports: [
     LucideChevronLeft,
     LucideChevronRight,
-    LucideCircle,
-    LucideCircleDashed,
     LucideX,
     TextLinkComponent,
+    IconButtonComponent,
   ],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
@@ -48,6 +42,11 @@ export class NavigationBarComponent implements OnDestroy {
   readonly isMenuOpen = signal(false);
   readonly isNavHidden = signal(false);
   readonly isNavCollapsed = signal(false);
+
+  // Appearance toggles are presentational for now — they flip the button's own state but do
+  // not yet drive any site-wide theme change. Real light-mode / high-contrast wiring lands later.
+  readonly isLightMode = signal(false);
+  readonly isHighContrast = signal(false);
 
   private readonly scrollHandler = () => this.onScroll();
   private readonly resizeHandler = () => this.onResize();
@@ -93,6 +92,14 @@ export class NavigationBarComponent implements OnDestroy {
   toggleNavCollapse(): void {
     this.hasManuallyToggledNav = true;
     this.isNavCollapsed.update((c) => !c);
+  }
+
+  toggleLightMode(): void {
+    this.isLightMode.update((light) => !light);
+  }
+
+  toggleHighContrast(): void {
+    this.isHighContrast.update((high) => !high);
   }
 
   private onScroll(): void {

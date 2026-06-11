@@ -1,0 +1,33 @@
+<button
+  class="icon-button"
+  [class.is-active]="active()"
+  [attr.data-tooltip]="tooltip()"
+  [attr.aria-pressed]="active()"
+  [attr.aria-label]="label()"
+  (click)="activated.emit()"
+>
+  @switch (icon()) {
+    @case ('motion') {
+      <span class="icon-button__glyph icon-button__glyph--slide">
+        <svg lucideCircleDashed class="glyph-outgoing" [size]="size()" aria-hidden="true"></svg>
+        <svg lucideCircle class="glyph-incoming" [size]="size()" aria-hidden="true"></svg>
+      </span>
+    }
+    @case ('theme') {
+      <span class="icon-button__glyph icon-button__glyph--cross">
+        <svg lucideMoon class="glyph-outgoing" [size]="size()" aria-hidden="true"></svg>
+        <svg lucideSun class="glyph-incoming" [size]="size()" aria-hidden="true"></svg>
+      </span>
+    }
+    @case ('contrast') {
+      <span class="icon-button__glyph icon-button__glyph--single">
+        <svg lucideContrast [size]="size()" aria-hidden="true"></svg>
+      </span>
+    }
+    @default {
+      <span class="icon-button__glyph">
+        <ng-content></ng-content>
+      </span>
+    }
+  }
+</button>
