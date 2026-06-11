@@ -65,14 +65,14 @@
   [class.is-collapsed]="isNavCollapsed()"
   [class.is-menu-open]="isMenuOpen()"
 >
-  <!-- <app-icon-button
+  <app-icon-button
     icon="theme"
     [active]="isLightMode()"
     [label]="isLightMode() ? 'Switch to dark mode' : 'Switch to light mode'"
     [tooltip]="isLightMode() ? 'Light mode: enabled' : 'Dark mode: enabled'"
     (activated)="toggleLightMode()"
   />
-  <app-icon-button
+  <!-- <app-icon-button
     icon="contrast"
     [active]="isHighContrast()"
     [label]="isHighContrast() ? 'Disable high contrast' : 'Enable high contrast'"
