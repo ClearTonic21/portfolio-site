@@ -24,12 +24,14 @@
     border-color: var(--accent);
   }
 
-  // Tooltip — sits to the right of the button (suits the desktop sidebar). Suppressed
-  // when no tooltip text is supplied so an empty bubble never renders.
+  // Tooltip — defaults to the right of the button (suits the desktop sidebar); a consumer can flip
+  // it to the left by setting the two custom properties (the mobile bottom-right cluster does this).
+  // Suppressed when no tooltip text is supplied so an empty bubble never renders.
   &::before {
     content: attr(data-tooltip);
     position: absolute;
-    left: calc(100% + tokens.$spacing-unit);
+    left: var(--icon-button-tooltip-left, calc(100% + #{tokens.$spacing-unit}));
+    right: var(--icon-button-tooltip-right, auto);
     top: 50%;
     transform: translateY(-50%);
     white-space: nowrap;

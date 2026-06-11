@@ -22,9 +22,16 @@
 .about-skills {
   flex: 2 1 0;
   min-width: 0;
-  display: flex;
+  // Hidden on mobile — the skill tags show on desktop only.
+  display: none;
   flex-direction: column;
   gap: tokens.$spacing-4;
+}
+
+@media (min-width: tokens.$breakpoint-medium) {
+  .about-skills {
+    display: flex;
+  }
 }
 
 // Base [appReveal] styles are global (styles.scss); only the stagger delay is local.
