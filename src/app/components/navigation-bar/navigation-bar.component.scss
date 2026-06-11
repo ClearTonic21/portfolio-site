@@ -194,6 +194,9 @@ app-text-link {
   right: tokens.$spacing-2;
   bottom: tokens.$spacing-2;
   z-index: 1100;
+  // 30% larger on mobile. zoom scales the buttons, glyphs, gaps, and the px-based stack offsets
+  // together, so all the tuned geometry stays proportional. Reset to 1 on desktop.
+  zoom: 1.3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -207,6 +210,9 @@ app-text-link {
 }
 
 .nav-controls app-icon-button {
+  // Cluster sits at the screen's bottom-right on mobile, so the tooltip opens to the left.
+  --icon-button-tooltip-left: auto;
+  --icon-button-tooltip-right: calc(100% + #{tokens.$spacing-unit});
   transition: transform tokens.$duration-base tokens.$easing-out-expo;
 }
 
@@ -440,6 +446,7 @@ app-text-link {
     width: var(--sidebar-width);
     padding-bottom: tokens.$spacing-8;
     gap: tokens.$spacing-2;
+    zoom: 1; // mobile enlargement is reset to actual size on desktop
     opacity: 1;
     pointer-events: auto;
     transform: none;
@@ -449,9 +456,11 @@ app-text-link {
       opacity tokens.$duration-base tokens.$easing-standard;
   }
 
-  // No mobile stacking on desktop — buttons sit in a plain column.
+  // No mobile stacking on desktop — buttons sit in a plain column, tooltip back on the right.
   .nav-controls app-icon-button,
   .nav-controls.is-menu-open app-icon-button {
+    --icon-button-tooltip-left: calc(100% + #{tokens.$spacing-unit});
+    --icon-button-tooltip-right: auto;
     transform: none;
     transition: none;
   }

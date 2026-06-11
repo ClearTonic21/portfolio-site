@@ -12,14 +12,18 @@
   display: flex;
   flex-direction: column;
   gap: tokens.$spacing-6;
-  padding-left: tokens.$spacing-6;
+  padding-left: tokens.$spacing-2;
+  // Mobile: pull the rail out into the section-inner's left gutter so the line + dots hug the
+  // screen edge (the line lands $spacing-unit from it) instead of starting at the content edge.
+  // The cards keep their right gutter; reset to 0 on desktop.
+  margin-left: calc(#{tokens.$spacing-unit} - #{tokens.$content-horizontal-gutter});
 
   &::before {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 20px;
+    left: 0;
     width: 4px;
     background: var(--border-accent);
   }
@@ -34,7 +38,7 @@
     content: '';
     position: absolute;
     top: tokens.$spacing-4;
-    left: -34px;
+    left: -22px;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -94,6 +98,7 @@
 @media (min-width: tokens.$breakpoint-medium) {
   .timeline {
     padding-left: 0;
+    margin-left: 0; // cancel the mobile gutter pull — desktop centers the rail
     gap: tokens.$spacing-8;
 
     &::before {
