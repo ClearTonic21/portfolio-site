@@ -10,7 +10,10 @@ Chronological work history rendered as a vertical timeline. Shows career progres
 `app-experience`
 
 ## Responsibilities
-- Eyebrow label: `Experience_`; heading "Work History"
+- Renders **body content only** — the vertical timeline. The section eyebrow (`Experience`) and
+  heading ("Work History") are owned by the parent `CrossSectionComponent` (set in
+  `AppComponent.sections`); this component no longer renders its own `<section>`, `.section-inner`,
+  eyebrow, or heading.
 - Vertical timeline: 4px `var(--border-accent)` line with an accent dot per entry; cards alternate left/right on desktop (`$breakpoint-medium`, 960px) and stack on mobile. A short-landscape override (`max-height: $breakpoint-height-compact`) collapses to a single flush-left column with the line on the right.
 - Three entries, newest first:
   1. ServiceNow Application Developer — Capital One: custom JS + AngularJS components, REST API integrations, ITSM/HR modules, Agile, mentored junior engineers
@@ -42,3 +45,5 @@ Timeline entries are text-only. If company logos or role icons are added in the 
 ## Does Not
 - Link to external URLs
 - Repeat skill tag groups from AboutComponent (experience cards use minimal context tags only)
+- Own its section anchor `id`, eyebrow, or heading — the parent `CrossSectionComponent` renders the
+  unified header from `AppComponent.sections`

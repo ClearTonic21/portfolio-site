@@ -1,7 +1,15 @@
 @if (imagePath() !== undefined) {
   <div class="article-card-image-area">
-    @if (imagePath()) {
-      <img class="article-card-image" [src]="imagePath()" [alt]="imageAlt()" loading="lazy" />
+    @if (imagePath(); as src) {
+      <button
+        type="button"
+        class="article-card-image-button"
+        [attr.aria-label]="expandLabel()"
+        [attr.aria-expanded]="isModalOpen()"
+        (click)="openImageModal()"
+      >
+        <img class="article-card-image" [src]="src" [alt]="imageAlt()" loading="lazy" />
+      </button>
     } @else {
       <div class="article-card-image-placeholder" aria-hidden="true">
         <span class="placeholder-label type-caption">Preview coming soon</span>
@@ -44,3 +52,29 @@
     </div>
   }
 </div>
+
+<!-- Expanded image view. A native <dialog> (showModal) renders in the top layer, so it overlays the
+     whole site and escapes the card's overflow:hidden / hover transform. Clicking the empty area
+     around the image (target === dialog) or the close button dismisses it; Escape closes natively. -->
+@if (imagePath(); as src) {
+  <dialog
+    #imageModal
+    class="article-card-modal"
+    aria-label="Expanded image view"
+    (click)="onBackdropClick($event)"
+    (cancel)="onModalClose()"
+    (close)="onModalClose()"
+  >
+    <div class="article-card-modal-frame">
+      <button
+        type="button"
+        class="article-card-modal-close"
+        aria-label="Close image view"
+        (click)="closeImageModal()"
+      >
+        <svg lucideX [size]="24" aria-hidden="true"></svg>
+      </button>
+      <img class="article-card-modal-image" [src]="src" [alt]="imageAlt()" />
+    </div>
+  </dialog>
+}

@@ -1,1 +1,26 @@
-<ng-container [ngComponentOutlet]="component()" />
+@if (hasHeader()) {
+  <section [id]="sectionId()" [attr.aria-labelledby]="heading() ? headingId() : null">
+    <div class="section-inner">
+      <header class="section-header">
+        @if (eyebrow(); as eyebrowText) {
+          <p class="type-eyebrow section-eyebrow" appReveal>
+            {{ eyebrowText }}<span class="accent">_</span>
+          </p>
+        }
+        @if (heading(); as headingText) {
+          <h2 [id]="headingId()" class="type-heading section-heading" tabindex="0" appReveal>
+            {{ headingText }}
+          </h2>
+        }
+        @if (subtitle(); as subtitleText) {
+          <p class="type-body section-subtitle" appReveal>{{ subtitleText }}</p>
+        }
+      </header>
+
+      <ng-container [ngComponentOutlet]="component()" />
+    </div>
+  </section>
+} @else {
+  <!-- Bespoke sections (hero, contact) own their <section>, .section-inner, and header. -->
+  <ng-container [ngComponentOutlet]="component()" />
+}

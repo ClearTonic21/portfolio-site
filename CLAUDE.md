@@ -518,22 +518,33 @@ Every page section is rendered through `CrossSectionComponent` (`app-cross-secti
 
 ```typescript
 interface CrossSection {
-  readonly id: string; // anchor id, owned by the inner section component
+  readonly id: string; // anchor id (scroll/nav target)
+  readonly label: string; // nav link label
   readonly component: Type<unknown>; // the section content component
   readonly enabled: boolean; // feature flag — false removes the section entirely
   readonly glass: boolean; // true → frosted-glass background + gold borders
+  readonly eyebrow?: string; // section header eyebrow (omit → bespoke section)
+  readonly heading?: string; // section header heading
+  readonly subtitle?: string; // optional supporting line under the heading
 }
 ```
 
 ```html
 @for (section of sections; track section.id) { @if (section.enabled) {
-<app-cross-section [component]="section.component" [glass]="section.glass" />
+<app-cross-section
+  [sectionId]="section.id"
+  [component]="section.component"
+  [glass]="section.glass"
+  [eyebrow]="section.eyebrow"
+  [heading]="section.heading"
+  [subtitle]="section.subtitle"
+/>
 } }
 ```
 
 - **Feature flag:** `enabled: false` fails the `@if`, so the cross-section and its content are never instantiated or added to the DOM.
-- **Background:** the cross-section owns the section background. `glass: true` applies the `.glass-section` treatment (frosted overlay + gold top/bottom borders that brighten to teal on hover, or on scroll-into-view on touch/small viewports); `glass: false` leaves the section transparent over the parallax background. Sections span the full viewport (full-bleed); the page no longer reserves sidebar space, so content centers on the true viewport center with the nav floating over it.
-- Content components (`app-hero`, `app-about`, …) render via `NgComponentOutlet` and keep their own `<section id="...">`, `.section-inner`, and content unchanged. They are not listed in `AppComponent`'s `imports`.
+- **Background:** the cross-section owns the section background. `glass: true` applies the `.glass-section` treatment — frosted overlay + gold top/bottom borders that brighten to teal on hover, or on scroll-into-view on touch/small viewports — **styled in the component's own SCSS** (`:host(.glass-section)`), not global CSS. `glass: false` leaves the section transparent over the parallax background. Sections span the full viewport (full-bleed). Only the theme/contrast palette overrides for `.glass-section` remain global (shared with `.nav-bar`).
+- **Header:** when `eyebrow` or `heading` is supplied (about, experience, projects), the cross-section renders the section shell (`<section [id] [aria-labelledby]>`, `.section-inner`) and a unified `.section-header` (eyebrow + accent `_`, heading, optional subtitle) with consistent spacing; the body component then renders **only its body**. Omitting them (hero, contact) keeps the section bespoke — the content component renders its own `<section id="...">`, `.section-inner`, and header. Content components render via `NgComponentOutlet` and are not listed in `AppComponent`'s `imports`.
 
 ### Navigation (NavigationBarComponent)
 
@@ -762,7 +773,7 @@ Adds `is-visible` class to host element when it enters viewport.
 - When `MotionService.reducedMotion()` is true, adds `is-visible` immediately on init
 
 The `[appReveal]` base style lives once in `styles.scss` (global); components only add per-element
-nuances such as a stagger delay (e.g. `.projects-heading[appReveal] { transition-delay: 150ms; }`):
+nuances such as a stagger delay (e.g. `.section-heading[appReveal] { transition-delay: 150ms; }`):
 
 ```scss
 [appReveal] {

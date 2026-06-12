@@ -18,6 +18,9 @@ interface CrossSection {
   readonly component: Type<unknown>;
   readonly enabled: boolean;
   readonly glass: boolean;
+  readonly eyebrow?: string;
+  readonly heading?: string;
+  readonly subtitle?: string;
 }
 
 @Component({
@@ -34,13 +37,23 @@ export class AppComponent {
 
   readonly sections: readonly CrossSection[] = [
     { id: 'hero', label: 'Hero', component: HeroComponent, enabled: true, glass: false },
-    { id: 'about', label: 'About', component: AboutComponent, enabled: true, glass: true },
+    {
+      id: 'about',
+      label: 'About',
+      component: AboutComponent,
+      enabled: true,
+      glass: true,
+      eyebrow: 'About',
+      heading: 'The Details',
+    },
     {
       id: 'experience',
       label: 'Experience',
       component: ExperienceComponent,
       enabled: true,
       glass: false,
+      eyebrow: 'Experience',
+      heading: 'Work History',
     },
     {
       id: 'projects',
@@ -48,6 +61,8 @@ export class AppComponent {
       component: ProjectsComponent,
       enabled: true,
       glass: false,
+      eyebrow: 'Projects',
+      heading: "Things I've Built",
     },
     { id: 'contact', label: 'Contact', component: ContactComponent, enabled: true, glass: false },
   ];

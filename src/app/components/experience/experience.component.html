@@ -1,28 +1,19 @@
-<section id="experience" aria-labelledby="experience-heading">
-  <div class="section-inner">
-    <p class="type-eyebrow" appReveal>Experience<span class="accent">_</span></p>
-    <h2 id="experience-heading" class="type-heading experience-heading" tabindex="0" appReveal>
-      Work History
-    </h2>
-
-    <div class="timeline">
-      @for (entry of timelineEntries; track entry.id; let isEven = $even) {
-        <div class="timeline-entry" [class.is-left]="isEven">
-          <app-article-card
-            [highlight]="entry.period"
-            [title]="entry.company"
-            [caption]="entry.role"
-            appReveal
-          >
-            <ul class="timeline-bullets">
-              @for (bullet of entry.bullets; track bullet) {
-                <li class="type-body timeline-bullet">{{ bullet }}</li>
-              }
-            </ul>
-            <app-tag-list [tags]="entry.tags" />
-          </app-article-card>
-        </div>
-      }
+<div class="timeline">
+  @for (entry of timelineEntries; track entry.id; let isEven = $even) {
+    <div class="timeline-entry" [class.is-left]="isEven">
+      <app-article-card
+        [highlight]="entry.period"
+        [title]="entry.company"
+        [caption]="entry.role"
+        appReveal
+      >
+        <ul class="timeline-bullets">
+          @for (bullet of entry.bullets; track bullet) {
+            <li class="type-body timeline-bullet">{{ bullet }}</li>
+          }
+        </ul>
+        <app-tag-list [tags]="entry.tags" />
+      </app-article-card>
     </div>
-  </div>
-</section>
+  }
+</div>

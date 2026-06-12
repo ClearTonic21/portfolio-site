@@ -39,7 +39,7 @@ redeclare it:
 }
 ```
 Components only add per-element nuances such as a stagger delay, e.g.
-`.projects-heading[appReveal] { transition-delay: 150ms; }`.
+`.section-heading[appReveal] { transition-delay: 150ms; }`.
 
 **Dependencies:**
 - `MotionService` — reads `reducedMotion` signal

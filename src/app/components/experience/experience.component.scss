@@ -1,10 +1,5 @@
 @use '../../../styles/tokens' as tokens;
 
-.experience-heading {
-  margin-top: tokens.$spacing-3;
-  margin-bottom: tokens.$spacing-4;
-}
-
 // ─── Timeline container ───────────────────────────────────────────────────────
 
 .timeline {
@@ -84,13 +79,6 @@
     font-family: tokens.$font-primary;
     font-size: 0.85em;
   }
-}
-
-// ─── Reveal animations ────────────────────────────────────────────────────────
-// Base [appReveal] styles are global (styles.scss); only the stagger delay is local.
-
-.experience-heading[appReveal] {
-  transition-delay: 150ms;
 }
 
 // ─── Desktop: alternating left/right layout ───────────────────────────────────

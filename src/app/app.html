@@ -27,7 +27,14 @@
 <main>
   @for (section of sections; track section.id) {
     @if (section.enabled) {
-      <app-cross-section [component]="section.component" [glass]="section.glass" />
+      <app-cross-section
+        [sectionId]="section.id"
+        [component]="section.component"
+        [glass]="section.glass"
+        [eyebrow]="section.eyebrow"
+        [heading]="section.heading"
+        [subtitle]="section.subtitle"
+      />
     }
   }
 </main>
