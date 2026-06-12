@@ -23,11 +23,20 @@ parent class.
 | `brandUnderscore` | `boolean`        | No       | `false` | When `true`, appends the brand `_` immediately after the label text.                                               |
 | `href`            | `string`         | No       | `'#'`   | Navigation URL. Pass a path or `mailto:` for link behaviour.                                                       |
 | `target`          | `string \| null` | No       | `null`  | `target` attribute on the `<a>`. Use `'_blank'` for new tabs — `rel="noopener noreferrer"` is added automatically. |
+| `tabIndex`        | `number \| null` | No       | `null`  | Overrides the anchor's `tabindex` for tab-order control. The hero CTA passes `1` so it is the first tab stop on the page; `null` leaves natural DOM order. |
 
 ## Rendering
 
 Renders an inner `<a class="action-call">` element. The `href` and `target` inputs drive the
 anchor attributes directly. The parent should not add a wrapping anchor.
+
+## Accessibility
+
+The link's accessible name is composed from its visible content: the `text` label (the brand
+underscore is `aria-hidden`, so screen readers don't read "underscore") plus the arrow icon. When
+`target="_blank"`, the arrow is exposed as `role="img"` with `aria-label="Opens in new tab"`
+(via the `iconAriaLabel` computed), so the link announces e.g. "Grab my Resume, Opens in new tab".
+A same-tab arrow stays `aria-hidden`.
 
 ## Styles
 

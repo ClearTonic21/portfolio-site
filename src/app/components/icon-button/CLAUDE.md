@@ -32,10 +32,11 @@ ways to fill the glyph slot:
 - **`motion`** — `CircleDashed` + `Circle`. At rest the two circles overlap; when `active` the dashed
   one fades out and the solid one slides over it and turns gold (the reduced-motion treatment).
 - **`theme`** — `Moon` + `Sun`. Resting (dark mode) shows the moon locked left in `--accent`; when
-  `active` (light mode) the moon slides right and fades as the sun fades in locked right in `--gold`,
-  so it reads as one icon converting into the other.
-- **`contrast`** — a single `Contrast` glyph locked right at rest; when `active` it slides left, flips
-  180°, and tints `--gold`.
+  `active` (light mode) the moon slides right and fades as the sun fades in locked right in
+  `--text-primary` (near-black on the light button surface, for contrast), so it reads as one icon
+  converting into the other.
+- **`contrast`** — a single `Contrast` glyph locked left at rest; when `active` it slides right, flips
+  180°, thickens its stroke (`stroke-width: 2.75`), and tints `--gold`.
 - **projected `<svg>`** — when `icon` is `null`, the consumer's `<ng-content>` SVG is rendered instead.
 
 ## Glyph slot

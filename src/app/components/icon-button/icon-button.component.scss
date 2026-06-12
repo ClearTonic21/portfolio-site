@@ -165,11 +165,12 @@
       color 0s;
   }
 
-  // Arriving icon travels in neutral, then blooms to gold once the slide settles.
+  // Arriving icon travels in neutral, then settles to the primary text color once the slide
+  // ends — near-black on the light-mode button surface, for stronger contrast than gold.
   .glyph-incoming {
     opacity: 1;
     transform: none;
-    color: var(--gold);
+    color: var(--text-primary);
     transition:
       opacity tokens.$duration-base tokens.$easing-standard,
       transform tokens.$duration-base tokens.$easing-out-expo,
@@ -177,8 +178,8 @@
   }
 }
 
-// Contrast: a single glyph locked right at rest; when active it slides left, flips 180°,
-// and tints gold. The 32px width matches the motion glyph so the buttons align.
+// Contrast: a single glyph locked left at rest; when active it slides right, flips 180°, thickens
+// its stroke, and tints gold. The 32px width matches the motion glyph so the buttons align.
 .icon-button__glyph--single {
   width: 32px;
   height: 20px;
@@ -186,15 +187,17 @@
   svg {
     position: absolute;
     top: 0;
-    left: 12px;
+    left: 0;
     color: var(--text-primary);
     transition:
       color tokens.$duration-base tokens.$easing-standard,
-      transform tokens.$duration-base tokens.$easing-out-expo;
+      stroke-width tokens.$duration-base tokens.$easing-standard,
+      transform tokens.$duration-slow tokens.$easing-out-expo;
   }
 }
 
 .icon-button.is-active .icon-button__glyph--single svg {
-  transform: translateX(-12px) rotate(-180deg);
+  transform: translateX(12px) rotate(180deg);
   color: var(--gold);
+  stroke-width: 3.75;
 }

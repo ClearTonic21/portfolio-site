@@ -33,10 +33,10 @@ export class ProjectsComponent {
       fullPage: false,
       eyebrow: 'Indie Game Design and Development',
       description:
-        'Solo-developed pixel art game built in Godot, from concept and art direction to mechanics. ClearTonic Games_ is the studio label for every game I create.',
+        'PuzzleRobot is a solo-developed pixel art game built in Godot, from concept and art direction to mechanics. ClearTonic Games_ is the studio label for every game I create.',
       imagePath: 'assets/images/game_screenshot.png',
       imageAlt: 'Screenshot of a ClearTonic Games_ indie game',
-      tags: ['Godot', 'Pixel Art', 'Game Design', 'Solo Dev'],
+      tags: ['Godot', 'Pixel Art', 'Game Design', 'Solo Development'],
       linkHref: 'https://github.com/ClearTonic21',
       linkLabel: 'View on GitHub',
     },

@@ -8,17 +8,10 @@
 //
 // Edit the stops here to change the effect site-wide.
 
-// ─── Gold gradient stops ──────────────────────────────────────────────────────
-
-$gold-fade:  rgba(100, 75, 10, 0.1);
-$gold-mid:   rgba(201, 162, 39, 0.7);
-$gold-peak:  rgba(255, 225, 100, 1.0);
-
-// ─── Teal accent gradient stops ───────────────────────────────────────────────
-
-$teal-fade:  rgba(56, 238, 180, 0.05);
-$teal-mid:   rgba(56, 238, 180, 0.7);
-$teal-peak:  rgba(56, 238, 180, 1.0);
+// ─── Gradient stops ───────────────────────────────────────────────────────────
+// The canonical values live as CSS custom properties (src/styles/tokens.scss) so the
+// light theme can re-tint them at runtime; the mixins below reference those variables.
+// Thickness is themed too via --metallic-border-width (1px dark, 2px light).
 
 // ─── Strip mixins (single-edge, directional) ──────────────────────────────────
 // $direction: CSS gradient direction string, e.g. 'to right' or 'to bottom'
@@ -26,22 +19,22 @@ $teal-peak:  rgba(56, 238, 180, 1.0);
 @mixin strip-gold($direction: 'to right') {
   background: linear-gradient(
     #{$direction},
-    $gold-fade,
-    $gold-mid  25%,
-    $gold-peak 50%,
-    $gold-mid  75%,
-    $gold-fade
+    var(--gold-fade),
+    var(--gold-mid) 25%,
+    var(--gold-peak) 50%,
+    var(--gold-mid) 75%,
+    var(--gold-fade)
   );
 }
 
 @mixin strip-teal($direction: 'to right') {
   background: linear-gradient(
     #{$direction},
-    $teal-fade,
-    $teal-mid  25%,
-    $teal-peak 50%,
-    $teal-mid  75%,
-    $teal-fade
+    var(--teal-fade),
+    var(--teal-mid) 25%,
+    var(--teal-peak) 50%,
+    var(--teal-mid) 75%,
+    var(--teal-fade)
   );
 }
 
@@ -51,29 +44,29 @@ $teal-peak:  rgba(56, 238, 180, 1.0);
 @mixin ring-gold() {
   background: linear-gradient(
     135deg,
-    $gold-fade  0%,
-    $gold-mid   30%,
-    $gold-peak  50%,
-    $gold-mid   70%,
-    $gold-fade  100%
+    var(--gold-fade) 0%,
+    var(--gold-mid) 30%,
+    var(--gold-peak) 50%,
+    var(--gold-mid) 70%,
+    var(--gold-fade) 100%
   );
 }
 
 @mixin ring-teal() {
   background: linear-gradient(
     135deg,
-    $teal-fade  0%,
-    $teal-mid   30%,
-    $teal-peak  50%,
-    $teal-mid   70%,
-    $teal-fade  100%
+    var(--teal-fade) 0%,
+    var(--teal-mid) 30%,
+    var(--teal-peak) 50%,
+    var(--teal-mid) 70%,
+    var(--teal-fade) 100%
   );
 }
 
-// Carves out the element interior so only the 1px border ring is visible.
+// Carves out the element interior so only the border ring is visible.
 // Apply on the same pseudo-element as ring-gold() or ring-teal().
 @mixin ring-mask() {
-  padding: 1px;
+  padding: var(--metallic-border-width, 1px);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);

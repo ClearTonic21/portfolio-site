@@ -49,3 +49,66 @@ toggleReducedMotion(): void
 - `RevealDirective` — adds `is-visible` immediately (skips the observer) when reduced motion is active
 
 **Spec file:** `motion.service.spec.ts`
+
+---
+
+## ThemeService (`theme.service.ts`)
+
+**Purpose:** Single source of truth for the light/dark theme. Drives the whole site's palette by
+toggling a `data-theme` attribute the global SCSS keys off of.
+
+**Public API:**
+```typescript
+readonly theme: Signal<'dark' | 'light'>
+readonly isLight: Signal<boolean>   // computed from theme()
+toggleTheme(): void
+```
+
+**Initialization:**
+- Reads `localStorage` key `portfolio-theme` (`'light'` / `'dark'`)
+- Falls back to the OS `prefers-color-scheme: light` media query (guarded for environments
+  without `matchMedia`)
+- Defaults to `'dark'`
+
+**Effect:**
+- Writes `document.body.dataset['theme']` on every change
+- Persists back to `localStorage` on every change
+- The light palette lives in `src/styles/tokens.scss` under `[data-theme='light']`; the nav bar
+  and glass sections stay dark frosted islands (re-asserted in `src/styles.scss`)
+
+**Used by:**
+- `NavigationBarComponent` — hosts the light/dark toggle button (the `theme` icon)
+- `AppComponent` — gates the light-mode-only wavy gold grid background (`@if (isLight())`)
+
+**Spec file:** `theme.service.spec.ts`
+
+---
+
+## ContrastService (`contrast.service.ts`)
+
+**Purpose:** Single source of truth for the high-contrast preference. Layers on top of either theme
+to drive a maximum-contrast palette via a `data-high-contrast` attribute the global SCSS keys off of.
+
+**Public API:**
+```typescript
+readonly highContrast: Signal<boolean>
+toggleHighContrast(): void
+```
+
+**Initialization:**
+- Reads `localStorage` key `portfolio-high-contrast` (`'true'` / `'false'`)
+- Falls back to the OS `prefers-contrast: more` media query (guarded for environments without
+  `matchMedia`)
+- Defaults to `false`
+
+**Effect:**
+- Writes `document.body.dataset['highContrast']` on every change
+- Persists back to `localStorage` on every change
+- The high-contrast palette lives in `src/styles/tokens.scss` under `[data-high-contrast='true']`
+  (plus a `[data-theme='light'][data-high-contrast='true']` block); the dark islands and decorative
+  backgrounds are adjusted in `src/styles.scss`
+
+**Used by:**
+- `NavigationBarComponent` — hosts the high-contrast toggle button (the `contrast` icon)
+
+**Spec file:** `contrast.service.spec.ts`

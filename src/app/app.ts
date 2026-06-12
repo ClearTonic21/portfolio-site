@@ -1,5 +1,6 @@
 ﻿import { Component, ChangeDetectionStrategy, Type, inject } from '@angular/core';
 import { MotionService } from './services/motion.service';
+import { ThemeService } from './services/theme.service';
 import {
   NavigationBarComponent,
   NavLink,
@@ -29,6 +30,7 @@ interface CrossSection {
 })
 export class AppComponent {
   readonly motionService = inject(MotionService);
+  readonly themeService = inject(ThemeService);
 
   readonly sections: readonly CrossSection[] = [
     { id: 'hero', label: 'Hero', component: HeroComponent, enabled: true, glass: false },

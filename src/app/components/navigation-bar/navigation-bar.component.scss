@@ -1,5 +1,5 @@
 @use '../../../styles/tokens' as tokens;
-@use '../../../styles/metallic-border' as mb;
+@use '../../../styles/metallic-border' as metallic_border;
 
 // ─── Mobile: fixed top bar ────────────────────────────────────────────────────
 
@@ -29,8 +29,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    @include mb.strip-gold('to right');
+    height: var(--metallic-border-width, 1px);
+    @include metallic_border.strip-gold('to right');
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
 
@@ -40,8 +40,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    @include mb.strip-teal('to right');
+    height: var(--metallic-border-width, 1px);
+    @include metallic_border.strip-teal('to right');
     opacity: 0;
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
@@ -336,9 +336,9 @@ app-text-link {
       top: 0;
       right: 0;
       left: auto;
-      width: 1px;
+      width: var(--metallic-border-width, 1px);
       height: auto;
-      @include mb.strip-gold('to bottom');
+      @include metallic_border.strip-gold('to bottom');
     }
 
     &::before {
@@ -346,9 +346,9 @@ app-text-link {
       top: 0;
       right: 0;
       left: auto;
-      width: 1px;
+      width: var(--metallic-border-width, 1px);
       height: auto;
-      @include mb.strip-teal('to bottom');
+      @include metallic_border.strip-teal('to bottom');
     }
 
     // Desktop hover: glow goes sideways
@@ -405,8 +405,6 @@ app-text-link {
     flex: 1;
     transform: none;
     transition: none;
-
-    // Override the mobile collapsed state — always visible on desktop
     max-height: none;
     opacity: 1;
     overflow: visible;
@@ -444,6 +442,7 @@ app-text-link {
     right: auto;
     bottom: 0;
     width: var(--sidebar-width);
+    padding-top: tokens.$spacing-3;
     padding-bottom: tokens.$spacing-8;
     gap: tokens.$spacing-2;
     zoom: 1; // mobile enlargement is reset to actual size on desktop
@@ -452,7 +451,7 @@ app-text-link {
     transform: none;
     cursor: default;
     transition:
-      transform 160ms tokens.$easing-standard,
+      transform 550ms tokens.$easing-out-expo,
       opacity tokens.$duration-base tokens.$easing-standard;
   }
 

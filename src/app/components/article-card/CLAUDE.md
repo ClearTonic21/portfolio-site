@@ -48,6 +48,10 @@ or styling is needed.
 
 ## Host bindings
 - Always has class `surface` (global surface card styling)
+- `tabindex="0"` — the whole card is a tab stop, so keyboard users land on each card as they step
+  through the Experience / Projects sections. The hover lift + teal ring + glow are mirrored on
+  `:host:focus-within` (so they persist while the card or its projected CTA link holds focus), and
+  the global `app-article-card:focus-visible` rule adds the accent focus outline.
 - Has class `is-full-page` when `fullPage()` is true
 - Has class `is-in-view` while the card sits in the middle 50% of the viewport on touch/small screens (see Scroll-activated glow)
 

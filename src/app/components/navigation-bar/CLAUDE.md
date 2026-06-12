@@ -37,9 +37,17 @@ component's SCSS (inherited by its inner `<a>`); the tap-target padding is passe
 `--text-link-padding` (`$spacing-2 0` mobile, `$spacing-unit 0` desktop). The accent + underline
 hover comes from the global `.link-underline` class the component applies.
 
+## Monogram (keyboard)
+The monogram is a keyboard-operable control (`role="button"`, `tabindex="0"`, Enter/Space handlers)
+that scrolls to `#hero`; it shows its hover border + glow on `:focus-visible`. In the page's overall
+tab order it is the second stop — the hero resume CTA is pulled ahead of it via `tabIndex=1` — after
+which come the nav links, then the `.nav-controls` toggles, then each section.
+
 ## Dependencies
 - `ScrollService` — all nav link clicks
 - `MotionService` — backs the reduced-motion toggle
+- `ThemeService` — backs the light/dark toggle
+- `ContrastService` — backs the high-contrast toggle
 - `TextLinkComponent` — renders each nav link
 - `IconButtonComponent` — renders each `.nav-controls` toggle (light-dark, high contrast, motion)
 
@@ -56,9 +64,11 @@ a **sibling of `<nav>`**, not a child, because the bar's `backdrop-filter` would
 - **Desktop:** docked at the sidebar bottom (centered column) and shares the sidebar's collapse —
   `is-collapsed` (and the compact-height query) slide/fade it out in step with the bar.
 
-Only the motion toggle is wired to real behaviour (`MotionService`). Light-dark and high contrast
-are presentational placeholders — local signals (`isLightMode`, `isHighContrast`) flip the button's
-own state but do not yet change site colors.
+The light-dark toggle is wired to `ThemeService` (`themeService.isLight()` /
+`themeService.toggleTheme()`), the motion toggle to `MotionService`, and the high-contrast toggle to
+`ContrastService` (`contrastService.highContrast()` / `contrastService.toggleHighContrast()`), which
+writes `body[data-high-contrast]` that the global SCSS keys off of (see `tokens.scss` /
+`styles.scss`).
 
 ## Does Not
 - Track the active section (underlines appear on hover only)

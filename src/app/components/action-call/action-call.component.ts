@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnDestroy,
   afterNextRender,
+  computed,
   inject,
   input,
   signal,
@@ -29,8 +30,15 @@ export class ActionCallComponent implements OnDestroy {
   readonly brandUnderscore = input<boolean>(false);
   readonly href = input('#');
   readonly target = input<string | null>(null);
+  // Lets a consumer override the link's position in the tab order (e.g. the hero CTA is pulled to
+  // the front with `1`). Null leaves the anchor at its natural DOM order.
+  readonly tabIndex = input<number | null>(null);
 
   readonly isInView = signal(false);
+
+  // The arrow signals that the link leaves the page, so it carries that as its accessible name
+  // (composed into the link's name); a same-tab arrow stays purely decorative.
+  readonly iconAriaLabel = computed(() => (this.target() === '_blank' ? 'Opens in new tab' : null));
 
   private observer?: IntersectionObserver;
 

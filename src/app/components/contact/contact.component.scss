@@ -31,10 +31,21 @@ app-text-link {
   --link-underline-offset: -4px;
 }
 
+.contact-heading {
+  // "LET'S BUILD SOMETHING." is a long display string; tighten fractionally beyond
+  // the global -0.02em so the edges don't clip on narrow viewports.
+  letter-spacing: -0.03em;
+}
+
 .contact-footer {
   margin-top: tokens.$spacing-12;
   padding-top: tokens.$spacing-4;
   border-top: 1px solid var(--border-default);
   width: 100%;
   text-align: center;
+
+  // Footer caption is bumped 1.25× over the base .type-caption (0.72rem) for legibility.
+  .type-caption {
+    font-size: 0.9rem;
+  }
 }

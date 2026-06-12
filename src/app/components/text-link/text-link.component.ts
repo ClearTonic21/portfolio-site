@@ -23,6 +23,19 @@ export class TextLinkComponent {
   // Auto-protect new-tab links, mirroring ActionCallComponent.
   readonly rel = computed(() => (this.target() === '_blank' ? 'noopener noreferrer' : null));
 
+  // The trailing icon carries its meaning as an accessible name composed into the link: the arrow
+  // announces an external/new-tab destination, the mail glyph announces an email action.
+  readonly iconAriaLabel = computed(() => {
+    switch (this.icon()) {
+      case 'arrow':
+        return this.target() === '_blank' ? 'Opens in new tab' : 'External link';
+      case 'mail':
+        return 'Email';
+      default:
+        return null;
+    }
+  });
+
   // Without an href the anchor is a button: it drives the `activated` output and needs
   // explicit keyboard activation. With an href the browser navigates natively, so we
   // leave the event untouched.

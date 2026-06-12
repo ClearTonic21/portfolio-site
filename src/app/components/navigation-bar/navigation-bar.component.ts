@@ -10,6 +10,8 @@ import {
 import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
+import { ThemeService } from '../../services/theme.service';
+import { ContrastService } from '../../services/contrast.service';
 import { TextLinkComponent } from '../text-link/text-link.component';
 import { IconButtonComponent } from '../icon-button/icon-button.component';
 
@@ -20,12 +22,7 @@ export interface NavLink {
 
 @Component({
   selector: 'app-navigation-bar',
-  imports: [
-    LucideChevronLeft,
-    LucideChevronRight,
-    TextLinkComponent,
-    IconButtonComponent,
-  ],
+  imports: [LucideChevronLeft, LucideChevronRight, TextLinkComponent, IconButtonComponent],
   templateUrl: './navigation-bar.component.html',
   styleUrl: './navigation-bar.component.scss',
   host: {
@@ -36,16 +33,13 @@ export interface NavLink {
 export class NavigationBarComponent implements OnDestroy {
   private readonly scrollService = inject(ScrollService);
   readonly motionService = inject(MotionService);
+  readonly themeService = inject(ThemeService);
+  readonly contrastService = inject(ContrastService);
   readonly navLinks = input.required<readonly NavLink[]>();
 
   readonly isMenuOpen = signal(false);
   readonly isNavHidden = signal(false);
   readonly isNavCollapsed = signal(false);
-
-  // Appearance toggles are presentational for now — they flip the button's own state but do
-  // not yet drive any site-wide theme change. Real light-mode / high-contrast wiring lands later.
-  readonly isLightMode = signal(false);
-  readonly isHighContrast = signal(false);
 
   private readonly scrollHandler = () => this.onScroll();
   private readonly resizeHandler = () => this.onResize();
@@ -93,14 +87,6 @@ export class NavigationBarComponent implements OnDestroy {
     this.isNavCollapsed.update((c) => !c);
   }
 
-  toggleLightMode(): void {
-    this.isLightMode.update((light) => !light);
-  }
-
-  toggleHighContrast(): void {
-    this.isHighContrast.update((high) => !high);
-  }
-
   private onScroll(): void {
     const currentScrollY = window.scrollY;
 
@@ -116,7 +102,10 @@ export class NavigationBarComponent implements OnDestroy {
     // Desktop: open at the top of the page, collapse once the user scrolls past the
     // middle of the hero. Disabled for good once the user works the chevron manually, so
     // their explicit choice is never overridden by scrolling.
-    if (!this.hasManuallyToggledNav && window.innerWidth >= NavigationBarComponent.DESKTOP_BREAKPOINT) {
+    if (
+      !this.hasManuallyToggledNav &&
+      window.innerWidth >= NavigationBarComponent.DESKTOP_BREAKPOINT
+    ) {
       const hero = document.getElementById('hero');
       if (hero) {
         const threshold = hero.offsetHeight * 0.5;
