@@ -1,5 +1,10 @@
 @use '../styles/tokens' as *;
 
+// Shared period for the light-mode background motion. The gold orbs' drift and the gold
+// patches' transparency-window glide all run on this one duration with no stagger, so the
+// gradient and the patches move in lockstep. Retune every layer at once by changing it here.
+$bg-drift-duration: 24s;
+
 :host {
   display: block;
   min-height: 100vh;
@@ -80,3 +85,174 @@
     transform: translate(0%, 0%);
   }
 }
+
+// ─── Light mode: gold orbs ─────────────────────────────────────────────────────
+// In light mode the teal accent orbs glow gold. They keep their size, blur, and drift.
+// The inner stops use rgb(160, 125, 22) — the exact gold of the wave lines
+// (gold-wave.svg's #a07d16 stroke) — so where a patch's lines cross the dense core of an
+// orb they blend into the matching gold and vanish, then re-emerge as the glow fades to
+// the cream page. (Blending color over itself is invariant to opacity, so the lines
+// disappear there regardless of the patch's own opacity.) Raise the first stop's alpha
+// toward 1 to make the grid vanish more completely; lower it for a softer fade.
+// (:host-context, not a bare attribute selector, so emulated encapsulation doesn't scope
+// the body's data-theme attribute to this component — same pattern as the nav.)
+
+:host-context([data-theme='light']) .parallax-orb--1 {
+  background: radial-gradient(
+    ellipse,
+    rgba(160, 125, 22, 0.92) 0%,
+    rgba(160, 125, 22, 0.5) 20%,
+    rgba(160, 125, 22, 0.12) 48%,
+    transparent 82%
+  );
+}
+
+:host-context([data-theme='light']) .parallax-orb--2 {
+  background: radial-gradient(
+    ellipse,
+    rgba(160, 125, 22, 0.85) 0%,
+    rgba(160, 125, 22, 0.45) 20%,
+    rgba(160, 125, 22, 0.1) 48%,
+    transparent 82%
+  );
+}
+
+:host-context([data-theme='light']) .parallax-orb--3 {
+  background: radial-gradient(
+    ellipse,
+    rgba(160, 125, 22, 0.78) 0%,
+    rgba(160, 125, 22, 0.4) 20%,
+    rgba(160, 125, 22, 0.1) 48%,
+    transparent 82%
+  );
+}
+
+// Sync the orb drift with the patch-window glide — one shared duration, no stagger or
+// reverse — so the gold gradient and the patches move simultaneously. Light mode only;
+// dark-mode orbs keep the independent, staggered drift set in their base blocks above.
+:host-context([data-theme='light']) .parallax-orb {
+  animation-duration: $bg-drift-duration;
+  animation-delay: 0s;
+  animation-direction: normal;
+}
+
+// ─── Light mode + reduced motion: flat gold-wave field ─────────────────────────
+// When motion is reduced, the orbs + patches are replaced by one static, full-bleed field
+// of gold waves (rendered only in that case — see app.html — so it needs no animation).
+// Oversized via negative inset so the rotation never exposes an uncovered corner.
+
+.gold-grid {
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-repeat: repeat;
+  background-size: 120px 34px;
+  background-image: url('../assets/images/gold-wave.svg');
+  transform: rotate(-70deg);
+}
+
+// ─── Light mode: gold-wave patches ─────────────────────────────────────────────
+// Three static patches of the gold-wave field hover above the gold orbs (motion on only).
+// Each patch is feathered to a soft blob by a radial mask; a soft "transparency window"
+// (the ::after) glides across, dissolving the gold to the page color like light sweeping
+// over brushed metal. The window moves via transform (compositor-accelerated) so it stays
+// smooth. Per-patch rotation / opacity / size live in their own blocks below for tweaking.
+
+.gold-patches {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gold-patch {
+  position: absolute;
+  overflow: hidden;
+  background-image: url('../assets/images/gold-wave.svg');
+  background-repeat: repeat;
+  background-size: 150px 42px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 28%, transparent 70%);
+  mask-image: radial-gradient(ellipse at center, #000 28%, transparent 70%);
+}
+
+.gold-patch::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(
+    ellipse 32% 48% at center,
+    rgba(239, 234, 224, 0.92) 0%,
+    rgba(239, 234, 224, 0.5) 38%,
+    transparent 84%
+  );
+  animation: patch-window $bg-drift-duration ease-in-out infinite;
+}
+
+@keyframes patch-window {
+  0% {
+    transform: translate(-45%, -28%);
+  }
+  50% {
+    transform: translate(45%, 28%);
+  }
+  100% {
+    transform: translate(-45%, -28%);
+  }
+}
+
+// ── Patch 1 — upper-left, over orb 1. Tweak rotation / opacity / size here. ──
+.gold-patch--1 {
+  top: -8%;
+  left: -6%;
+  width: 58vw;
+  height: 58vh;
+  opacity: 0.6;
+  transform: rotate(-70deg);
+}
+
+// ── Patch 2 — lower-right, over orb 2. ──
+.gold-patch--2 {
+  right: -50%;
+  bottom: -12%;
+  width: 52vw;
+  height: 60vh;
+  opacity: 0.5;
+  transform: rotate(-70deg);
+}
+
+// ── Patch 3 — upper-right──
+.gold-patch--3 {
+  right: -30%;
+  top: -12%;
+  width: 80vw;
+  height: 60vh;
+  opacity: 0.2;
+  transform: rotate(-70deg);
+}
+
+// ── Patch 4 — bottom-center, over orb 3. ──
+.gold-patch--4 {
+  top: 64%;
+  left: 8%;
+  width: 70vw;
+  height: 46vh;
+  opacity: 0.25;
+  transform: rotate(-70deg);
+}
+
+// Mobile shows only patches 3 and 4 — patches 1 and 2 are positioned for the wider desktop
+// canvas, so they're hidden below the desktop breakpoint (mobile-first: hidden by default).
+.gold-patch--1,
+.gold-patch--2 {
+  display: none;
+
+  @media (min-width: $breakpoint-medium) {
+    display: block;
+  }
+}
+
+// All patch windows share the base $bg-drift-duration with no per-patch delay, so they
+// glide in unison and stay locked to the orb drift.

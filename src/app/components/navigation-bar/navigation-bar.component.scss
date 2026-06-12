@@ -1,5 +1,5 @@
 @use '../../../styles/tokens' as tokens;
-@use '../../../styles/metallic-border' as mb;
+@use '../../../styles/metallic-border' as metallic_border;
 
 // ─── Mobile: fixed top bar ────────────────────────────────────────────────────
 
@@ -30,7 +30,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    @include mb.strip-gold('to right');
+    @include metallic_border.strip-gold('to right');
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
 
@@ -41,7 +41,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    @include mb.strip-teal('to right');
+    @include metallic_border.strip-teal('to right');
     opacity: 0;
     transition: opacity tokens.$duration-slow tokens.$easing-standard;
   }
@@ -338,7 +338,7 @@ app-text-link {
       left: auto;
       width: 1px;
       height: auto;
-      @include mb.strip-gold('to bottom');
+      @include metallic_border.strip-gold('to bottom');
     }
 
     &::before {
@@ -348,7 +348,7 @@ app-text-link {
       left: auto;
       width: 1px;
       height: auto;
-      @include mb.strip-teal('to bottom');
+      @include metallic_border.strip-teal('to bottom');
     }
 
     // Desktop hover: glow goes sideways

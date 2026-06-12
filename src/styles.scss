@@ -1,7 +1,6 @@
 @use 'styles/reset';
 @use 'styles/tokens' as tokens;
 @use 'styles/typography';
-@use 'styles/metallic-border' as mb;
 
 html {
   min-height: 98%;
@@ -201,6 +200,13 @@ body .link-underline:focus-visible {
   backdrop-filter: blur(12px);
   transition: box-shadow tokens.$duration-slow tokens.$easing-standard;
 
+  // Glass sections keep the dark-island palette. A heading sets no colour of its own, so it
+  // would inherit the page's (light-mode dark) text colour and go dark on the dark frosting.
+  // Pin it to the island's --text-primary so it reads like the body copy.
+  .type-heading {
+    color: var(--text-primary);
+  }
+
   &::after {
     content: '';
     position: absolute;
@@ -209,19 +215,19 @@ body .link-underline:focus-visible {
     background-image:
       linear-gradient(
         to right,
-        mb.$gold-fade,
-        mb.$gold-mid 25%,
-        mb.$gold-peak 50%,
-        mb.$gold-mid 75%,
-        mb.$gold-fade
+        var(--gold-fade),
+        var(--gold-mid) 25%,
+        var(--gold-peak) 50%,
+        var(--gold-mid) 75%,
+        var(--gold-fade)
       ),
       linear-gradient(
         to right,
-        mb.$gold-fade,
-        mb.$gold-mid 25%,
-        mb.$gold-peak 50%,
-        mb.$gold-mid 75%,
-        mb.$gold-fade
+        var(--gold-fade),
+        var(--gold-mid) 25%,
+        var(--gold-peak) 50%,
+        var(--gold-mid) 75%,
+        var(--gold-fade)
       );
     background-size: 100% 1px;
     background-repeat: no-repeat;
@@ -239,19 +245,19 @@ body .link-underline:focus-visible {
     background-image:
       linear-gradient(
         to right,
-        mb.$teal-fade,
-        mb.$teal-mid 25%,
-        mb.$teal-peak 50%,
-        mb.$teal-mid 75%,
-        mb.$teal-fade
+        var(--teal-fade),
+        var(--teal-mid) 25%,
+        var(--teal-peak) 50%,
+        var(--teal-mid) 75%,
+        var(--teal-fade)
       ),
       linear-gradient(
         to right,
-        mb.$teal-fade,
-        mb.$teal-mid 25%,
-        mb.$teal-peak 50%,
-        mb.$teal-mid 75%,
-        mb.$teal-fade
+        var(--teal-fade),
+        var(--teal-mid) 25%,
+        var(--teal-peak) 50%,
+        var(--teal-mid) 75%,
+        var(--teal-fade)
       );
     background-size: 100% 1px;
     background-repeat: no-repeat;
@@ -300,6 +306,52 @@ body .link-underline:focus-visible {
       }
     }
   }
+
+  // main is offset right by --collapsed-width so the nav sliver is never covered.
+  // Pull the glass section back to the true viewport left edge so the frosted
+  // background passes under the nav bar rather than stopping at the content margin.
+  @media (min-width: tokens.$breakpoint-medium) {
+    margin-left: calc(-1 * var(--collapsed-width));
+    width: calc(100% + var(--collapsed-width));
+  }
+
+  // Compact-height: main has padding-left: 0, so the section is already flush left.
+  @media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+// ─── Light theme: dark frosted islands ────────────────────────────────────────
+// The nav bar and glass sections keep their dark frosted background in light mode
+// (--background-overlay is left dark in tokens.scss). Re-assert the dark-theme palette
+// inside them so their text, accents, and gold borders read against the dark frosting
+// exactly as they do in dark mode — including the original bright #38eeb4 accent.
+
+[data-theme='light'] .nav-bar,
+[data-theme='light'] .glass-section {
+  --text-primary: #f0ede6;
+  --text-secondary: #d6cbb5;
+  --background-surface: #232323;
+  --background-subtle: #2c2c2c;
+  --border-default: rgba(240, 237, 230, 0.08);
+  --accent: #38eeb4;
+  --accent-hover: #1abfa0;
+  --accent-bright: #d7fcf0;
+  --accent-glow: rgba(56, 238, 180, 0.15);
+  --border-accent: rgba(56, 238, 180, 0.3);
+  --gold: #c9a227;
+  --gold-fade: rgba(100, 75, 10, 0.1);
+  --gold-mid: rgba(201, 162, 39, 0.7);
+  --gold-peak: rgba(255, 225, 100, 1);
+  --metallic-border-width: 1px;
+}
+
+// The hero's pixel-noise texture is a light dot meant for the dark background; swap it for
+// a dark dot in light mode so the subtle grain survives on the cream surface.
+[data-theme='light'] app-hero .hero-overlay {
+  background-image: radial-gradient(circle, rgba(31, 29, 26, 0.4) 1px, transparent 1px);
+  opacity: 0.08;
 }
 
 .tag {

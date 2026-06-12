@@ -16,8 +16,6 @@
         <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
       </div>
 
-      <!-- Hamburger lives here so it participates in the header row on mobile.
-           display: none on desktop via media query. -->
       <button
         class="nav-hamburger"
         [class.is-open]="isMenuOpen()"
@@ -67,10 +65,10 @@
 >
   <app-icon-button
     icon="theme"
-    [active]="isLightMode()"
-    [label]="isLightMode() ? 'Switch to dark mode' : 'Switch to light mode'"
-    [tooltip]="isLightMode() ? 'Light mode: enabled' : 'Dark mode: enabled'"
-    (activated)="toggleLightMode()"
+    [active]="themeService.isLight()"
+    [label]="themeService.isLight() ? 'Switch to dark mode' : 'Switch to light mode'"
+    [tooltip]="themeService.isLight() ? 'Light mode: enabled' : 'Dark mode: enabled'"
+    (activated)="themeService.toggleTheme()"
   />
   <!-- <app-icon-button
     icon="contrast"
