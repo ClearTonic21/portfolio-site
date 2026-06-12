@@ -49,12 +49,35 @@ or styling is needed.
 
 ## Host bindings
 - Always has class `surface` (global surface card styling)
-- `tabindex="0"` — the whole card is a tab stop, so keyboard users land on each card as they step
-  through the Experience / Projects sections. The hover lift + teal ring + glow are mirrored on
-  `:host:focus-within` (so they persist while the card or its projected CTA link holds focus), and
-  the global `app-article-card:focus-visible` rule adds the accent focus outline.
+- `[attr.tabindex]` — bound to `hostTabIndex()`. The card is a tab stop (`0`) **only when it has no
+  expandable image**. When a real image is present the image expander button owns the card's tab
+  stop instead and the host drops its `tabindex` (→ `null`) to avoid a double stop. Either way the
+  hover lift + teal ring + glow show on keyboard focus via `:host:focus-visible` (the focusable
+  host) and `:host:has(:focus-visible)` (a focused descendant — the image button or projected CTA
+  link). `:focus-visible` (not `:focus-within`) is deliberate: the expand modal is a DOM descendant
+  that restores focus to its trigger on close, which `:focus-within` would latch onto, leaving the
+  card stuck looking hovered after a mouse open/close.
 - Has class `is-full-page` when `fullPage()` is true
 - Has class `is-in-view` while the card sits in the middle 50% of the viewport on touch/small screens (see Scroll-activated glow)
+
+## Expandable image
+When `imagePath()` is a non-empty string (a real image, not the `''` placeholder), the image is
+wrapped in a `.article-card-image-button` (`aria-label` = `Expand image: {imageAlt}`,
+`aria-expanded` reflecting the modal state). Clicking it opens the full image in a native `<dialog>`:
+- `showModal()` promotes the dialog to the **top layer**, so it overlays the whole site and is *not*
+  clipped by the card's `overflow: hidden` or repositioned by its hover `transform` (a plain
+  `position: fixed` overlay would be). The `::backdrop` is the site-wide shadow.
+- A close button (`LucideX`, `aria-label="Close image view"`) sits just **above the image's
+  top-right corner** — outside the image, not overlapping. The image is capped to the viewport minus
+  reserved headroom so the button is never clipped.
+- Dismissal: clicking the close button, clicking outside the image (a click whose `target` is the
+  dialog itself, handled by `onBackdropClick`), or pressing Escape (native). `closeImageModal()`
+  sets `isModalOpen` directly rather than trusting the dialog's `close` event, which some engines
+  don't dispatch on a programmatic `close()`; `(cancel)`/`(close)` cover the Escape path.
+
+The tab-stop reassignment means: an image card → Tab lands on the image expander (Enter/Space opens
+the modal); a no-image card (experience cards, the placeholder project) → Tab lands on the host and
+just shows the hover treatment, exactly as before.
 
 ## Scroll-activated glow
 On pointer devices the gold metallic ring swaps to teal with an accent glow on `:hover`. Touch/small

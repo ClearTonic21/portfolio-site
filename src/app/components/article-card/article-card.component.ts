@@ -94,8 +94,11 @@ export class ArticleCardComponent implements OnDestroy {
   }
 
   closeImageModal(): void {
-    // close() fires the dialog's `close` event, which flips isModalOpen back via onModalClose().
+    // Sync the state here rather than relying on the dialog's `close` event — that event is not
+    // dispatched in every engine when close() is called programmatically. onModalClose() covers the
+    // remaining path (Escape, which dismisses the dialog natively without going through here).
     this.modal()?.nativeElement.close();
+    this.isModalOpen.set(false);
   }
 
   onModalClose(): void {

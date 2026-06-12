@@ -62,16 +62,19 @@
     class="article-card-modal"
     aria-label="Expanded image view"
     (click)="onBackdropClick($event)"
+    (cancel)="onModalClose()"
     (close)="onModalClose()"
   >
-    <button
-      type="button"
-      class="article-card-modal-close"
-      aria-label="Close image view"
-      (click)="closeImageModal()"
-    >
-      <svg lucideX [size]="24" aria-hidden="true"></svg>
-    </button>
-    <img class="article-card-modal-image" [src]="src" [alt]="imageAlt()" />
+    <div class="article-card-modal-frame">
+      <button
+        type="button"
+        class="article-card-modal-close"
+        aria-label="Close image view"
+        (click)="closeImageModal()"
+      >
+        <svg lucideX [size]="24" aria-hidden="true"></svg>
+      </button>
+      <img class="article-card-modal-image" [src]="src" [alt]="imageAlt()" />
+    </div>
   </dialog>
 }

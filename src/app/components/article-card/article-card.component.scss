@@ -15,10 +15,14 @@
     transform 250ms tokens.$easing-out-expo,
     box-shadow tokens.$duration-slow tokens.$easing-standard;
 
-  // :focus-within (not :focus-visible) so the lift/ring persists across both the card itself
-  // (it is tabindex=0) and its projected CTA link as keyboard focus moves between them.
+  // Lift/ring on hover and on *keyboard* focus. `:focus-visible` (host, the tabindex=0 card) plus
+  // `:has(:focus-visible)` (a focused descendant — the image expander or projected CTA link) keeps
+  // the affordance for keyboard users without it sticking after a mouse interaction: the expand
+  // modal is a DOM descendant and restores focus to its trigger on close, which `:focus-within`
+  // would latch onto, leaving the card looking hovered after a click-to-expand-and-close.
   &:hover,
-  &:focus-within {
+  &:focus-visible,
+  &:has(:focus-visible) {
     transform: translateY(-3px);
     box-shadow: 0 0 24px var(--accent-glow);
     transition:
@@ -53,8 +57,10 @@
 // Fast fade-IN when entering hover
 :host:hover::before,
 :host:hover::after,
-:host:focus-within::before,
-:host:focus-within::after {
+:host:focus-visible::before,
+:host:focus-visible::after,
+:host:has(:focus-visible)::before,
+:host:has(:focus-visible)::after {
   transition: opacity tokens.$duration-fast tokens.$easing-standard;
 }
 
@@ -106,7 +112,8 @@
   transition: transform 350ms tokens.$easing-out-expo;
 
   :host:hover &,
-  :host:focus-within & {
+  :host:focus-visible &,
+  :host:has(:focus-visible) & {
     transform: scale(1.03);
   }
 }
@@ -250,7 +257,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: modal-content-in tokens.$duration-base tokens.$easing-out-expo;
   }
 
   &::backdrop {
@@ -262,19 +268,35 @@
   }
 }
 
+// Shrink-wraps the image so the close button can anchor to the image's own corner (rather than the
+// viewport corner). The image caps to the viewport minus the dialog padding so it stays fully shown.
+.article-card-modal-frame {
+  position: relative;
+  display: flex;
+
+  .article-card-modal[open] & {
+    animation: modal-content-in tokens.$duration-base tokens.$easing-out-expo;
+  }
+}
+
 .article-card-modal-image {
-  max-width: 100%;
-  max-height: 100%;
+  display: block;
+  max-width: calc(100vw - #{tokens.$spacing-4} * 2);
+  // Reserve headroom (dialog padding + a button row) above the image so the close control can sit
+  // fully outside it without being clipped at the viewport top.
+  max-height: calc(100vh - #{tokens.$spacing-4} * 2 - #{tokens.$spacing-8});
   object-fit: contain;
   border-radius: tokens.$border-radius-medium;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
 }
 
-// Reuses the icon-button shell (surface, accent border + glow on hover/focus), pinned top-right.
+// Reuses the icon-button shell (surface, accent border + glow on hover/focus). Sits just above the
+// image's top-right corner — outside the image, not overlapping it.
 .article-card-modal-close {
   position: absolute;
-  top: tokens.$spacing-3;
-  right: tokens.$spacing-3;
+  bottom: calc(100% + #{tokens.$spacing-2});
+  right: -64px;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -322,13 +344,13 @@
 // Reduced motion: drop the open animations (covers the OS preference and the in-app toggle, which
 // sets body[data-reduced-motion], reached here via :host-context since the toggle lives elsewhere).
 @media (prefers-reduced-motion: reduce) {
-  .article-card-modal[open],
+  .article-card-modal[open] .article-card-modal-frame,
   .article-card-modal[open]::backdrop {
     animation: none;
   }
 }
 
-:host-context([data-reduced-motion='true']) .article-card-modal[open],
+:host-context([data-reduced-motion='true']) .article-card-modal[open] .article-card-modal-frame,
 :host-context([data-reduced-motion='true']) .article-card-modal[open]::backdrop {
   animation: none;
 }
