@@ -21,6 +21,9 @@ import { TextLinkComponent } from '../text-link/text-link.component';
   host: {
     // Surface styling comes from the global .surface class
     class: 'surface',
+    // Focusable so keyboard users land on the whole card (and get the hover lift/ring via
+    // :focus-within in the SCSS) as they tab through the experience / project sections.
+    tabindex: '0',
     '[class.is-full-page]': 'fullPage()',
     '[class.is-in-view]': 'isInView()',
   },

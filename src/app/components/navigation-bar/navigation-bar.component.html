@@ -10,9 +10,12 @@
     <div class="nav-header" (click)="toggleMenu()">
       <div
         class="nav-monogram"
+        role="button"
+        tabindex="0"
         aria-label="Scroll to top"
-        alt="Clear Tonic brand icon"
         (click)="$event.stopPropagation(); navLinkClick('hero')"
+        (keydown.enter)="navLinkClick('hero')"
+        (keydown.space)="$event.preventDefault(); navLinkClick('hero')"
       >
         <img src="assets/icons/ClearTonic_%20icon.svg" alt="" aria-hidden="true" />
       </div>

@@ -15,7 +15,10 @@
     transform 250ms tokens.$easing-out-expo,
     box-shadow tokens.$duration-slow tokens.$easing-standard;
 
-  &:hover {
+  // :focus-within (not :focus-visible) so the lift/ring persists across both the card itself
+  // (it is tabindex=0) and its projected CTA link as keyboard focus moves between them.
+  &:hover,
+  &:focus-within {
     transform: translateY(-3px);
     box-shadow: 0 0 24px var(--accent-glow);
     transition:
@@ -49,7 +52,9 @@
 
 // Fast fade-IN when entering hover
 :host:hover::before,
-:host:hover::after {
+:host:hover::after,
+:host:focus-within::before,
+:host:focus-within::after {
   transition: opacity tokens.$duration-fast tokens.$easing-standard;
 }
 
@@ -80,7 +85,8 @@
   display: block;
   transition: transform 350ms tokens.$easing-out-expo;
 
-  :host:hover & {
+  :host:hover &,
+  :host:focus-within & {
     transform: scale(1.03);
   }
 }

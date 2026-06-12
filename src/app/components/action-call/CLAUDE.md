@@ -23,6 +23,7 @@ parent class.
 | `brandUnderscore` | `boolean`        | No       | `false` | When `true`, appends the brand `_` immediately after the label text.                                               |
 | `href`            | `string`         | No       | `'#'`   | Navigation URL. Pass a path or `mailto:` for link behaviour.                                                       |
 | `target`          | `string \| null` | No       | `null`  | `target` attribute on the `<a>`. Use `'_blank'` for new tabs — `rel="noopener noreferrer"` is added automatically. |
+| `tabIndex`        | `number \| null` | No       | `null`  | Overrides the anchor's `tabindex` for tab-order control. The hero CTA passes `1` so it is the first tab stop on the page; `null` leaves natural DOM order. |
 
 ## Rendering
 

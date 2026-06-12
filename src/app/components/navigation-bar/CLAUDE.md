@@ -37,6 +37,12 @@ component's SCSS (inherited by its inner `<a>`); the tap-target padding is passe
 `--text-link-padding` (`$spacing-2 0` mobile, `$spacing-unit 0` desktop). The accent + underline
 hover comes from the global `.link-underline` class the component applies.
 
+## Monogram (keyboard)
+The monogram is a keyboard-operable control (`role="button"`, `tabindex="0"`, Enter/Space handlers)
+that scrolls to `#hero`; it shows its hover border + glow on `:focus-visible`. In the page's overall
+tab order it is the second stop — the hero resume CTA is pulled ahead of it via `tabIndex=1` — after
+which come the nav links, then the `.nav-controls` toggles, then each section.
+
 ## Dependencies
 - `ScrollService` — all nav link clicks
 - `MotionService` — backs the reduced-motion toggle

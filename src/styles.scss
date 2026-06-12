@@ -59,6 +59,15 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
+// Section headings and the article-card surfaces are pulled into the tab order (tabindex on the
+// per-section <h2>s and on the ArticleCardComponent host) so keyboard users step through each
+// section landmark and card. Give them the same accent focus ring as the buttons/links.
+:where(h1, h2, h3)[tabindex]:focus-visible,
+app-article-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .surface {
   background: var(--background-surface);
   border: 1px solid var(--border-default);

@@ -9,13 +9,19 @@
   (keydown.enter)="activate($event)"
   (keydown.space)="activate($event)"
 >
-  <span class="text-link__label">{{ label() }}@if (icon() === 'underscore') {<span class="accent">_</span>}</span>
+  <span class="text-link__label">{{ label() }}@if (icon() === 'underscore') {<span class="accent" aria-hidden="true">_</span>}</span>
   @switch (icon()) {
     @case ('arrow') {
-      <svg lucideArrowUpRight class="link-arrow" [size]="iconSize()" aria-hidden="true"></svg>
+      <svg
+        lucideArrowUpRight
+        class="link-arrow"
+        [size]="iconSize()"
+        role="img"
+        [attr.aria-label]="iconAriaLabel()"
+      ></svg>
     }
     @case ('mail') {
-      <span class="link-mail">
+      <span class="link-mail" role="img" [attr.aria-label]="iconAriaLabel()">
         <svg lucideMail [size]="iconSize()" aria-hidden="true"></svg>
       </span>
     }

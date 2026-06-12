@@ -30,6 +30,9 @@ export class ActionCallComponent implements OnDestroy {
   readonly brandUnderscore = input<boolean>(false);
   readonly href = input('#');
   readonly target = input<string | null>(null);
+  // Lets a consumer override the link's position in the tab order (e.g. the hero CTA is pulled to
+  // the front with `1`). Null leaves the anchor at its natural DOM order.
+  readonly tabIndex = input<number | null>(null);
 
   readonly isInView = signal(false);
 
