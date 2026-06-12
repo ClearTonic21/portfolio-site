@@ -11,12 +11,14 @@
 
 .type-eyebrow {
   font-family: tokens.$font-primary;
-  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  font-size: clamp(0.8125rem, 1.25vw, 0.9375rem);
   // Weight is a themed token (--type-eyebrow-weight in tokens.scss): 700 dark, 900 light.
   font-weight: var(--type-eyebrow-weight);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  // Themed black/white for legibility (--eyebrow-color in tokens.scss); the accent underscore
+  // beside the label keeps the brand colour.
+  color: var(--eyebrow-color);
 }
 
 .type-heading {

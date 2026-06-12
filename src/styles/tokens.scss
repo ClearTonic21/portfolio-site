@@ -82,6 +82,10 @@ $duration-reveal: 700ms;
 
   // Typography weights that shift per theme (single source of truth — consumed in typography.scss).
   --type-eyebrow-weight: 700;
+
+  // Eyebrow labels read as plain white (dark) / black (light) for legibility; the accent
+  // underscore beside them carries the brand colour. Re-asserted white on the dark islands.
+  --eyebrow-color: #ffffff;
 }
 
 // ─── Light theme ──────────────────────────────────────────────────────────────
@@ -114,4 +118,46 @@ $duration-reveal: 700ms;
   --metallic-border-width: 4px;
   // Eyebrow caps read heavier in light mode so the small accent labels hold their presence.
   --type-eyebrow-weight: 900;
+  --eyebrow-color: #000000;
+}
+
+// ─── High contrast mode ─────────────────────────────────────────────────────────
+// Toggled by ContrastService (body[data-high-contrast='true']) and layered on top of either
+// theme. It pushes backgrounds to pure black/white and text to pure white/black, makes borders
+// fully opaque, and strengthens the accent glow so every edge and control reads at maximum
+// contrast. The dark accent stays #38eeb4 (already ~14:1 on pure black); only the light accent
+// darkens further (mirroring the light theme's existing jade-darkening for contrast).
+
+[data-high-contrast='true'] {
+  --background: #000000;
+  --background-surface: #0a0a0a;
+  --background-subtle: #161616;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-inverted: #000000;
+  --accent-glow: rgba(56, 238, 180, 0.3);
+  --border-default: rgba(255, 255, 255, 0.55);
+  --border-accent: rgba(56, 238, 180, 0.8);
+  --gold: #e8be3f;
+  --gold-border: rgba(232, 190, 63, 0.7);
+  --background-overlay: rgba(0, 0, 0, 0.92);
+  --eyebrow-color: #ffffff;
+}
+
+[data-theme='light'][data-high-contrast='true'] {
+  --background: #ffffff;
+  --background-surface: #ffffff;
+  --background-subtle: #ededed;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-inverted: #ffffff;
+  --accent: #005c44;
+  --accent-hover: #00432f;
+  --accent-bright: #00432f;
+  --accent-glow: rgba(0, 92, 68, 0.22);
+  --border-default: rgba(0, 0, 0, 0.6);
+  --border-accent: rgba(0, 92, 68, 0.8);
+  --gold: #5e4a00;
+  --gold-border: rgba(94, 74, 0, 0.7);
+  --eyebrow-color: #000000;
 }

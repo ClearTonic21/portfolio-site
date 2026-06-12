@@ -71,13 +71,15 @@
     [tooltip]="themeService.isLight() ? 'Light mode: enabled' : 'Dark mode: enabled'"
     (activated)="themeService.toggleTheme()"
   />
-  <!-- <app-icon-button
+  <app-icon-button
     icon="contrast"
-    [active]="isHighContrast()"
-    [label]="isHighContrast() ? 'Disable high contrast' : 'Enable high contrast'"
-    [tooltip]="isHighContrast() ? 'High contrast: enabled' : 'High contrast: disabled'"
-    (activated)="toggleHighContrast()"
-  /> -->
+    [active]="contrastService.highContrast()"
+    [label]="contrastService.highContrast() ? 'Disable high contrast' : 'Enable high contrast'"
+    [tooltip]="
+      contrastService.highContrast() ? 'High contrast: enabled' : 'High contrast: disabled'
+    "
+    (activated)="contrastService.toggleHighContrast()"
+  />
   <app-icon-button
     icon="motion"
     [active]="motionService.reducedMotion()"

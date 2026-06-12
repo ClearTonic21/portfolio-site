@@ -41,6 +41,7 @@ hover comes from the global `.link-underline` class the component applies.
 - `ScrollService` — all nav link clicks
 - `MotionService` — backs the reduced-motion toggle
 - `ThemeService` — backs the light/dark toggle
+- `ContrastService` — backs the high-contrast toggle
 - `TextLinkComponent` — renders each nav link
 - `IconButtonComponent` — renders each `.nav-controls` toggle (light-dark, high contrast, motion)
 
@@ -58,9 +59,10 @@ a **sibling of `<nav>`**, not a child, because the bar's `backdrop-filter` would
   `is-collapsed` (and the compact-height query) slide/fade it out in step with the bar.
 
 The light-dark toggle is wired to `ThemeService` (`themeService.isLight()` /
-`themeService.toggleTheme()`) and the motion toggle to `MotionService`. High contrast is still a
-presentational placeholder — a local `isHighContrast` signal flips the button's own state but does
-not yet change site colors (its button is currently commented out in the template).
+`themeService.toggleTheme()`), the motion toggle to `MotionService`, and the high-contrast toggle to
+`ContrastService` (`contrastService.highContrast()` / `contrastService.toggleHighContrast()`), which
+writes `body[data-high-contrast]` that the global SCSS keys off of (see `tokens.scss` /
+`styles.scss`).
 
 ## Does Not
 - Track the active section (underlines appear on hover only)

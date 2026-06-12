@@ -52,6 +52,13 @@ inside the label (no gap), and `none` renders no icon — neither needs a Lucide
 - The underline's vertical offset is the global `--link-underline-offset` (default `0`); set it on
   the host to nudge the bar (the contact links use `-4px`).
 
+## Accessibility
+The link's accessible name comes from its `label` text plus the trailing icon. The brand underscore
+(`underscore` icon) is `aria-hidden` so it isn't read aloud. The `arrow` and `mail` icons are exposed
+as `role="img"` with an `aria-label` from the `iconAriaLabel` computed — `arrow` announces "Opens in
+new tab" (or "External link" for a same-tab link), `mail` announces "Email" — so a contact link reads
+e.g. "GitHub, Opens in new tab" / "eli.philpott21@gmail.com, Email".
+
 ## Does Not
 - Own its typography, color, width, or alignment — the consuming context sets those on the host
 - Track active/selected state

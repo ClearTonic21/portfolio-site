@@ -43,4 +43,9 @@ app-text-link {
   border-top: 1px solid var(--border-default);
   width: 100%;
   text-align: center;
+
+  // Footer caption is bumped 1.25× over the base .type-caption (0.72rem) for legibility.
+  .type-caption {
+    font-size: 0.9rem;
+  }
 }

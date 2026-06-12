@@ -11,6 +11,7 @@ import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { ScrollService } from '../../services/scroll.service';
 import { MotionService } from '../../services/motion.service';
 import { ThemeService } from '../../services/theme.service';
+import { ContrastService } from '../../services/contrast.service';
 import { TextLinkComponent } from '../text-link/text-link.component';
 import { IconButtonComponent } from '../icon-button/icon-button.component';
 
@@ -33,15 +34,12 @@ export class NavigationBarComponent implements OnDestroy {
   private readonly scrollService = inject(ScrollService);
   readonly motionService = inject(MotionService);
   readonly themeService = inject(ThemeService);
+  readonly contrastService = inject(ContrastService);
   readonly navLinks = input.required<readonly NavLink[]>();
 
   readonly isMenuOpen = signal(false);
   readonly isNavHidden = signal(false);
   readonly isNavCollapsed = signal(false);
-
-  // High contrast is still a placeholder — it flips the button's own state but
-  // does not yet drive any site-wide change.
-  readonly isHighContrast = signal(false);
 
   private readonly scrollHandler = () => this.onScroll();
   private readonly resizeHandler = () => this.onResize();
@@ -87,10 +85,6 @@ export class NavigationBarComponent implements OnDestroy {
   toggleNavCollapse(): void {
     this.hasManuallyToggledNav = true;
     this.isNavCollapsed.update((c) => !c);
-  }
-
-  toggleHighContrast(): void {
-    this.isHighContrast.update((high) => !high);
   }
 
   private onScroll(): void {

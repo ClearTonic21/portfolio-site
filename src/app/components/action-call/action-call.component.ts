@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnDestroy,
   afterNextRender,
+  computed,
   inject,
   input,
   signal,
@@ -31,6 +32,10 @@ export class ActionCallComponent implements OnDestroy {
   readonly target = input<string | null>(null);
 
   readonly isInView = signal(false);
+
+  // The arrow signals that the link leaves the page, so it carries that as its accessible name
+  // (composed into the link's name); a same-tab arrow stays purely decorative.
+  readonly iconAriaLabel = computed(() => (this.target() === '_blank' ? 'Opens in new tab' : null));
 
   private observer?: IntersectionObserver;
 

@@ -29,6 +29,14 @@ parent class.
 Renders an inner `<a class="action-call">` element. The `href` and `target` inputs drive the
 anchor attributes directly. The parent should not add a wrapping anchor.
 
+## Accessibility
+
+The link's accessible name is composed from its visible content: the `text` label (the brand
+underscore is `aria-hidden`, so screen readers don't read "underscore") plus the arrow icon. When
+`target="_blank"`, the arrow is exposed as `role="img"` with `aria-label="Opens in new tab"`
+(via the `iconAriaLabel` computed), so the link announces e.g. "Grab my Resume, Opens in new tab".
+A same-tab arrow stays `aria-hidden`.
+
 ## Styles
 
 All button styles are self-contained in this component's SCSS — no dependency on the global
