@@ -82,6 +82,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  // Consumer-tunable crop focal point (set via the imagePosition input → host style binding).
+  object-position: var(--article-card-image-position, center);
   display: block;
   transition: transform 350ms tokens.$easing-out-expo;
 

@@ -22,6 +22,7 @@ inputs and optionally drop an `<app-tag-list>` / `<app-text-link>` inside the ca
 |             |           |          |         | Pass `''` (empty string) to show the "Preview coming soon"    |
 |             |           |          |         | placeholder while keeping the image area reserved.            |
 | `imageAlt`  | `string`  | No       | `''`    | Alt text for the image. Required when `imagePath` is set.     |
+| `imagePosition` | `string` | No   | `'center'` | Crop focal point for the image — maps to `object-position` (the image keeps `object-fit: cover`), so it controls which part of a screenshot stays in frame once cropped. Accepts any `object-position` value (`'top'`, `'bottom'`, `'50% 20%'`, …). Fed to the SCSS via the `--article-card-image-position` host style binding. |
 | `fullPage`  | `boolean` | No       | `false` | When `true`, card takes full row width on desktop (100%).     |
 |             |           |          |         | When `false`, card takes half row width (50% - gap).          |
 | `description` | `string` | No      | —       | Body copy rendered by the card (`.type-body`, secondary color). Same treatment everywhere. |

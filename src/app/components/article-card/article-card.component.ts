@@ -26,6 +26,7 @@ import { TextLinkComponent } from '../text-link/text-link.component';
     tabindex: '0',
     '[class.is-full-page]': 'fullPage()',
     '[class.is-in-view]': 'isInView()',
+    '[style.--article-card-image-position]': 'imagePosition()',
   },
 })
 export class ArticleCardComponent implements OnDestroy {
@@ -39,6 +40,9 @@ export class ArticleCardComponent implements OnDestroy {
   // Pass a non-empty string to show an image, '' to show the placeholder, omit to hide the image area entirely
   readonly imagePath = input<string>();
   readonly imageAlt = input<string>('');
+  // Crop focal point for the image — maps to `object-position`, so it controls which part of the
+  // screenshot stays in frame once `object-fit: cover` crops it (e.g. 'top', 'center', '50% 20%').
+  readonly imagePosition = input<string>('center');
   readonly fullPage = input<boolean>(false);
   // Body copy rendered by the card (same treatment everywhere it's used).
   readonly description = input<string>();
