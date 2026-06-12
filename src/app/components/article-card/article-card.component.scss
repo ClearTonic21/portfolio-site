@@ -78,6 +78,24 @@
   background: var(--background-subtle);
 }
 
+// Click-to-expand affordance: the image sits inside a reset button that fills the image area.
+.article-card-image-button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  // Inset the focus ring: the image area is overflow:hidden, so the global 3px outward offset
+  // would be clipped. Keeping it inside the frame keeps the keyboard focus state visible.
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -3px;
+  }
+}
+
 .article-card-image {
   width: 100%;
   height: 100%;
@@ -209,4 +227,108 @@
   :host {
     flex: 1 1 100%;
   }
+}
+
+// ─── Expanded image modal ─────────────────────────────────────────────────────
+// Native <dialog> opened with showModal(): the ::backdrop is the site-wide shadow and the dialog
+// fills the viewport as a transparent, centered flex layer that catches "click outside" dismissals.
+
+.article-card-modal {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: tokens.$spacing-4;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+
+  &[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modal-content-in tokens.$duration-base tokens.$easing-out-expo;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  &[open]::backdrop {
+    animation: modal-backdrop-in tokens.$duration-base tokens.$easing-standard;
+  }
+}
+
+.article-card-modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: tokens.$border-radius-medium;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+
+// Reuses the icon-button shell (surface, accent border + glow on hover/focus), pinned top-right.
+.article-card-modal-close {
+  position: absolute;
+  top: tokens.$spacing-3;
+  right: tokens.$spacing-3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$spacing-unit;
+  border: 1px solid var(--border-default);
+  border-radius: tokens.$border-radius-medium;
+  background: var(--background-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition:
+    border-color tokens.$duration-base tokens.$easing-standard,
+    box-shadow tokens.$duration-base tokens.$easing-standard;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 18px var(--accent-glow);
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Reduced motion: drop the open animations (covers the OS preference and the in-app toggle, which
+// sets body[data-reduced-motion], reached here via :host-context since the toggle lives elsewhere).
+@media (prefers-reduced-motion: reduce) {
+  .article-card-modal[open],
+  .article-card-modal[open]::backdrop {
+    animation: none;
+  }
+}
+
+:host-context([data-reduced-motion='true']) .article-card-modal[open],
+:host-context([data-reduced-motion='true']) .article-card-modal[open]::backdrop {
+  animation: none;
 }
