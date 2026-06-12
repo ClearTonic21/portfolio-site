@@ -2,7 +2,7 @@
 
 ## Purpose
 Reusable square icon-only toggle button. Carries the shared toggle-button shell (surface
-background, border that brightens to accent on hover/focus, and a hover tooltip) plus a set of
+background, border that brightens to accent with an accent glow on hover/focus, and a hover tooltip) plus a set of
 built-in animated Lucide glyphs. Used in the navigation bar's footer for the appearance/motion
 toggles (light-dark mode, high contrast, reduced motion).
 
@@ -46,8 +46,9 @@ directive it imports itself, or a raw inline SVG). Icon color comes from the gly
 `color` (Lucide strokes use `currentColor`).
 
 ## Styling
-- The button shell, hover/focus accent border, and the right-anchored hover tooltip all live in this
-  component's SCSS (moved here from the nav's old `.nav-motion-toggle`).
+- The button shell, hover/focus accent border + glow (`box-shadow: 0 0 18px var(--accent-glow)`), and
+  the right-anchored hover tooltip all live in this component's SCSS (moved here from the nav's old
+  `.nav-motion-toggle`).
 - `:host` is `display: inline-flex`; the consuming layout (e.g. the nav footer column) positions and
   spaces the buttons.
 - The `motion`, `theme`, and `contrast` glyphs all share a 32×20 slot so the buttons render at an

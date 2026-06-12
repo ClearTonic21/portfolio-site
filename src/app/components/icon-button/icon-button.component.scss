@@ -17,11 +17,20 @@
   background: var(--background-surface);
   color: var(--text-primary);
   cursor: pointer;
-  transition: border-color tokens.$duration-base tokens.$easing-standard;
+  transition:
+    border-color tokens.$duration-base tokens.$easing-standard,
+    box-shadow tokens.$duration-base tokens.$easing-standard;
 
   &:hover,
   &:focus-visible {
     border-color: var(--accent);
+    box-shadow: 0 0 18px var(--accent-glow);
+  }
+
+  // Light mode: sit on the skill-tag surface (--background-subtle) rather than the near-white
+  // --background-surface, so the control buttons read a touch deeper against the cream page.
+  :host-context([data-theme='light']) & {
+    background: var(--background-subtle);
   }
 
   // Tooltip — defaults to the right of the button (suits the desktop sidebar); a consumer can flip
