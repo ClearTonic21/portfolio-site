@@ -4,14 +4,14 @@
   [attr.target]="target()"
   [attr.rel]="target() === '_blank' ? 'noopener noreferrer' : null"
 >
-  <span class="action-call__label"
+  <span class="action-call__label" aria-hidden="true"
     >{{ text() }}
     @if (brandUnderscore()) {
       <span class="accent">_</span>
     }
   </span>
   @if (arrowIcon()) {
-    <span class="action-call__icon">
+    <span class="action-call__icon" aria-hidden="true">
       <svg lucideArrowUpRight [size]="16"></svg>
     </span>
   }
