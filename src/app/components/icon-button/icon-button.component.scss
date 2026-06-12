@@ -165,11 +165,12 @@
       color 0s;
   }
 
-  // Arriving icon travels in neutral, then blooms to gold once the slide settles.
+  // Arriving icon travels in neutral, then settles to the primary text color once the slide
+  // ends — near-black on the light-mode button surface, for stronger contrast than gold.
   .glyph-incoming {
     opacity: 1;
     transform: none;
-    color: var(--gold);
+    color: var(--text-primary);
     transition:
       opacity tokens.$duration-base tokens.$easing-standard,
       transform tokens.$duration-base tokens.$easing-out-expo,

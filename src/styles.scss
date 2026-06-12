@@ -229,7 +229,7 @@ body .link-underline:focus-visible {
         var(--gold-mid) 75%,
         var(--gold-fade)
       );
-    background-size: 100% 1px;
+    background-size: 100% var(--metallic-border-width, 1px);
     background-repeat: no-repeat;
     background-position:
       top center,
@@ -259,7 +259,7 @@ body .link-underline:focus-visible {
         var(--teal-mid) 75%,
         var(--teal-fade)
       );
-    background-size: 100% 1px;
+    background-size: 100% var(--metallic-border-width, 1px);
     background-repeat: no-repeat;
     background-position:
       top center,
@@ -344,7 +344,9 @@ body .link-underline:focus-visible {
   --gold-fade: rgba(100, 75, 10, 0.1);
   --gold-mid: rgba(201, 162, 39, 0.7);
   --gold-peak: rgba(255, 225, 100, 1);
-  --metallic-border-width: 1px;
+  // --metallic-border-width is intentionally NOT re-pinned: the islands keep the dark-mode gold
+  // *colour* but inherit the theme's border *thickness*, so the nav and glass borders track the
+  // same --metallic-border-width as the article cards.
 }
 
 // The hero's pixel-noise texture is a light dot meant for the dark background; swap it for

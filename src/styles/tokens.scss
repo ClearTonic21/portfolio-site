@@ -67,6 +67,51 @@ $duration-reveal: 700ms;
   --gold-border: #{$color-gold-border};
   --error: #{$color-error};
   --background-overlay: #{rgba($color-background, 0.8)};
-  --sidebar-width: 180px;
+  --sidebar-width: 16vw;
   --collapsed-width: 32px;
+
+  // Metallic border stops (mirrors src/styles/metallic-border.scss). Exposed as custom
+  // properties so the light theme can re-tint the gold and thicken the border at runtime.
+  --gold-fade: rgba(100, 75, 10, 0.1);
+  --gold-mid: rgba(201, 162, 39, 0.7);
+  --gold-peak: rgba(255, 225, 100, 1);
+  --teal-fade: rgba(56, 238, 180, 0.05);
+  --teal-mid: rgba(56, 238, 180, 0.7);
+  --teal-peak: rgba(56, 238, 180, 1);
+  --metallic-border-width: 2px;
+
+  // Typography weights that shift per theme (single source of truth — consumed in typography.scss).
+  --type-eyebrow-weight: 700;
+}
+
+// ─── Light theme ──────────────────────────────────────────────────────────────
+// A warm, paper-toned counterpart to the dark palette. The accent darkens to a deep
+// jade so it keeps WCAG-AA contrast on the cream background, and the metallic gold
+// deepens to an antique tone (and thickens) so card borders read on the light surface.
+// The nav bar and glass sections stay dark frosted islands over the light page (their inner
+// palette is re-asserted in styles.scss). #38eeb4 still lives on those dark islands, so the
+// brand accent is never lost. --background-overlay is lifted a little here so the frosting reads
+// as a touch lighter than dark mode (it backs only the nav bar and glass sections).
+[data-theme='light'] {
+  --background: #efeae0;
+  --background-surface: #faf8f3;
+  --background-subtle: #e4ded1;
+  --background-overlay: rgba(48, 47, 44, 0.82);
+  --text-primary: #1f1d1a;
+  --text-secondary: #5a5348;
+  --text-inverted: #f8f6f0;
+  --accent: #08755b;
+  --accent-hover: #066249;
+  --accent-bright: #066249;
+  --accent-glow: rgba(8, 117, 91, 0.18);
+  --border-default: rgba(31, 29, 26, 0.12);
+  --border-accent: rgba(8, 117, 91, 0.35);
+  --gold: #8a6d12;
+  --gold-border: rgba(138, 109, 18, 0.4);
+  --gold-fade: rgba(110, 85, 10, 0.25);
+  --gold-mid: rgba(138, 109, 18, 0.9);
+  --gold-peak: rgba(170, 132, 26, 1);
+  --metallic-border-width: 4px;
+  // Eyebrow caps read heavier in light mode so the small accent labels hold their presence.
+  --type-eyebrow-weight: 900;
 }

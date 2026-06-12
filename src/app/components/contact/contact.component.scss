@@ -31,6 +31,12 @@ app-text-link {
   --link-underline-offset: -4px;
 }
 
+.contact-heading {
+  // "LET'S BUILD SOMETHING." is a long display string; tighten fractionally beyond
+  // the global -0.02em so the edges don't clip on narrow viewports.
+  letter-spacing: -0.03em;
+}
+
 .contact-footer {
   margin-top: tokens.$spacing-12;
   padding-top: tokens.$spacing-4;
