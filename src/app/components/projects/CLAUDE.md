@@ -10,7 +10,10 @@ Showcases Eli's personal projects and indie game development. The most visually 
 `app-projects`
 
 ## Responsibilities
-- Eyebrow label: `Projects_`; heading "Things I've Built"
+- Renders **body content only** — the project card grid. The section eyebrow (`Projects`) and
+  heading ("Things I've Built") are owned by the parent `CrossSectionComponent` (set in
+  `AppComponent.sections`); this component no longer renders its own `<section>`, `.section-inner`,
+  eyebrow, or heading.
 - Cards rendered by `app-article-card` in a wrapping flex row (`.projects-grid`): two per row on desktop (`$breakpoint-medium`, 960px), one per row on mobile. A `fullPage` card spans the full row width. (Flexbox, not CSS Grid.)
 - Each card: image area, highlight eyebrow, `.type-heading` title, tag pills, description, and a centered CTA link. The description is the card's `description` input; the tags and link are supplied as `<app-tag-list>` / `<app-text-link>` projected into the card's slots. No project-specific markup or styling remains — projects and experience differ only in what they pass to `app-article-card`.
 - Card hover / scroll-in-view: `translateY(-3px)` lift + accent glow + metallic border swaps gold → teal (owned by `ArticleCardComponent`)
@@ -52,3 +55,5 @@ Each card's CTA is an `app-text-link` (`icon="arrow"`, accent-colored) driven by
 
 ## Does Not
 - Contain modal or lightbox behavior
+- Own its section anchor `id`, eyebrow, or heading — the parent `CrossSectionComponent` renders the
+  unified header from `AppComponent.sections`

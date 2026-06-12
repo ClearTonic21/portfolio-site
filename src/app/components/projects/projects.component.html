@@ -1,31 +1,22 @@
-<section id="projects" aria-labelledby="projects-heading">
-  <div class="section-inner">
-    <p class="type-eyebrow" appReveal>Projects<span class="accent">_</span></p>
-    <h2 id="projects-heading" class="type-heading projects-heading" tabindex="0" appReveal>
-      Things I've Built
-    </h2>
-
-    <div class="projects-grid">
-      @for (project of projects; track project.id) {
-        <app-article-card
-          [imagePath]="project.imagePath"
-          [imageAlt]="project.imageAlt"
-          [imagePosition]="project.imagePosition"
-          [fullPage]="project.fullPage"
-          [highlight]="project.eyebrow"
-          [title]="project.title"
-          [description]="project.description"
-          appReveal
-        >
-          <app-tag-list [tags]="project.tags" />
-          <app-text-link
-            [label]="project.linkLabel"
-            icon="arrow"
-            [href]="project.linkHref"
-            [target]="project.linkHref !== '#' ? '_blank' : null"
-          />
-        </app-article-card>
-      }
-    </div>
-  </div>
-</section>
+<div class="projects-grid">
+  @for (project of projects; track project.id) {
+    <app-article-card
+      [imagePath]="project.imagePath"
+      [imageAlt]="project.imageAlt"
+      [imagePosition]="project.imagePosition"
+      [fullPage]="project.fullPage"
+      [highlight]="project.eyebrow"
+      [title]="project.title"
+      [description]="project.description"
+      appReveal
+    >
+      <app-tag-list [tags]="project.tags" />
+      <app-text-link
+        [label]="project.linkLabel"
+        icon="arrow"
+        [href]="project.linkHref"
+        [target]="project.linkHref !== '#' ? '_blank' : null"
+      />
+    </app-article-card>
+  }
+</div>

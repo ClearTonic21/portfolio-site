@@ -1,0 +1,163 @@
+@use '../../../styles/tokens' as tokens;
+
+// ─── Section header ─────────────────────────────────────────────────────────────
+// Unified eyebrow → heading → subtitle block. One spacing scale here means every
+// standard section (about, experience, projects) shares the same rhythm instead of
+// each component setting its own heading margins.
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$spacing-3;
+  margin-bottom: tokens.$spacing-4;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  max-width: 60ch;
+}
+
+// Base [appReveal] styles are global (styles.scss); only the per-element stagger lives here so
+// the header animates in sequence (eyebrow, then heading, then subtitle).
+.section-heading[appReveal] {
+  transition-delay: 150ms;
+}
+
+.section-subtitle[appReveal] {
+  transition-delay: 250ms;
+}
+
+// ─── Glass section ──────────────────────────────────────────────────────────────
+// Frosted background + gold metallic top/bottom borders that brighten to teal on hover (or on
+// scroll-into-view on touch/small viewports). Driven by the `glass` input via the host class, so
+// the glass treatment is owned here rather than in global CSS. The theme/contrast palette overrides
+// for `.glass-section` still live in styles.scss (they are shared with the nav bar and re-tint the
+// dark frosted islands across themes).
+
+:host(.glass-section) {
+  position: relative;
+  background: var(--background-overlay);
+  backdrop-filter: blur(12px);
+  transition: box-shadow tokens.$duration-slow tokens.$easing-standard;
+
+  // The section heading sits on dark frosting; pin it to the island's --text-primary so it
+  // never inherits the page's (light-mode dark) text colour and goes dark on the dark glass.
+  .section-heading {
+    color: var(--text-primary);
+  }
+
+  // Gold border (resting) — top + bottom strips painted as a background gradient.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        to right,
+        var(--gold-fade),
+        var(--gold-mid) 25%,
+        var(--gold-peak) 50%,
+        var(--gold-mid) 75%,
+        var(--gold-fade)
+      ),
+      linear-gradient(
+        to right,
+        var(--gold-fade),
+        var(--gold-mid) 25%,
+        var(--gold-peak) 50%,
+        var(--gold-mid) 75%,
+        var(--gold-fade)
+      );
+    background-size: 100% var(--metallic-border-width, 1px);
+    background-repeat: no-repeat;
+    background-position:
+      top center,
+      bottom center;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  // Teal border (hover / in-view) — same geometry, faded in over the gold.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        to right,
+        var(--teal-fade),
+        var(--teal-mid) 25%,
+        var(--teal-peak) 50%,
+        var(--teal-mid) 75%,
+        var(--teal-fade)
+      ),
+      linear-gradient(
+        to right,
+        var(--teal-fade),
+        var(--teal-mid) 25%,
+        var(--teal-peak) 50%,
+        var(--teal-mid) 75%,
+        var(--teal-fade)
+      );
+    background-size: 100% var(--metallic-border-width, 1px);
+    background-repeat: no-repeat;
+    background-position:
+      top center,
+      bottom center;
+    opacity: 0;
+    transition: opacity tokens.$duration-slow tokens.$easing-standard;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 32px var(--accent-glow);
+    transition: box-shadow tokens.$duration-fast tokens.$easing-standard;
+
+    &::after {
+      opacity: 0;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+    &::before {
+      opacity: 1;
+      transition: opacity tokens.$duration-fast tokens.$easing-standard;
+    }
+  }
+
+  // main is offset right by --collapsed-width so the nav sliver is never covered. Pull the glass
+  // section back to the true viewport left edge so the frosting passes under the nav bar rather
+  // than stopping at the content margin.
+  @media (min-width: tokens.$breakpoint-medium) {
+    margin-left: calc(-1 * var(--collapsed-width));
+    width: calc(100% + var(--collapsed-width));
+  }
+
+  // Compact-height: main has padding-left: 0, so the section is already flush left.
+  @media (min-width: tokens.$breakpoint-medium) and (max-height: tokens.$breakpoint-height-compact) {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+// Scroll-activated: teal border + glow while the section sits in the viewport. Desktop relies on
+// :hover instead (no pointer hover on touch), so the effect is reset above $breakpoint-medium.
+:host(.glass-section.is-in-view) {
+  box-shadow: 0 4px 32px var(--accent-glow);
+
+  &::after {
+    opacity: 0;
+  }
+  &::before {
+    opacity: 1;
+  }
+
+  @media (min-width: tokens.$breakpoint-medium) {
+    box-shadow: none;
+
+    &::after {
+      opacity: 1;
+    }
+    &::before {
+      opacity: 0;
+    }
+  }
+}

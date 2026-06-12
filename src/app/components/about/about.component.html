@@ -1,41 +1,34 @@
-<section id="about" aria-labelledby="about-heading">
-  <div class="section-inner">
-    <p class="type-eyebrow" appReveal>About_</p>
-
-    <div class="two-column-layout about-layout" appReveal>
-      <div class="about-prose">
-        <h2 id="about-heading" class="type-heading about-heading" tabindex="0">The Details</h2>
-        <div class="about-body">
-          <p class="type-body">
-            <span class="accent">The kind of details</span> that show up in pixel-perfect layouts,
-            intuitive flows, and professionally written code.
-          </p>
-          <p class="type-body">
-            <span class="accent">I am energized when</span> a problem demands
-            <span class="accent">both</span> my technical and creative thinking. With a background
-            in enterprise SaaS products and indie game design,
-            <span class="accent"
-              >I have the expertise and eye for engagement that every project demands</span
-            >.
-          </p>
-          <p class="type-body">
-            <span class="accent">When I use AI tools</span>, it is with strict intention and
-            <span class="accent">planning</span>. Every output is evaluated against design
-            principles and engineering standards <span class="accent">before it counts</span>.
-            <span class="accent">*</span>
-          </p>
-          <p class="type-body">
-            <span class="accent">*</span> I will not use AI tools for game design under ClearTonic
-            Games<span class="accent">_</span> ever<span class="accent">.</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="about-skills">
-        @for (group of skillGroups; track group.category) {
-          <app-tag-list [title]="group.category" [tags]="group.skills" />
-        }
-      </div>
+<div class="two-column-layout about-layout" appReveal>
+  <div class="about-prose">
+    <div class="about-body">
+      <p class="type-body">
+        <span class="accent">The kind of details</span> that show up in pixel-perfect layouts,
+        intuitive flows, and professionally written code.
+      </p>
+      <p class="type-body">
+        <span class="accent">I am energized when</span> a problem demands
+        <span class="accent">both</span> my technical and creative thinking. With a background in
+        enterprise SaaS products and indie game design,
+        <span class="accent"
+          >I have the expertise and eye for engagement that every project demands</span
+        >.
+      </p>
+      <p class="type-body">
+        <span class="accent">When I use AI tools</span>, it is with strict intention and
+        <span class="accent">planning</span>. Every output is evaluated against design principles
+        and engineering standards <span class="accent">before it counts</span>.
+        <span class="accent">*</span>
+      </p>
+      <p class="type-body">
+        <span class="accent">*</span> I will not use AI tools for game design under ClearTonic
+        Games<span class="accent">_</span> ever<span class="accent">.</span>
+      </p>
     </div>
   </div>
-</section>
+
+  <div class="about-skills">
+    @for (group of skillGroups; track group.category) {
+      <app-tag-list [title]="group.category" [tags]="group.skills" />
+    }
+  </div>
+</div>

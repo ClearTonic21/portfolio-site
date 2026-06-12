@@ -22,6 +22,7 @@ describe('CrossSectionComponent', () => {
     fixture = TestBed.createComponent(CrossSectionComponent);
     component = fixture.componentInstance;
     host = fixture.nativeElement as HTMLElement;
+    fixture.componentRef.setInput('sectionId', 'about');
     fixture.componentRef.setInput('component', TestContentComponent);
     fixture.detectChanges();
   });
@@ -42,5 +43,28 @@ describe('CrossSectionComponent', () => {
     fixture.componentRef.setInput('glass', true);
     fixture.detectChanges();
     expect(host.classList.contains('glass-section')).toBe(true);
+  });
+
+  it('stays bespoke (no section shell) when no eyebrow or heading is supplied', () => {
+    expect(host.querySelector('section')).toBeNull();
+    expect(host.querySelector('.section-header')).toBeNull();
+  });
+
+  it('renders the unified header and section shell when a heading is supplied', () => {
+    fixture.componentRef.setInput('eyebrow', 'About');
+    fixture.componentRef.setInput('heading', 'The Details');
+    fixture.detectChanges();
+
+    const section = host.querySelector('section');
+    expect(section?.id).toBe('about');
+    expect(section?.getAttribute('aria-labelledby')).toBe('about-heading');
+
+    const heading = host.querySelector('.section-heading');
+    expect(heading?.id).toBe('about-heading');
+    expect(heading?.textContent?.trim()).toBe('The Details');
+
+    // Eyebrow keeps the brand accent underscore beside its label.
+    expect(host.querySelector('.section-eyebrow')?.textContent).toContain('About');
+    expect(host.querySelector('.section-eyebrow .accent')?.textContent).toBe('_');
   });
 });

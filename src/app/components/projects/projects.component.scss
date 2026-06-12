@@ -1,10 +1,5 @@
 @use '../../../styles/tokens' as tokens;
 
-.projects-heading {
-  margin-top: tokens.$spacing-3;
-  margin-bottom: tokens.$spacing-4;
-}
-
 // ─── Grid ─────────────────────────────────────────────────────────────────────
 
 .projects-grid {
@@ -15,10 +10,4 @@
 
 // Card body content (description, tags, the centered CTA link) is owned by
 // ArticleCardComponent — projects only supplies the data and the projected elements.
-
-// ─── Reveal animations ────────────────────────────────────────────────────────
-// Base [appReveal] styles are global (styles.scss); only the stagger delay is local.
-
-.projects-heading[appReveal] {
-  transition-delay: 150ms;
-}
+// The section eyebrow + heading are owned by the parent CrossSectionComponent.
